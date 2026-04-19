@@ -15,7 +15,9 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="schedule.html">Schedule</a></li>
           <li><a href="practices.html">Practices</a></li>
+          <li><a href="games.html">Games</a></li>
           <li><a href="stats.html">Stats</a></li>
+          <li><a href="standings.html">Standings</a></li>
         </ul>
       </nav>
     </div>
@@ -23,20 +25,18 @@
 
   <main>
     <h2>Practice Plans</h2>
-    <p class="meta">Tap any plan to expand. Print-friendly — use your browser's print menu for a coach card.</p>
+    <p class="meta">Tap a date to expand. Print any open plan via your browser's print menu.</p>
 
-    <div id="practiceList" class="pill-row"></div>
     <div id="practices"></div>
+
+    <h2>Drill library</h2>
+    <p class="meta">Quick-reference drills to mix into future plans.</p>
+    <div id="drillLib" class="grid"></div>
   </main>
 
   <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
 
   <script>
-    async function loadJSON(path) {
-      const res = await fetch(path, { cache: 'no-store' });
-      if (!res.ok) throw new Error('Failed to load ' + path + ': ' + res.status);
-      return res.json();
-    }
     function el(tag, attrs = {}, ...children) {
       const e = document.createElement(tag);
       for (const [k, v] of Object.entries(attrs)) {
@@ -78,31 +78,37 @@
       const data = window.PRACTICES;
       document.getElementById('teamName').textContent = team.team.name;
 
-      const list = document.getElementById('practiceList');
       const mount = document.getElementById('practices');
-      const practices = data.practices.sort((a,b) => new Date(b.date) - new Date(a.date));
+      const now = new Date();
 
-      practices.forEach((p, i) => {
-        const btn = el('button', {
-          class: i === 0 ? 'active' : '',
-          'data-id': p.id,
-          onclick: () => {
-            document.querySelectorAll('#practiceList button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            render(p);
-          }
-        }, fmtDate(p.date));
-        list.appendChild(btn);
+      // Sort: upcoming first (soonest), then past (newest first)
+      const sorted = data.practices.slice().sort((a, b) => {
+        const da = new Date(a.date), db = new Date(b.date);
+        const au = da >= now, bu = db >= now;
+        if (au !== bu) return au ? -1 : 1;
+        return au ? (da - db) : (db - da);
       });
 
-      function render(p) {
-        mount.innerHTML = '';
-        const card = el('div', { class: 'card' });
+      // First upcoming practice is open by default
+      let firstUpcomingIdx = sorted.findIndex(p => new Date(p.date) >= now);
+      if (firstUpcomingIdx === -1) firstUpcomingIdx = 0;
 
-        card.appendChild(el('h3', {}, fmtDate(p.date) + ' · ' + p.location));
-        card.appendChild(el('p', { class: 'meta' },
-          `${p.duration} min · Focus: ${p.focus.join(' / ')}`
-        ));
+      sorted.forEach((p, idx) => {
+        const det = el('details', idx === firstUpcomingIdx ? { open: '' } : {});
+        det.className = 'card';
+        det.style.padding = '0.75rem 1rem';
+
+        const summary = el('summary', {}, [
+          el('strong', {}, fmtDate(p.date)),
+          ' · ',
+          el('span', { class: 'meta' }, `${p.location} · ${p.duration} min · ${p.focus.join(' / ')}`)
+        ]);
+        summary.style.cursor = 'pointer';
+        summary.style.fontSize = '1.05rem';
+        det.appendChild(summary);
+
+        const body = el('div');
+        body.style.paddingTop = '0.75rem';
 
         if (p.equipment?.length) {
           const eq = el('details', {});
@@ -110,7 +116,7 @@
           const ul = el('ul');
           p.equipment.forEach(x => ul.appendChild(el('li', {}, x)));
           eq.appendChild(ul);
-          card.appendChild(eq);
+          body.appendChild(eq);
         }
 
         if (p.coachingPoints?.length) {
@@ -119,55 +125,49 @@
           const ul = el('ul');
           p.coachingPoints.forEach(x => ul.appendChild(el('li', {}, x)));
           cp.appendChild(ul);
-          card.appendChild(cp);
+          body.appendChild(cp);
         }
 
         p.blocks.forEach(b => {
           const block = el('div', { class: 'block' });
           block.appendChild(el('div', { class: 'time' }, minutesToClock(b.start, b.duration)));
-          const body = el('div', { class: 'body' });
-          body.appendChild(el('h4', {}, [el('span', { class: 'tag' }, b.tag || 'Block'), ' ', b.title]));
+          const row = el('div', { class: 'body' });
+          row.appendChild(el('h4', {}, [el('span', { class: 'tag' }, b.tag || 'Block'), ' ', b.title]));
           if (b.drills) {
             const ul = el('ul');
             b.drills.forEach(d => ul.appendChild(el('li', {}, d)));
-            body.appendChild(ul);
+            row.appendChild(ul);
           }
           if (b.stations) {
             b.stations.forEach(st => {
-              body.appendChild(el('p', {}, [el('strong', {}, st.name), ' ', el('span', { class: 'meta' }, `· ${st.coach} · ${st.players} players · ${st.reps}`)]));
+              row.appendChild(el('p', {}, [el('strong', {}, st.name), ' ', el('span', { class: 'meta' }, `· ${st.coach} · ${st.players} players · ${st.reps}`)]));
               const ul = el('ul');
               st.drills.forEach(d => ul.appendChild(el('li', {}, d)));
-              body.appendChild(ul);
+              row.appendChild(ul);
             });
           }
-          if (b.notes) body.appendChild(el('p', { class: 'meta' }, '💡 ' + b.notes));
-          block.appendChild(body);
-          card.appendChild(block);
+          if (b.notes) row.appendChild(el('p', { class: 'meta' }, '💡 ' + b.notes));
+          block.appendChild(row);
+          body.appendChild(block);
         });
 
-        mount.appendChild(card);
+        det.appendChild(body);
+        mount.appendChild(det);
+      });
 
-        // Drill library reference
-        if (data.drillLibrary) {
-          const ref = el('div', { class: 'card' });
-          ref.appendChild(el('h3', {}, 'Drill library'));
-          ref.appendChild(el('p', { class: 'meta' }, 'Quick-reference drills to mix into future plans.'));
-          const grid = el('div', { class: 'grid' });
-          Object.entries(data.drillLibrary).forEach(([cat, drills]) => {
-            const box = el('div', { class: 'stat' });
-            box.style.textAlign = 'left';
-            box.appendChild(el('strong', {}, cat[0].toUpperCase() + cat.slice(1)));
-            const ul = el('ul');
-            drills.forEach(d => ul.appendChild(el('li', {}, d)));
-            box.appendChild(ul);
-            grid.appendChild(box);
-          });
-          ref.appendChild(grid);
-          mount.appendChild(ref);
-        }
+      // Drill library
+      const lib = document.getElementById('drillLib');
+      if (data.drillLibrary) {
+        Object.entries(data.drillLibrary).forEach(([cat, drills]) => {
+          const box = el('div', { class: 'stat' });
+          box.style.textAlign = 'left';
+          box.appendChild(el('strong', {}, cat[0].toUpperCase() + cat.slice(1)));
+          const ul = el('ul');
+          drills.forEach(d => ul.appendChild(el('li', {}, d)));
+          box.appendChild(ul);
+          lib.appendChild(box);
+        });
       }
-
-      if (practices[0]) render(practices[0]);
     })();
   </script>
 </body>

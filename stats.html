@@ -15,7 +15,9 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="schedule.html">Schedule</a></li>
           <li><a href="practices.html">Practices</a></li>
+          <li><a href="games.html">Games</a></li>
           <li><a href="stats.html">Stats</a></li>
+          <li><a href="standings.html">Standings</a></li>
         </ul>
       </nav>
     </div>
@@ -23,7 +25,7 @@
 
   <main>
     <h2>Season batting stats</h2>
-    <p class="meta">AVG = H/AB. Updated after each game from <code>data/stats.json</code>.</p>
+    <p class="meta">AVG = H/AB · OBP = (H+BB)/(AB+BB) · SLG = TB/AB. Totals auto-computed from every game posted in <a href="games.html">Games</a>.</p>
 
     <div id="teamTotals" class="grid"></div>
 
@@ -33,9 +35,10 @@
           <tr>
             <th>#</th><th>Name</th>
             <th class="num">G</th><th class="num">AB</th><th class="num">H</th>
+            <th class="num">2B</th><th class="num">3B</th><th class="num">HR</th>
             <th class="num">BB</th><th class="num">K</th>
             <th class="num">R</th><th class="num">RBI</th>
-            <th class="num">AVG</th><th class="num">OBP</th>
+            <th class="num">AVG</th><th class="num">OBP</th><th class="num">SLG</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -49,11 +52,6 @@
   <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
 
   <script>
-    async function loadJSON(path) {
-      const res = await fetch(path, { cache: 'no-store' });
-      if (!res.ok) throw new Error('Failed to load ' + path + ': ' + res.status);
-      return res.json();
-    }
     function el(tag, attrs = {}, ...children) {
       const e = document.createElement(tag);
       for (const [k, v] of Object.entries(attrs)) {
@@ -75,10 +73,9 @@
       if (String(iso).includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
       return s;
     }
-    function minutesToClock(startMin, durMin) {
-      const end = startMin + durMin;
-      const f = m => Math.floor(m / 60) + ':' + (m % 60).toString().padStart(2, '0');
-      return f(startMin) + '–' + f(end);
+    function fmtRate(x) {
+      if (!isFinite(x)) return '.000';
+      return x.toFixed(3).replace(/^0/, '');
     }
     document.addEventListener('DOMContentLoaded', () => {
       const here = location.pathname.split('/').pop() || 'index.html';
@@ -88,51 +85,91 @@
     });
   </script>
   <script src="data/team.js"></script>
-  <script src="data/stats.js"></script>
+  <script src="data/games.js"></script>
   <script>
-    function avg(h, ab) { return ab ? (h/ab).toFixed(3).replace(/^0/, '') : '.000'; }
-    function obp(h, bb, ab) {
-      const denom = ab + bb;
-      return denom ? ((h+bb)/denom).toFixed(3).replace(/^0/, '') : '.000';
-    }
-
     (() => {
       const team = window.TEAM;
-      const stats = window.STATS;
+      const games = (window.GAMES && window.GAMES.games) || [];
       document.getElementById('teamName').textContent = team.team.name;
 
+      // Build season totals keyed by player name from roster
+      const totals = {};
+      team.roster.forEach(p => {
+        totals[p.name] = {
+          num: p.num, name: p.name,
+          G: 0, AB: 0, H: 0, "2B": 0, "3B": 0, HR: 0,
+          BB: 0, K: 0, R: 0, RBI: 0
+        };
+      });
+
+      games.forEach(g => {
+        (g.batting || []).forEach(b => {
+          if (!b.name) return;
+          let t = totals[b.name];
+          if (!t) {
+            // Player not in roster — still include
+            t = totals[b.name] = {
+              num: b.num || '', name: b.name,
+              G: 0, AB: 0, H: 0, "2B": 0, "3B": 0, HR: 0,
+              BB: 0, K: 0, R: 0, RBI: 0
+            };
+          }
+          t.G += 1;
+          ['AB','H','2B','3B','HR','BB','K','R','RBI'].forEach(k => {
+            t[k] += Number(b[k] || 0);
+          });
+        });
+      });
+
+      const rows = Object.values(totals).sort((a, b) => {
+        const aa = a.AB ? a.H / a.AB : 0;
+        const ba = b.AB ? b.H / b.AB : 0;
+        return ba - aa;
+      });
+
       const tbody = document.querySelector('#battingTable tbody');
-      const rows = stats.season.batting.slice().sort((a,b) => avg(b.H,b.AB).localeCompare(avg(a.H,a.AB)));
       rows.forEach(p => {
+        const AVG = p.AB ? p.H / p.AB : 0;
+        const OBP = (p.AB + p.BB) ? (p.H + p.BB) / (p.AB + p.BB) : 0;
+        const singles = p.H - p["2B"] - p["3B"] - p.HR;
+        const TB = singles + 2 * p["2B"] + 3 * p["3B"] + 4 * p.HR;
+        const SLG = p.AB ? TB / p.AB : 0;
         const tr = el('tr', {},
-          el('td', {}, String(p.num)),
+          el('td', {}, String(p.num || '')),
           el('td', {}, p.name),
           el('td', { class: 'num' }, String(p.G)),
           el('td', { class: 'num' }, String(p.AB)),
           el('td', { class: 'num' }, String(p.H)),
+          el('td', { class: 'num' }, String(p["2B"])),
+          el('td', { class: 'num' }, String(p["3B"])),
+          el('td', { class: 'num' }, String(p.HR)),
           el('td', { class: 'num' }, String(p.BB)),
           el('td', { class: 'num' }, String(p.K)),
           el('td', { class: 'num' }, String(p.R)),
           el('td', { class: 'num' }, String(p.RBI)),
-          el('td', { class: 'num' }, avg(p.H, p.AB)),
-          el('td', { class: 'num' }, obp(p.H, p.BB, p.AB))
+          el('td', { class: 'num' }, fmtRate(AVG)),
+          el('td', { class: 'num' }, fmtRate(OBP)),
+          el('td', { class: 'num' }, fmtRate(SLG))
         );
         tbody.appendChild(tr);
       });
 
       // Team totals
-      const t = stats.season.batting.reduce((a, p) => {
-        a.G = Math.max(a.G, p.G); a.AB += p.AB; a.H += p.H; a.BB += p.BB;
-        a.K += p.K; a.R += p.R; a.RBI += p.RBI; return a;
-      }, { G:0, AB:0, H:0, BB:0, K:0, R:0, RBI:0 });
+      const t = rows.reduce((a, p) => {
+        a.G = Math.max(a.G, p.G);
+        ['AB','H','2B','3B','HR','BB','K','R','RBI'].forEach(k => a[k] += p[k]);
+        return a;
+      }, { G:0, AB:0, H:0, "2B":0, "3B":0, HR:0, BB:0, K:0, R:0, RBI:0 });
 
       const tt = document.getElementById('teamTotals');
+      const AVG = t.AB ? t.H / t.AB : 0;
+      const OBP = (t.AB + t.BB) ? (t.H + t.BB) / (t.AB + t.BB) : 0;
       const cards = [
-        ['Games', t.G],
-        ['Team AVG', avg(t.H, t.AB)],
-        ['Team OBP', obp(t.H, t.BB, t.AB)],
-        ['Runs', t.R],
+        ['Games', games.length],
+        ['Team AVG', fmtRate(AVG)],
+        ['Team OBP', fmtRate(OBP)],
         ['Hits', t.H],
+        ['Extra-base H', t["2B"] + t["3B"] + t.HR],
         ['Walks', t.BB]
       ];
       cards.forEach(([label, n]) => {
@@ -142,15 +179,15 @@
         tt.appendChild(box);
       });
 
-      // Game log
+      // Game log (mini)
       const log = document.getElementById('gameLog');
-      if (!stats.games.length) {
-        log.innerHTML = '<div class="card"><p class="meta">No games played yet. After each game, add an entry to <code>data/stats.json</code> under <code>games</code>.</p></div>';
+      if (!games.length) {
+        log.innerHTML = '<div class="card"><p class="meta">No games played yet. Add a game via <a href="entry.html">the stat entry form</a>.</p></div>';
       } else {
-        stats.games.slice().reverse().forEach(g => {
+        games.slice().sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5).forEach(g => {
           const card = el('div', { class: 'card' });
-          card.appendChild(el('h3', {}, fmtDate(g.date) + ' · ' + (g.home ? 'vs ' : '@ ') + g.opponent));
-          card.appendChild(el('p', {}, `${g.result || ''} ${g.teamRuns ?? ''} - ${g.oppRuns ?? ''}`));
+          card.appendChild(el('h3', {}, fmtDate(g.date) + ' · ' + (g.home ? 'vs ' : '@ ') + (g.opponent || 'TBD')));
+          card.appendChild(el('p', {}, `${g.result || '-'} · ${g.teamRuns ?? '-'} - ${g.oppRuns ?? '-'}`));
           if (g.notes) card.appendChild(el('p', { class: 'meta' }, g.notes));
           log.appendChild(card);
         });

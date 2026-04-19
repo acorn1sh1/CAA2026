@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stat Entry · Your 9U Team</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .entry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+    .entry-grid label { display: flex; flex-direction: column; font-size: 0.85rem; color: var(--muted); gap: 0.25rem; }
+    .entry-grid input, .entry-grid select { padding: 0.5rem; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; }
+    table.entry-table input { width: 3rem; padding: 0.35rem; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 4px; text-align: right; font-variant-numeric: tabular-nums; }
+    table.entry-table td.name { min-width: 10rem; }
+    .btn { background: var(--accent); color: var(--bg); border: none; padding: 0.6rem 1.1rem; border-radius: var(--radius); font-weight: 600; cursor: pointer; font-size: 0.95rem; margin-right: 0.5rem; }
+    .btn.alt { background: var(--bg-alt); color: var(--fg); border: 1px solid var(--border); }
+    .btn:hover { filter: brightness(1.1); }
+    textarea#jsonOut { width: 100%; min-height: 200px; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem; font-family: ui-monospace, monospace; font-size: 0.8rem; }
+    .toast { background: var(--ok); color: var(--bg); padding: 0.5rem 0.9rem; border-radius: 6px; display: inline-block; margin-top: 0.5rem; font-weight: 600; }
+    .hide { display: none; }
+    #gate { max-width: 420px; margin: 2rem auto; }
+    #gate input { width: 100%; padding: 0.6rem; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; margin: 0.5rem 0; }
+    #gate .btn { width: 100%; margin: 0.25rem 0 0; }
+    #gateErr { color: var(--warn); font-weight: 600; min-height: 1.2em; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span> · Stat Entry</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="practices.html">Practices</a></li>
+          <li><a href="games.html">Games</a></li>
+          <li><a href="stats.html">Stats</a></li>
+          <li><a href="standings.html">Standings</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="gate">
+    <div class="card">
+      <h3>Coach login</h3>
+      <p class="meta">Stat entry is password-protected. Enter the coach password to continue.</p>
+      <form id="gateForm" autocomplete="off">
+        <label for="gatePw" class="meta">Password</label>
+        <input type="password" id="gatePw" autofocus>
+        <button type="submit" class="btn">Unlock</button>
+        <p id="gateErr"></p>
+      </form>
+    </div>
+  </section>
+
+  <main class="hide" id="app">
+    <h2>Add / Edit Game</h2>
+    <p class="meta">Fill the form, then click <strong>Export games.json</strong> to download an updated file. Replace <code>data/games.json</code> in the repo and push. <em>Changes stay in this browser until you export.</em></p>
+
+    <div class="card">
+      <h3>Game info</h3>
+      <div class="entry-grid">
+        <label>Date <input type="date" id="gDate" required></label>
+        <label>Time <input type="time" id="gTime" value="18:00"></label>
+        <label>Opponent <input type="text" id="gOpp" placeholder="e.g., Tigers"></label>
+        <label>Home/Away
+          <select id="gHome">
+            <option value="true">Home</option>
+            <option value="false">Away</option>
+          </select>
+        </label>
+        <label>Location <input type="text" id="gLoc" placeholder="e.g., Field 4"></label>
+        <label>Our runs <input type="number" id="gUs" min="0" value="0"></label>
+        <label>Opp runs <input type="number" id="gThem" min="0" value="0"></label>
+        <label>Result
+          <select id="gResult">
+            <option value="">(auto)</option>
+            <option value="W">Win</option>
+            <option value="L">Loss</option>
+            <option value="T">Tie</option>
+          </select>
+        </label>
+      </div>
+      <label style="display:block; margin-top:0.5rem;">
+        Notes
+        <input type="text" id="gNotes" placeholder="e.g., walkoff in bottom 6, Jack had 3 RBI" style="width:100%; padding:0.5rem; background:var(--bg); color:var(--fg); border:1px solid var(--border); border-radius:6px; margin-top:0.25rem;">
+      </label>
+    </div>
+
+    <div class="card">
+      <h3>Line score by inning <span class="meta" style="font-weight:400;">(optional)</span></h3>
+      <p class="meta">Enter runs scored each inning. Totals auto-check against "Our runs" / "Opp runs" above.</p>
+      <div style="overflow-x:auto;">
+        <table class="entry-table" id="inningTbl">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="num">1</th><th class="num">2</th><th class="num">3</th>
+              <th class="num">4</th><th class="num">5</th><th class="num">6</th>
+              <th class="num">7</th><th class="num">8</th><th class="num">9</th>
+              <th class="num">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name" id="usLabel">Us</td>
+              <td><input type="number" min="0" data-team="us" data-inning="0" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="1" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="2" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="3" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="4" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="5" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="6" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="7" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="8" value=""></td>
+              <td class="num" id="usTotal">0</td>
+            </tr>
+            <tr>
+              <td class="name">Opp</td>
+              <td><input type="number" min="0" data-team="opp" data-inning="0" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="1" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="2" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="3" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="4" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="5" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="6" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="7" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="8" value=""></td>
+              <td class="num" id="oppTotal">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta" id="inningWarn"></p>
+    </div>
+
+    <div class="card">
+      <h3>Batting lines</h3>
+      <p class="meta">Enter only rows for players who batted. Leave blanks or zeros for everything else.</p>
+      <div style="overflow-x:auto;">
+        <table class="entry-table" id="batTbl">
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th>
+              <th class="num">AB</th><th class="num">H</th>
+              <th class="num">2B</th><th class="num">3B</th><th class="num">HR</th>
+              <th class="num">BB</th><th class="num">K</th>
+              <th class="num">R</th><th class="num">RBI</th>
+              <th class="num">Played</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="meta" id="batWarn"></p>
+    </div>
+
+    <div class="card">
+      <button class="btn" id="btnPreview">Preview JSON</button>
+      <button class="btn alt" id="btnLoad">Load existing game (by date)</button>
+      <button class="btn" id="btnExport">Export games.json</button>
+      <button class="btn alt" id="btnCopy">Copy JSON</button>
+      <button class="btn alt" id="btnReset" style="float:right;">Reset form</button>
+      <p class="toast hide" id="toast"></p>
+    </div>
+
+    <div class="card">
+      <h3>Output JSON</h3>
+      <p class="meta">This is what will be written to <code>data/games.json</code> (all games, including this one).</p>
+      <textarea id="jsonOut" readonly placeholder="Click 'Preview JSON' or 'Export games.json' to generate..."></textarea>
+    </div>
+
+    <div class="card">
+      <h3>How to save</h3>
+      <ol>
+        <li>Click <strong>Export games.json</strong>. Your browser downloads the updated file.</li>
+        <li>In your local repo, replace <code>data/games.json</code> with the downloaded file.</li>
+        <li>Regenerate the JS mirror: <code>printf 'window.GAMES = ' > data/games.js && cat data/games.json >> data/games.js && printf ';\n' >> data/games.js</code></li>
+        <li><code>git add data/games.json data/games.js &amp;&amp; git commit -m "add game" &amp;&amp; git push</code></li>
+        <li>GitHub Pages rebuilds in ~30 sec. Stats + Games pages show the new game.</li>
+      </ol>
+    </div>
+  </main>
+
+  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+
+  <script>
+    // ---- Password gate (client-side only; not real security) ----
+    // SHA-256 hash of the coach password. Change both password + hash to rotate.
+    const PW_HASH = 'ab8b51259550ff28517592867e947c830427dcf37f4ab45fe96a285936e38d60';
+
+    async function sha256Hex(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function unlock() {
+      document.getElementById('gate').classList.add('hide');
+      document.getElementById('app').classList.remove('hide');
+    }
+
+    (function gateInit() {
+      if (sessionStorage.getItem('entryAuthed') === '1') { unlock(); return; }
+      const form = document.getElementById('gateForm');
+      const err = document.getElementById('gateErr');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const pw = document.getElementById('gatePw').value;
+        const h = await sha256Hex(pw);
+        if (h === PW_HASH) {
+          sessionStorage.setItem('entryAuthed', '1');
+          err.textContent = '';
+          unlock();
+        } else {
+          err.textContent = 'Wrong password';
+          document.getElementById('gatePw').value = '';
+        }
+      });
+    })();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const here = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('nav a').forEach(a => {
+        if (a.getAttribute('href') === here) a.classList.add('active');
+      });
+    });
+  </script>
+  <script src="data/team.js"></script>
+  <script src="data/games.js"></script>
+  <script>
+    (() => {
+      const team = window.TEAM;
+      const existingGames = ((window.GAMES && window.GAMES.games) || []).slice();
+      document.getElementById('teamName').textContent = team.team.name;
+
+      // Build batter rows from roster
+      const batBody = document.querySelector('#batTbl tbody');
+      team.roster.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.dataset.name = p.name;
+        tr.innerHTML = `
+          <td>${p.num || ''}</td>
+          <td class="name">${p.name}</td>
+          <td><input type="number" min="0" data-k="AB" value=""></td>
+          <td><input type="number" min="0" data-k="H" value=""></td>
+          <td><input type="number" min="0" data-k="2B" value=""></td>
+          <td><input type="number" min="0" data-k="3B" value=""></td>
+          <td><input type="number" min="0" data-k="HR" value=""></td>
+          <td><input type="number" min="0" data-k="BB" value=""></td>
+          <td><input type="number" min="0" data-k="K" value=""></td>
+          <td><input type="number" min="0" data-k="R" value=""></td>
+          <td><input type="number" min="0" data-k="RBI" value=""></td>
+          <td class="num"><input type="checkbox" data-k="played" checked></td>
+        `;
+        batBody.appendChild(tr);
+      });
+
+      // Default date = today
+      document.getElementById('gDate').valueAsDate = new Date();
+
+      // Label the 'us' row with team name
+      document.getElementById('usLabel').textContent = team.team.name;
+
+      // Live inning totals + mismatch warning
+      function updateInningTotals() {
+        const get = (team) => Array.from(document.querySelectorAll(`input[data-team="${team}"]`))
+          .map(i => Number(i.value || 0));
+        const us = get('us'), opp = get('opp');
+        const usSum = us.reduce((a, b) => a + b, 0);
+        const oppSum = opp.reduce((a, b) => a + b, 0);
+        document.getElementById('usTotal').textContent = usSum;
+        document.getElementById('oppTotal').textContent = oppSum;
+
+        const usDecl = Number(document.getElementById('gUs').value || 0);
+        const oppDecl = Number(document.getElementById('gThem').value || 0);
+        const hasInnings = us.some(x => x > 0) || opp.some(x => x > 0);
+        const warn = document.getElementById('inningWarn');
+        if (hasInnings && (usSum !== usDecl || oppSum !== oppDecl)) {
+          warn.innerHTML = `⚠️ Inning sums (${usSum}-${oppSum}) don't match declared score (${usDecl}-${oppDecl})`;
+          warn.style.color = 'var(--warn)';
+        } else {
+          warn.textContent = '';
+        }
+      }
+      document.querySelectorAll('#inningTbl input, #gUs, #gThem').forEach(i => i.addEventListener('input', updateInningTotals));
+
+      // Live batting totals check vs team runs
+      function updateBatWarn() {
+        let rSum = 0;
+        document.querySelectorAll('#batTbl tbody tr').forEach(tr => {
+          const v = tr.querySelector('input[data-k="R"]').value;
+          rSum += Number(v || 0);
+        });
+        const usDecl = Number(document.getElementById('gUs').value || 0);
+        const warn = document.getElementById('batWarn');
+        if (rSum > 0 && rSum !== usDecl) {
+          warn.innerHTML = `⚠️ Sum of batter R (${rSum}) ≠ team runs (${usDecl})`;
+          warn.style.color = 'var(--warn)';
+        } else {
+          warn.textContent = '';
+        }
+      }
+      document.querySelectorAll('#batTbl input, #gUs').forEach(i => i.addEventListener('input', updateBatWarn));
+
+      // Build the game object from form
+      function buildGame() {
+        const date = document.getElementById('gDate').value;
+        const time = document.getElementById('gTime').value || '00:00';
+        const dateTime = date ? `${date}T${time}` : '';
+        const us = Number(document.getElementById('gUs').value || 0);
+        const them = Number(document.getElementById('gThem').value || 0);
+        let result = document.getElementById('gResult').value;
+        if (!result) result = us > them ? 'W' : us < them ? 'L' : 'T';
+
+        // Innings
+        const usInn = Array.from(document.querySelectorAll('input[data-team="us"]')).map(i => i.value === '' ? null : Number(i.value));
+        const oppInn = Array.from(document.querySelectorAll('input[data-team="opp"]')).map(i => i.value === '' ? null : Number(i.value));
+        let byInning = null;
+        if (usInn.some(x => x !== null) || oppInn.some(x => x !== null)) {
+          byInning = [];
+          for (let i = 0; i < 9; i++) {
+            if (usInn[i] === null && oppInn[i] === null) continue;
+            byInning.push([usInn[i] ?? 0, oppInn[i] ?? 0]);
+          }
+        }
+
+        // Batting
+        const batting = [];
+        document.querySelectorAll('#batTbl tbody tr').forEach(tr => {
+          const played = tr.querySelector('input[data-k="played"]').checked;
+          const row = { name: tr.dataset.name };
+          const nums = ['AB','H','2B','3B','HR','BB','K','R','RBI'];
+          let any = false;
+          nums.forEach(k => {
+            const v = tr.querySelector(`input[data-k="${k}"]`).value;
+            row[k] = Number(v || 0);
+            if (row[k] !== 0) any = true;
+          });
+          // Include if played OR any non-zero stat
+          if (played || any) batting.push(row);
+        });
+
+        const game = {
+          id: 'g-' + (date || 'undated'),
+          date: dateTime,
+          opponent: document.getElementById('gOpp').value || '',
+          home: document.getElementById('gHome').value === 'true',
+          location: document.getElementById('gLoc').value || '',
+          teamRuns: us,
+          oppRuns: them,
+          result,
+          notes: document.getElementById('gNotes').value || ''
+        };
+        if (byInning) game.byInning = byInning;
+        if (batting.length) game.batting = batting;
+        return game;
+      }
+
+      function mergeGame(newGame) {
+        const list = existingGames.slice();
+        const idx = list.findIndex(g => g.id === newGame.id);
+        if (idx >= 0) list[idx] = newGame;
+        else list.push(newGame);
+        list.sort((a, b) => new Date(a.date) - new Date(b.date));
+        return { games: list };
+      }
+
+      function toast(msg, ok = true) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.style.background = ok ? 'var(--ok)' : 'var(--warn)';
+        t.classList.remove('hide');
+        setTimeout(() => t.classList.add('hide'), 3000);
+      }
+
+      // Preview
+      document.getElementById('btnPreview').addEventListener('click', () => {
+        const merged = mergeGame(buildGame());
+        document.getElementById('jsonOut').value = JSON.stringify(merged, null, 2);
+        toast('Preview generated');
+      });
+
+      // Export download
+      document.getElementById('btnExport').addEventListener('click', () => {
+        const merged = mergeGame(buildGame());
+        const json = JSON.stringify(merged, null, 2);
+        document.getElementById('jsonOut').value = json;
+        const blob = new Blob([json + '\n'], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'games.json';
+        document.body.appendChild(a); a.click();
+        document.body.removeChild(a); URL.revokeObjectURL(url);
+        toast('Downloaded games.json');
+      });
+
+      // Copy
+      document.getElementById('btnCopy').addEventListener('click', async () => {
+        const merged = mergeGame(buildGame());
+        const json = JSON.stringify(merged, null, 2);
+        document.getElementById('jsonOut').value = json;
+        try {
+          await navigator.clipboard.writeText(json);
+          toast('Copied to clipboard');
+        } catch {
+          toast('Copy failed — select text manually', false);
+        }
+      });
+
+      // Load existing by matching date
+      document.getElementById('btnLoad').addEventListener('click', () => {
+        const date = document.getElementById('gDate').value;
+        if (!date) { toast('Pick a date first', false); return; }
+        const id = 'g-' + date;
+        const g = existingGames.find(x => x.id === id);
+        if (!g) { toast('No game found for ' + date, false); return; }
+
+        // Fill form
+        const t = (g.date || '').split('T')[1] || '18:00';
+        document.getElementById('gTime').value = t.slice(0, 5);
+        document.getElementById('gOpp').value = g.opponent || '';
+        document.getElementById('gHome').value = g.home ? 'true' : 'false';
+        document.getElementById('gLoc').value = g.location || '';
+        document.getElementById('gUs').value = g.teamRuns ?? 0;
+        document.getElementById('gThem').value = g.oppRuns ?? 0;
+        document.getElementById('gResult').value = g.result || '';
+        document.getElementById('gNotes').value = g.notes || '';
+
+        // Innings
+        document.querySelectorAll('input[data-team]').forEach(i => i.value = '');
+        (g.byInning || []).forEach(([u, o], i) => {
+          const usI = document.querySelector(`input[data-team="us"][data-inning="${i}"]`);
+          const opI = document.querySelector(`input[data-team="opp"][data-inning="${i}"]`);
+          if (usI) usI.value = u;
+          if (opI) opI.value = o;
+        });
+
+        // Batting
+        document.querySelectorAll('#batTbl tbody tr').forEach(tr => {
+          tr.querySelectorAll('input[type="number"]').forEach(i => i.value = '');
+          tr.querySelector('input[data-k="played"]').checked = false;
+        });
+        (g.batting || []).forEach(b => {
+          const tr = document.querySelector(`#batTbl tbody tr[data-name="${(b.name || '').replace(/"/g, '\\"')}"]`);
+          if (!tr) return;
+          tr.querySelector('input[data-k="played"]').checked = true;
+          ['AB','H','2B','3B','HR','BB','K','R','RBI'].forEach(k => {
+            const inp = tr.querySelector(`input[data-k="${k}"]`);
+            if (inp) inp.value = b[k] ?? 0;
+          });
+        });
+
+        updateInningTotals();
+        updateBatWarn();
+        toast('Loaded ' + date);
+      });
+
+      // Reset
+      document.getElementById('btnReset').addEventListener('click', () => {
+        if (!confirm('Reset the form? Current inputs will be lost.')) return;
+        document.querySelectorAll('#batTbl input[type="number"], #inningTbl input').forEach(i => i.value = '');
+        document.querySelectorAll('#batTbl input[type="checkbox"]').forEach(i => i.checked = true);
+        document.getElementById('gOpp').value = '';
+        document.getElementById('gLoc').value = '';
+        document.getElementById('gUs').value = 0;
+        document.getElementById('gThem').value = 0;
+        document.getElementById('gResult').value = '';
+        document.getElementById('gNotes').value = '';
+        document.getElementById('jsonOut').value = '';
+        updateInningTotals(); updateBatWarn();
+        toast('Form reset');
+      });
+    })();
+  </script>
+</body>
+</html>

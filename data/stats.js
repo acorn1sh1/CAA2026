@@ -1,21 +1,20 @@
-// Edit this object between games/practices. Reload page to see changes.
-window.STATS = 
-{
+window.STATS = {
   "games": [],
   "season": {
     "batting": [
-      { "num": 1,  "name": "Player 1",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 2,  "name": "Player 2",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 3,  "name": "Player 3",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 4,  "name": "Player 4",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 5,  "name": "Player 5",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 6,  "name": "Player 6",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 7,  "name": "Player 7",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 8,  "name": "Player 8",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 9,  "name": "Player 9",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 10, "name": "Player 10", "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 11, "name": "Player 11", "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
-      { "num": 12, "name": "Player 12", "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 }
+      { "num": "", "name": "Jack Cornish",     "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Greyson Cerminn",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Benton Herrmann",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Michael Schirmer", "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Luca Lopez",       "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Albert Doerr",     "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Forrest Doerr",    "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Jude Durako",      "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Nolan Schueler",   "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Levi Schueler",    "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Jackson Segura",   "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Charlie Wachtel",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Parker White",     "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 }
     ]
   }
 }
