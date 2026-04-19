@@ -1,6 +1,6 @@
 window.TEAM = {
   "team": {
-    "name": "Your 9U Team",
+    "name": "Columbia TBD",
     "season": "Spring 2026",
     "league": "9U Kid Pitch / Coach Pitch",
     "rules": {
