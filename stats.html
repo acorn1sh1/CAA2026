@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stats · Your 9U Team</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="practices.html">Practices</a></li>
+          <li><a href="stats.html">Stats</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2>Season batting stats</h2>
+    <p class="meta">AVG = H/AB. Updated after each game from <code>data/stats.json</code>.</p>
+
+    <div id="teamTotals" class="grid"></div>
+
+    <div class="card" style="padding:0; overflow-x:auto;">
+      <table id="battingTable">
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th>
+            <th class="num">G</th><th class="num">AB</th><th class="num">H</th>
+            <th class="num">BB</th><th class="num">K</th>
+            <th class="num">R</th><th class="num">RBI</th>
+            <th class="num">AVG</th><th class="num">OBP</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <h2>Recent games</h2>
+    <div id="gameLog"></div>
+  </main>
+
+  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+
+  <script>
+    async function loadJSON(path) {
+      const res = await fetch(path, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to load ' + path + ': ' + res.status);
+      return res.json();
+    }
+    function el(tag, attrs = {}, ...children) {
+      const e = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === 'class') e.className = v;
+        else if (k === 'html') e.innerHTML = v;
+        else if (k.startsWith('on') && typeof v === 'function') e.addEventListener(k.slice(2), v);
+        else e.setAttribute(k, v);
+      }
+      for (const c of children.flat()) {
+        if (c == null) continue;
+        e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+      }
+      return e;
+    }
+    function fmtDate(iso) {
+      const d = new Date(iso);
+      if (isNaN(d)) return iso;
+      let s = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+      if (String(iso).includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      return s;
+    }
+    function minutesToClock(startMin, durMin) {
+      const end = startMin + durMin;
+      const f = m => Math.floor(m / 60) + ':' + (m % 60).toString().padStart(2, '0');
+      return f(startMin) + '–' + f(end);
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const here = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('nav a').forEach(a => {
+        if (a.getAttribute('href') === here) a.classList.add('active');
+      });
+    });
+  </script>
+  <script src="data/team.js"></script>
+  <script src="data/stats.js"></script>
+  <script>
+    function avg(h, ab) { return ab ? (h/ab).toFixed(3).replace(/^0/, '') : '.000'; }
+    function obp(h, bb, ab) {
+      const denom = ab + bb;
+      return denom ? ((h+bb)/denom).toFixed(3).replace(/^0/, '') : '.000';
+    }
+
+    (() => {
+      const team = window.TEAM;
+      const stats = window.STATS;
+      document.getElementById('teamName').textContent = team.team.name;
+
+      const tbody = document.querySelector('#battingTable tbody');
+      const rows = stats.season.batting.slice().sort((a,b) => avg(b.H,b.AB).localeCompare(avg(a.H,a.AB)));
+      rows.forEach(p => {
+        const tr = el('tr', {},
+          el('td', {}, String(p.num)),
+          el('td', {}, p.name),
+          el('td', { class: 'num' }, String(p.G)),
+          el('td', { class: 'num' }, String(p.AB)),
+          el('td', { class: 'num' }, String(p.H)),
+          el('td', { class: 'num' }, String(p.BB)),
+          el('td', { class: 'num' }, String(p.K)),
+          el('td', { class: 'num' }, String(p.R)),
+          el('td', { class: 'num' }, String(p.RBI)),
+          el('td', { class: 'num' }, avg(p.H, p.AB)),
+          el('td', { class: 'num' }, obp(p.H, p.BB, p.AB))
+        );
+        tbody.appendChild(tr);
+      });
+
+      // Team totals
+      const t = stats.season.batting.reduce((a, p) => {
+        a.G = Math.max(a.G, p.G); a.AB += p.AB; a.H += p.H; a.BB += p.BB;
+        a.K += p.K; a.R += p.R; a.RBI += p.RBI; return a;
+      }, { G:0, AB:0, H:0, BB:0, K:0, R:0, RBI:0 });
+
+      const tt = document.getElementById('teamTotals');
+      const cards = [
+        ['Games', t.G],
+        ['Team AVG', avg(t.H, t.AB)],
+        ['Team OBP', obp(t.H, t.BB, t.AB)],
+        ['Runs', t.R],
+        ['Hits', t.H],
+        ['Walks', t.BB]
+      ];
+      cards.forEach(([label, n]) => {
+        const box = el('div', { class: 'stat' });
+        box.appendChild(el('span', { class: 'n' }, String(n)));
+        box.appendChild(el('span', { class: 'l' }, label));
+        tt.appendChild(box);
+      });
+
+      // Game log
+      const log = document.getElementById('gameLog');
+      if (!stats.games.length) {
+        log.innerHTML = '<div class="card"><p class="meta">No games played yet. After each game, add an entry to <code>data/stats.json</code> under <code>games</code>.</p></div>';
+      } else {
+        stats.games.slice().reverse().forEach(g => {
+          const card = el('div', { class: 'card' });
+          card.appendChild(el('h3', {}, fmtDate(g.date) + ' · ' + (g.home ? 'vs ' : '@ ') + g.opponent));
+          card.appendChild(el('p', {}, `${g.result || ''} ${g.teamRuns ?? ''} - ${g.oppRuns ?? ''}`));
+          if (g.notes) card.appendChild(el('p', { class: 'meta' }, g.notes));
+          log.appendChild(card);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
