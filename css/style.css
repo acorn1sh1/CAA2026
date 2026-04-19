@@ -77,6 +77,56 @@ nav a {
 nav a:hover { background: var(--bg-alt); text-decoration: none; }
 nav a.active { background: var(--accent); color: var(--bg); }
 
+/* Hamburger — hidden on desktop, shown on narrow screens */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: auto;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--fg);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+@media (max-width: 719px) {
+  .nav-toggle { display: inline-flex; }
+  nav {
+    order: 3;
+    flex-basis: 100%;
+    display: none;
+  }
+  nav.open { display: block; }
+  nav ul {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+  nav a {
+    display: block;
+    padding: 0.6rem 0.75rem;
+  }
+}
+
 main {
   max-width: 1000px;
   margin: 0 auto;
@@ -186,7 +236,7 @@ footer.site {
 }
 
 @media print {
-  header.site, footer.site, .pill-row, nav { display: none; }
+  header.site, footer.site, .pill-row, nav, .nav-toggle { display: none; }
   body { background: white; color: black; }
   .card { background: white; border: 1px solid #999; box-shadow: none; color: black; }
   h2 { border-color: black; }

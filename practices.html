@@ -89,12 +89,13 @@
         return au ? (da - db) : (db - da);
       });
 
-      // First upcoming practice is open by default
-      let firstUpcomingIdx = sorted.findIndex(p => new Date(p.date) >= now);
-      if (firstUpcomingIdx === -1) firstUpcomingIdx = 0;
+      // Default: all collapsed. Open a specific practice only if URL hash matches its id.
+      const hashId = (location.hash || '').replace(/^#/, '');
 
-      sorted.forEach((p, idx) => {
-        const det = el('details', idx === firstUpcomingIdx ? { open: '' } : {});
+      sorted.forEach((p) => {
+        const attrs = { id: p.id };
+        if (hashId && p.id === hashId) attrs.open = '';
+        const det = el('details', attrs);
         det.className = 'card';
         det.style.padding = '0.75rem 1rem';
 
@@ -155,6 +156,20 @@
         mount.appendChild(det);
       });
 
+      // Scroll to hash-targeted practice after render
+      function focusHashTarget() {
+        const id = (location.hash || '').replace(/^#/, '');
+        if (!id) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+        if (target.tagName === 'DETAILS') target.open = true;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      focusHashTarget();
+
+      // Handle in-page hash changes (e.g. user edits URL or clicks another anchor)
+      window.addEventListener('hashchange', focusHashTarget);
+
       // Drill library
       const lib = document.getElementById('drillLib');
       if (data.drillLibrary) {
@@ -170,5 +185,6 @@
       }
     })();
   </script>
+  <script src="js/nav.js"></script>
 </body>
 </html>

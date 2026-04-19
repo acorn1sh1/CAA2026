@@ -121,10 +121,12 @@
         });
       });
 
+      const lastName = n => (n || '').trim().split(/\s+/).slice(-1)[0].toLowerCase();
       const rows = Object.values(totals).sort((a, b) => {
         const aa = a.AB ? a.H / a.AB : 0;
         const ba = b.AB ? b.H / b.AB : 0;
-        return ba - aa;
+        if (ba !== aa) return ba - aa;
+        return lastName(a.name).localeCompare(lastName(b.name));
       });
 
       const tbody = document.querySelector('#battingTable tbody');
@@ -194,5 +196,6 @@
       }
     })();
   </script>
+  <script src="js/nav.js"></script>
 </body>
 </html>
