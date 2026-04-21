@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Games · Columbia TBD</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="practices.html">Practices</a></li>
+          <li><a href="games.html">Games</a></li>
+          <li><a href="stats.html">Stats</a></li>
+          <li><a href="standings.html">Standings</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2>Games</h2>
+    <p class="meta">Results, box scores, and individual batting lines. Add a game via <a href="entry.html">the stat entry form</a>.</p>
+
+    <div class="pill-row">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="W">Wins</button>
+      <button data-filter="L">Losses</button>
+      <button data-filter="T">Ties</button>
+    </div>
+
+    <div id="record" class="grid"></div>
+    <div id="games"></div>
+  </main>
+
+  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+
+  <script>
+    function el(tag, attrs = {}, ...children) {
+      const e = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === 'class') e.className = v;
+        else if (k === 'html') e.innerHTML = v;
+        else if (k.startsWith('on') && typeof v === 'function') e.addEventListener(k.slice(2), v);
+        else e.setAttribute(k, v);
+      }
+      for (const c of children.flat()) {
+        if (c == null) continue;
+        e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+      }
+      return e;
+    }
+    function fmtDate(iso) {
+      const d = new Date(iso);
+      if (isNaN(d)) return iso;
+      let s = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+      if (String(iso).includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      return s;
+    }
+    function avg(h, ab) { return ab ? (h/ab).toFixed(3).replace(/^0/, '') : '.000'; }
+    document.addEventListener('DOMContentLoaded', () => {
+      const here = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('nav a').forEach(a => {
+        if (a.getAttribute('href') === here) a.classList.add('active');
+      });
+    });
+  </script>
+  <script src="data/team.js"></script>
+  <script src="data/games.js"></script>
+  <script>
+    (() => {
+      const team = window.TEAM;
+      const games = (window.GAMES && window.GAMES.games) || [];
+      document.getElementById('teamName').textContent = team.team.name;
+
+      // Record summary
+      const rec = { W: 0, L: 0, T: 0, RF: 0, RA: 0 };
+      games.forEach(g => {
+        if (g.result === 'W') rec.W++;
+        else if (g.result === 'L') rec.L++;
+        else if (g.result === 'T') rec.T++;
+        rec.RF += Number(g.teamRuns || 0);
+        rec.RA += Number(g.oppRuns || 0);
+      });
+      const recEl = document.getElementById('record');
+      const cards = [
+        ['Record', `${rec.W}-${rec.L}${rec.T ? '-' + rec.T : ''}`],
+        ['Runs For', rec.RF],
+        ['Runs Against', rec.RA],
+        ['Run Diff', (rec.RF - rec.RA >= 0 ? '+' : '') + (rec.RF - rec.RA)]
+      ];
+      cards.forEach(([label, n]) => {
+        const box = el('div', { class: 'stat' });
+        box.appendChild(el('span', { class: 'n' }, String(n)));
+        box.appendChild(el('span', { class: 'l' }, label));
+        recEl.appendChild(box);
+      });
+
+      const mount = document.getElementById('games');
+
+      function render(filter) {
+        mount.innerHTML = '';
+        const list = games
+          .slice()
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .filter(g => filter === 'all' ? true : g.result === filter);
+
+        if (!list.length) {
+          mount.innerHTML = '<div class="card"><p class="meta">No games yet. After the first game, add an entry at <a href="entry.html">entry.html</a>.</p></div>';
+          return;
+        }
+
+        list.forEach(g => {
+          const card = el('div', { class: 'card' });
+          const resultTag = g.result ? el('span', { class: 'tag' + (g.result === 'W' ? '' : ' alt') }, g.result) : '';
+          card.appendChild(resultTag);
+          const title = `${fmtDate(g.date)} · ${g.home ? 'vs' : '@'} ${g.opponent || 'TBD'}`;
+          card.appendChild(el('h3', {}, title));
+          card.appendChild(el('p', {}, `Score: ${g.teamRuns ?? '-'} - ${g.oppRuns ?? '-'}${g.location ? ' · ' + g.location : ''}`));
+          if (g.notes) card.appendChild(el('p', { class: 'meta' }, g.notes));
+
+          // Inning-by-inning (optional)
+          if (Array.isArray(g.byInning) && g.byInning.length) {
+            const tbl = el('table');
+            const thead = el('thead');
+            const thr = el('tr');
+            thr.appendChild(el('th', {}, ''));
+            g.byInning.forEach((_, i) => thr.appendChild(el('th', { class: 'num' }, String(i + 1))));
+            thr.appendChild(el('th', { class: 'num' }, 'R'));
+            thead.appendChild(thr);
+            tbl.appendChild(thead);
+            const tbody = el('tbody');
+            const usRow = el('tr'); usRow.appendChild(el('td', {}, team.team.name));
+            const oppRow = el('tr'); oppRow.appendChild(el('td', {}, g.opponent || 'Opp'));
+            let usTot = 0, oppTot = 0;
+            g.byInning.forEach(([u, o]) => {
+              usTot += Number(u || 0); oppTot += Number(o || 0);
+              usRow.appendChild(el('td', { class: 'num' }, String(u ?? '')));
+              oppRow.appendChild(el('td', { class: 'num' }, String(o ?? '')));
+            });
+            usRow.appendChild(el('td', { class: 'num' }, String(usTot)));
+            oppRow.appendChild(el('td', { class: 'num' }, String(oppTot)));
+            tbody.appendChild(usRow); tbody.appendChild(oppRow);
+            tbl.appendChild(tbody);
+            const wrap = el('div', { class: 'card' });
+            wrap.style.padding = '0'; wrap.style.overflowX = 'auto';
+            wrap.appendChild(tbl);
+            card.appendChild(wrap);
+          }
+
+          // Batting box score
+          if (Array.isArray(g.batting) && g.batting.length) {
+            const det = el('details', {});
+            det.appendChild(el('summary', {}, `Box score (${g.batting.length} batters)`));
+            const wrap = el('div');
+            wrap.style.overflowX = 'auto';
+            const tbl = el('table');
+            const thead = el('thead');
+            const thr = el('tr');
+            ['Name','AB','H','2B','3B','HR','BB','K','R','RBI','AVG'].forEach((h, i) => {
+              thr.appendChild(el('th', { class: i === 0 ? '' : 'num' }, h));
+            });
+            thead.appendChild(thr);
+            tbl.appendChild(thead);
+            const tbody = el('tbody');
+            g.batting.forEach(p => {
+              const tr = el('tr');
+              tr.appendChild(el('td', {}, p.name || ''));
+              ['AB','H','2B','3B','HR','BB','K','R','RBI'].forEach(k => {
+                tr.appendChild(el('td', { class: 'num' }, String(p[k] ?? 0)));
+              });
+              tr.appendChild(el('td', { class: 'num' }, avg(p.H || 0, p.AB || 0)));
+              tbody.appendChild(tr);
+            });
+            tbl.appendChild(tbody);
+            wrap.appendChild(tbl);
+            det.appendChild(wrap);
+            card.appendChild(det);
+          }
+
+          mount.appendChild(card);
+        });
+      }
+
+      render('all');
+      document.querySelectorAll('[data-filter]').forEach(b => {
+        b.addEventListener('click', () => {
+          document.querySelectorAll('[data-filter]').forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+          render(b.dataset.filter);
+        });
+      });
+    })();
+  </script>
+  <script src="js/nav.js"></script>
+</body>
+</html>

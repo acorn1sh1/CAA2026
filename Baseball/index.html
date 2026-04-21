@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Columbia TBD</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="practices.html">Practices</a></li>
+          <li><a href="games.html">Games</a></li>
+          <li><a href="stats.html">Stats</a></li>
+          <li><a href="standings.html">Standings</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <h3 id="welcome">Welcome</h3>
+      <p id="leagueBlurb" class="meta"></p>
+      <p>Parents — check here for the next game or practice, current lineup, and season stats. Questions: <a id="coachEmail" href="">email the coach</a>.</p>
+      <p>League site: <a href="https://dist19.com/" target="_blank" rel="noopener">District 19 →</a></p>
+      <p>Rules: <a href="https://dist19.com/wp-content/uploads/2025/05/Dist-19-Handbook2025-v2.0.pdf" target="_blank" rel="noopener">District 19 Handbook 2025 (PDF) →</a></p>
+    </div>
+
+    <h2>Next 3 events</h2>
+    <div id="nextEvent"></div>
+
+    <h2>Roster</h2>
+    <div id="roster" class="grid"></div>
+
+  </main>
+
+  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+
+  <script>
+    async function loadJSON(path) {
+      const res = await fetch(path, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to load ' + path + ': ' + res.status);
+      return res.json();
+    }
+    function el(tag, attrs = {}, ...children) {
+      const e = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === 'class') e.className = v;
+        else if (k === 'html') e.innerHTML = v;
+        else if (k.startsWith('on') && typeof v === 'function') e.addEventListener(k.slice(2), v);
+        else e.setAttribute(k, v);
+      }
+      for (const c of children.flat()) {
+        if (c == null) continue;
+        e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+      }
+      return e;
+    }
+    function fmtDate(iso) {
+      const d = new Date(iso);
+      if (isNaN(d)) return iso;
+      let s = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+      if (String(iso).includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      return s;
+    }
+    function minutesToClock(startMin, durMin) {
+      const end = startMin + durMin;
+      const f = m => Math.floor(m / 60) + ':' + (m % 60).toString().padStart(2, '0');
+      return f(startMin) + '–' + f(end);
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const here = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('nav a').forEach(a => {
+        if (a.getAttribute('href') === here) a.classList.add('active');
+      });
+    });
+  </script>
+  <script src="data/team.js"></script>
+  <script src="data/schedule.js"></script>
+  <script>
+    (() => {
+      const team = window.TEAM;
+      const sched = window.SCHEDULE;
+      const t = team.team;
+      document.getElementById('teamName').textContent = t.name;
+      document.getElementById('welcome').textContent = `Welcome, ${t.name} families`;
+      document.getElementById('leagueBlurb').textContent = `${t.season} · ${t.league}`;
+      const mail = document.getElementById('coachEmail');
+      mail.href = `mailto:${t.coach.contact}`;
+      mail.textContent = `email ${t.coach.name}`;
+
+      // Next event
+      const now = new Date();
+      const upcoming = sched.events
+        .map(e => ({ ...e, d: new Date(e.date) }))
+        .filter(e => e.d >= now)
+        .sort((a,b) => a.d - b.d)
+        .slice(0, 3);
+
+      const next = document.getElementById('nextEvent');
+      if (upcoming.length) {
+        upcoming.forEach(ev => {
+          const card = el('div', { class: 'card' });
+          card.appendChild(el('span', { class: 'tag' + (ev.type === 'game' ? '' : ' alt') }, ev.type.toUpperCase()));
+          card.appendChild(el('h3', {}, fmtDate(ev.date)));
+          const loc = ev.location ? ` · ${ev.location}` : '';
+          const opp = ev.opponent ? `vs ${ev.opponent}${ev.home ? ' (home)' : ' (away)'}` : '';
+          card.appendChild(el('p', {}, [opp, loc].filter(Boolean).join(' ')));
+          if (ev.notes) card.appendChild(el('p', { class: 'meta' }, ev.notes));
+          if (ev.practiceId) card.appendChild(el('p', {}, el('a', { href: 'practices.html' }, 'View practice plan →')));
+          next.appendChild(card);
+        });
+      } else {
+        next.innerHTML = '<div class="card"><p class="meta">Nothing scheduled. Add events to <code>data/schedule.js</code>.</p></div>';
+      }
+
+      // Roster
+      const rosterEl = document.getElementById('roster');
+      team.roster.forEach(p => {
+        const box = el('div', { class: 'stat' });
+        box.appendChild(el('span', { class: 'n' }, '#' + p.num));
+        box.appendChild(el('span', { class: 'l' }, p.name));
+        box.appendChild(el('div', { class: 'meta' }, `${p.pos.join(' / ')} · B:${p.bats} T:${p.throws}`));
+        rosterEl.appendChild(box);
+      });
+
+    })();
+  </script>
+  <script src="js/nav.js"></script>
+</body>
+</html>

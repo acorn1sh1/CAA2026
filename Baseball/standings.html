@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Standings · Columbia TBD</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="practices.html">Practices</a></li>
+          <li><a href="games.html">Games</a></li>
+          <li><a href="stats.html">Stats</a></li>
+          <li><a href="standings.html">Standings</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2>League Standings</h2>
+
+    <div class="card">
+      <p>Official standings are maintained on the District 19 league site and updated after each game night.</p>
+      <p>
+        <a href="https://dist19.com/" target="_blank" rel="noopener" style="font-size:1.1rem; font-weight:600;">
+          Open District 19 →
+        </a>
+      </p>
+      <p class="meta">Tip: bookmark that page on your phone for quick checks during the season.</p>
+    </div>
+
+    <h2>Our record</h2>
+    <div id="ourRecord" class="grid"></div>
+    <p class="meta">Computed from games posted in <a href="games.html">Games</a>.</p>
+  </main>
+
+  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+
+  <script>
+    function el(tag, attrs = {}, ...children) {
+      const e = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === 'class') e.className = v;
+        else if (k === 'html') e.innerHTML = v;
+        else e.setAttribute(k, v);
+      }
+      for (const c of children.flat()) {
+        if (c == null) continue;
+        e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+      }
+      return e;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const here = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('nav a').forEach(a => {
+        if (a.getAttribute('href') === here) a.classList.add('active');
+      });
+    });
+  </script>
+  <script src="data/team.js"></script>
+  <script src="data/games.js"></script>
+  <script>
+    (() => {
+      const team = window.TEAM;
+      const games = (window.GAMES && window.GAMES.games) || [];
+      document.getElementById('teamName').textContent = team.team.name;
+
+      const rec = { W: 0, L: 0, T: 0, RF: 0, RA: 0 };
+      games.forEach(g => {
+        if (g.result === 'W') rec.W++;
+        else if (g.result === 'L') rec.L++;
+        else if (g.result === 'T') rec.T++;
+        rec.RF += Number(g.teamRuns || 0);
+        rec.RA += Number(g.oppRuns || 0);
+      });
+
+      const mount = document.getElementById('ourRecord');
+      const cards = [
+        ['Record', `${rec.W}-${rec.L}${rec.T ? '-' + rec.T : ''}`],
+        ['Runs For', rec.RF],
+        ['Runs Against', rec.RA],
+        ['Run Diff', (rec.RF - rec.RA >= 0 ? '+' : '') + (rec.RF - rec.RA)]
+      ];
+      cards.forEach(([label, n]) => {
+        const box = el('div', { class: 'stat' });
+        box.appendChild(el('span', { class: 'n' }, String(n)));
+        box.appendChild(el('span', { class: 'l' }, label));
+        mount.appendChild(box);
+      });
+    })();
+  </script>
+  <script src="js/nav.js"></script>
+</body>
+</html>
