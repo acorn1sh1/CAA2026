@@ -10,7 +10,7 @@ window.PRACTICES = {
         "18 baseballs (regular)",
         "12 safety/training balls",
         "1 L-screen or net (for soft toss)",
-        "1 target"
+        "4 target buckets + 2 tarps/nets for throwing accuracy station",
         "Cones (12)",
         "Stopwatch",
         "Water jug"
@@ -58,7 +58,7 @@ window.PRACTICES = {
                 "Round 1 (4 min): routine grounders from 25 ft — 'wide base, funnel to belly button'",
                 "Round 2 (4 min): backhand — step with right foot (RHT), glove thumb down",
                 "Round 3 (4 min): charge play — short-hop slow roller, two hands always",
-                "Catch → shuffle → throw"
+                "Catch → shuffle → throw to bucket 1B-distance away"
               ]
             },
             {
@@ -81,10 +81,9 @@ window.PRACTICES = {
               "reps": "Rotate",
               "drills": [
                 "Hit fly balls and ground balls from outfied",
-                "Focus on tracking balls"
-                "Getting Balls in quick"
+                "Focus on tracking balls",
+                "Getting Balls in quick",
                 "Ask why we need to get balls in quick. All runners must stop once ball is in infeild"
-
               ]
             },
             {
@@ -93,9 +92,9 @@ window.PRACTICES = {
               "players": "3",
               "reps": "3 rounds of 10 throws",
               "drills": [
-                "Targets: a Hula Hoop on dense"
+                "Targets: a Hula Hoop on dense",
                 "Start at 25 / 40 / 60...ft",
-                "Score: 1 pts for each target hit,"
+                "Score: 1 pts for each target hit",
                 "Rotate distance each round"
               ]
             }
@@ -173,46 +172,7 @@ window.PRACTICES = {
           ]
         }
       ]
-    }
-  ],
-  "drillLibrary": {
-    "warmup": [
-      "Dynamic run-throughs (high knees, butt kicks, carioca)",
-      "J-band arm care",
-      "Wrist flips / one-knee throws"
-    ],
-    "throwing": [
-      "Long toss progression",
-      "Figure-4 stride",
-      "4-seam grip drills",
-      "Target accuracy (buckets / tarp)"
-    ],
-    "fielding": [
-      "Routine grounders — wide base, funnel",
-      "Backhand step-through",
-      "Short-hop reaction (knees down)",
-      "Charge-play slow rollers"
-    ],
-    "hitting": [
-      "Soft toss: inside / middle / oppo",
-      "Front toss tracking (yes/no)",
-      "Bunts: sacrifice + slug",
-      "One-hand top/bottom drills"
-    ],
-    "pitching": [
-      "Balance-point hold",
-      "Stride + land closed",
-      "Bullpen to catcher (strike-zone focus)",
-      "Glove tuck + back leg through"
-    ],
-    "baserunning": [
-      "Home-to-first sprint (30 reps builds habit)",
-      "Secondary lead + read on ball in dirt",
-      "First-to-third reads off OF",
-      "Tag-up from 3rd"
-    ]
-  }
-},
+    },
     {
       "id": "p-2026-04-25",
       "date": "2026-04-25T10:00",
@@ -332,7 +292,8 @@ window.PRACTICES = {
           "notes": "Whistle to rotate every 15 min. Coaches stay at station, kids move. Water break rolls into each rotation (10 sec)."
         }
       ]
-    },
+    }
+  ],
   "drillLibrary": {
     "warmup": [
       "Dynamic run-throughs (high knees, butt kicks, carioca)",
@@ -370,5 +331,5 @@ window.PRACTICES = {
       "Tag-up from 3rd"
     ]
   }
-
+}
 ;

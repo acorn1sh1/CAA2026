@@ -81,8 +81,8 @@ window.PRACTICES = {
               "reps": "Rotate",
               "drills": [
                 "Hit fly balls and ground balls from outfied",
-                "Focus on tracking balls"
-                "Getting Balls in quick"
+                "Focus on tracking balls",
+                "Getting Balls in quick",
                 "Ask why we need to get balls in quick. All runners must stop once ball is in infeild"
               ]
             },
@@ -92,9 +92,9 @@ window.PRACTICES = {
               "players": "3",
               "reps": "3 rounds of 10 throws",
               "drills": [
-                "Targets: a Hula Hoop on dense"
+                "Targets: a Hula Hoop on dense",
                 "Start at 25 / 40 / 60...ft",
-                "Score: 1 pts for each target hit,"
+                "Score: 1 pts for each target hit",
                 "Rotate distance each round"
               ]
             }
