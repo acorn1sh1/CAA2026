@@ -156,6 +156,44 @@
     </div>
 
     <div class="card">
+      <h3>Pitching lines</h3>
+      <p class="meta">Enter rows for each player who pitched. IP uses baseball notation: 1.1 = 1⅓, 1.2 = 1⅔. Only kid-pitch innings (1-2) count.</p>
+      <div style="overflow-x:auto;">
+        <table class="entry-table" id="pitchTbl">
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th>
+              <th class="num">IP</th><th class="num">H</th>
+              <th class="num">R</th><th class="num">BB</th>
+              <th class="num">K</th><th class="num">HBP</th>
+              <th class="num">Pitched</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="meta" id="pitchWarn"></p>
+    </div>
+
+    <div class="card">
+      <h3>Lineup</h3>
+      <p class="meta">Rows = batting order. Pick a position for each inning or leave blank to sit. Kid pitch innings 1-2, coach pitch 3+.</p>
+      <div style="overflow-x:auto;">
+        <table class="entry-table" id="lineupTbl">
+          <thead>
+            <tr>
+              <th>#</th><th>Player</th>
+              <th class="num">1</th><th class="num">2</th><th class="num">3</th>
+              <th class="num">4</th><th class="num">5</th><th class="num">6</th><th class="num">7</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="meta" id="defWarn"></p>
+    </div>
+
+    <div class="card">
       <button class="btn" id="btnPreview">Preview JSON</button>
       <button class="btn alt" id="btnLoad">Load existing game (by date)</button>
       <button class="btn" id="btnExport">Export games.json</button>
@@ -255,6 +293,113 @@
         batBody.appendChild(tr);
       });
 
+      // Build pitcher rows from roster
+      const pitchBody = document.querySelector('#pitchTbl tbody');
+      team.roster.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.dataset.name = p.name;
+        tr.innerHTML = `
+          <td>${p.num || ''}</td>
+          <td class="name">${p.name}</td>
+          <td><input type="text" data-k="IP" value="" style="width:3.5rem;" placeholder="0"></td>
+          <td><input type="number" min="0" data-k="pH" value=""></td>
+          <td><input type="number" min="0" data-k="pR" value=""></td>
+          <td><input type="number" min="0" data-k="pBB" value=""></td>
+          <td><input type="number" min="0" data-k="pK" value=""></td>
+          <td><input type="number" min="0" data-k="pHBP" value=""></td>
+          <td class="num"><input type="checkbox" data-k="pitched"></td>
+        `;
+        pitchBody.appendChild(tr);
+      });
+
+      // Build unified lineup table: rows = players, cols = innings, cells = position dropdown
+      const names = team.roster.map(p => p.name);
+      const POSITIONS = ['','P','C','1B','2B','SS','3B','LF','LCF','RCF','RF'];
+      const POS_LABELS = {'':'Sit','P':'P','C':'C','1B':'1st','2B':'2nd','3B':'3rd','SS':'SS','LF':'LF','LCF':'LCF','RCF':'RCF','RF':'RF'};
+      const INNINGS = 7;
+
+      function makePosSelect(playerIdx, inn) {
+        const sel = document.createElement('select');
+        sel.dataset.player = playerIdx;
+        sel.dataset.inn = inn;
+        sel.style.cssText = 'padding:0.3rem;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:4px;font-size:0.85rem;width:4.5rem;';
+        POSITIONS.forEach(pos => {
+          const o = document.createElement('option');
+          o.value = pos;
+          o.textContent = POS_LABELS[pos] || pos;
+          sel.appendChild(o);
+        });
+        return sel;
+      }
+
+      const lineupBody = document.querySelector('#lineupTbl tbody');
+      // Each row = a player select (batting order) + position per inning
+      for (let i = 0; i < names.length; i++) {
+        const tr = document.createElement('tr');
+        // Batting order number
+        const numTd = document.createElement('td');
+        numTd.textContent = i + 1;
+        numTd.style.cssText = 'font-weight:600;font-variant-numeric:tabular-nums;';
+        tr.appendChild(numTd);
+        // Player name dropdown
+        const nameTd = document.createElement('td');
+        nameTd.className = 'name';
+        const nameSel = document.createElement('select');
+        nameSel.id = 'bo-' + i;
+        nameSel.style.cssText = 'padding:0.3rem;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:4px;font-size:0.85rem;min-width:8rem;';
+        const blank = document.createElement('option');
+        blank.value = ''; blank.textContent = '—';
+        nameSel.appendChild(blank);
+        names.forEach(n => {
+          const o = document.createElement('option');
+          o.value = n; o.textContent = n;
+          nameSel.appendChild(o);
+        });
+        nameTd.appendChild(nameSel);
+        tr.appendChild(nameTd);
+        // Position dropdowns for each inning
+        for (let inn = 1; inn <= INNINGS; inn++) {
+          const td = document.createElement('td');
+          td.appendChild(makePosSelect(i, inn));
+          tr.appendChild(td);
+        }
+        lineupBody.appendChild(tr);
+      }
+
+      // Warn on duplicate positions in same inning or same player twice
+      function updateDefWarn() {
+        const warn = document.getElementById('defWarn');
+        const issues = [];
+        for (let inn = 1; inn <= INNINGS; inn++) {
+          const posUsed = {};
+          for (let i = 0; i < names.length; i++) {
+            const sel = document.querySelector(`select[data-player="${i}"][data-inn="${inn}"]`);
+            const pos = sel ? sel.value : '';
+            if (pos) {
+              if (posUsed[pos]) issues.push(`Inning ${inn}: ${pos} assigned twice`);
+              posUsed[pos] = true;
+            }
+          }
+        }
+        // Check duplicate players in batting order
+        const boUsed = {};
+        for (let i = 0; i < names.length; i++) {
+          const sel = document.getElementById('bo-' + i);
+          const v = sel ? sel.value : '';
+          if (v) {
+            if (boUsed[v]) issues.push(`${v} in batting order twice`);
+            boUsed[v] = true;
+          }
+        }
+        if (issues.length) {
+          warn.innerHTML = '⚠️ ' + issues.join('<br>⚠️ ');
+          warn.style.color = 'var(--warn)';
+        } else {
+          warn.textContent = '';
+        }
+      }
+      document.getElementById('lineupTbl').addEventListener('change', updateDefWarn);
+
       // Default date = today
       document.getElementById('gDate').valueAsDate = new Date();
 
@@ -340,6 +485,22 @@
           if (played || any) batting.push(row);
         });
 
+        // Pitching
+        const pitching = [];
+        document.querySelectorAll('#pitchTbl tbody tr').forEach(tr => {
+          const pitched = tr.querySelector('input[data-k="pitched"]').checked;
+          const ipRaw = tr.querySelector('input[data-k="IP"]').value.trim();
+          const row = { name: tr.dataset.name };
+          row.IP = ipRaw || '0';
+          ['pH','pR','pBB','pK','pHBP'].forEach(k => {
+            const v = tr.querySelector(`input[data-k="${k}"]`).value;
+            const key = k.slice(1); // strip 'p' prefix → H, R, BB, K, HBP
+            row[key] = Number(v || 0);
+          });
+          const any = ipRaw || row.H || row.R || row.BB || row.K || row.HBP;
+          if (pitched || any) pitching.push(row);
+        });
+
         const game = {
           id: 'g-' + (date || 'undated'),
           date: dateTime,
@@ -353,6 +514,33 @@
         };
         if (byInning) game.byInning = byInning;
         if (batting.length) game.batting = batting;
+        if (pitching.length) game.pitching = pitching;
+
+        // Lineup: read from unified table (rows=players, cols=innings)
+        const battingOrder = [];
+        const defense = {};
+        let hasDefense = false;
+        for (let i = 0; i < names.length; i++) {
+          const nameSel = document.getElementById('bo-' + i);
+          const playerName = nameSel ? nameSel.value : '';
+          if (playerName) battingOrder.push(playerName);
+          for (let inn = 1; inn <= INNINGS; inn++) {
+            const posSel = document.querySelector(`select[data-player="${i}"][data-inn="${inn}"]`);
+            const pos = posSel ? posSel.value : '';
+            if (pos && playerName) {
+              if (!defense[inn]) defense[inn] = {};
+              defense[inn][pos] = playerName;
+              hasDefense = true;
+            }
+          }
+        }
+
+        if (battingOrder.length || hasDefense) {
+          game.lineup = {};
+          if (battingOrder.length) game.lineup.battingOrder = battingOrder;
+          if (hasDefense) game.lineup.defense = defense;
+        }
+
         return game;
       }
 
@@ -450,6 +638,54 @@
           });
         });
 
+        // Pitching
+        document.querySelectorAll('#pitchTbl tbody tr').forEach(tr => {
+          tr.querySelectorAll('input[type="number"]').forEach(i => i.value = '');
+          tr.querySelector('input[data-k="IP"]').value = '';
+          tr.querySelector('input[data-k="pitched"]').checked = false;
+        });
+        (g.pitching || []).forEach(p => {
+          const tr = document.querySelector(`#pitchTbl tbody tr[data-name="${(p.name || '').replace(/"/g, '\\"')}"]`);
+          if (!tr) return;
+          tr.querySelector('input[data-k="pitched"]').checked = true;
+          tr.querySelector('input[data-k="IP"]').value = p.IP || '';
+          ['H','R','BB','K','HBP'].forEach(k => {
+            const inp = tr.querySelector(`input[data-k="p${k}"]`);
+            if (inp) inp.value = p[k] ?? 0;
+          });
+        });
+
+        // Lineup: clear all
+        for (let i = 0; i < names.length; i++) {
+          const sel = document.getElementById('bo-' + i);
+          if (sel) sel.value = '';
+          for (let inn = 1; inn <= INNINGS; inn++) {
+            const ps = document.querySelector(`select[data-player="${i}"][data-inn="${inn}"]`);
+            if (ps) ps.value = '';
+          }
+        }
+        // Load batting order + defense into unified table
+        if (g.lineup && g.lineup.battingOrder) {
+          // Build reverse lookup: inning → pos → player name
+          const defense = g.lineup.defense || {};
+          // For each player in batting order, find their positions
+          g.lineup.battingOrder.forEach((name, i) => {
+            const sel = document.getElementById('bo-' + i);
+            if (sel) sel.value = name;
+            // Find this player's position in each inning
+            for (let inn = 1; inn <= INNINGS; inn++) {
+              const posMap = defense[inn] || {};
+              let playerPos = '';
+              Object.entries(posMap).forEach(([pos, pName]) => {
+                if (pName === name) playerPos = pos;
+              });
+              const ps = document.querySelector(`select[data-player="${i}"][data-inn="${inn}"]`);
+              if (ps) ps.value = playerPos;
+            }
+          });
+        }
+        updateDefWarn();
+
         updateInningTotals();
         updateBatWarn();
         toast('Loaded ' + date);
@@ -460,6 +696,9 @@
         if (!confirm('Reset the form? Current inputs will be lost.')) return;
         document.querySelectorAll('#batTbl input[type="number"], #inningTbl input').forEach(i => i.value = '');
         document.querySelectorAll('#batTbl input[type="checkbox"]').forEach(i => i.checked = true);
+        document.querySelectorAll('#pitchTbl input[type="number"], #pitchTbl input[type="text"]').forEach(i => i.value = '');
+        document.querySelectorAll('#pitchTbl input[type="checkbox"]').forEach(i => i.checked = false);
+        document.querySelectorAll('#lineupTbl select').forEach(s => s.value = '');
         document.getElementById('gOpp').value = '';
         document.getElementById('gLoc').value = '';
         document.getElementById('gUs').value = 0;

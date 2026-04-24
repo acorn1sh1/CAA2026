@@ -63,10 +63,11 @@
       return e;
     }
     function fmtDate(iso) {
-      const d = new Date(iso);
+      const raw = String(iso);
+      const d = new Date(raw.includes('T') ? raw : raw + 'T00:00');
       if (isNaN(d)) return iso;
       let s = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-      if (String(iso).includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      if (raw.includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
       return s;
     }
     function minutesToClock(startMin, durMin) {

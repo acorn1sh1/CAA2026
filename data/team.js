@@ -6,7 +6,7 @@ window.TEAM = {
     "rules": {
       "pitchFormat": "Kid pitch innings 1-2, coach pitch innings 3+",
       "runCap": "5 runs per inning",
-      "innings": 6
+      "innings": 7
     },
     "coach": {
       "name": "Coach Andrew",
