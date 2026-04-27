@@ -18,6 +18,7 @@
           <li><a href="games.html">Games</a></li>
           <li><a href="stats.html">Stats</a></li>
           <li><a href="standings.html">Standings</a></li>
+          <li><a href="entry.html">Entry</a></li>
         </ul>
       </nav>
     </div>
@@ -123,7 +124,10 @@
         });
       }
 
-      render('all');
+      const defaultFilter = 'upcoming';
+      document.querySelector(`[data-filter="${defaultFilter}"]`).classList.add('active');
+      document.querySelector('[data-filter="all"]').classList.remove('active');
+      render(defaultFilter);
       document.querySelectorAll('[data-filter]').forEach(b => {
         b.addEventListener('click', () => {
           document.querySelectorAll('[data-filter]').forEach(x => x.classList.remove('active'));

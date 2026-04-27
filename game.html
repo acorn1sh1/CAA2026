@@ -18,6 +18,7 @@
           <li><a href="games.html">Games</a></li>
           <li><a href="stats.html">Stats</a></li>
           <li><a href="standings.html">Standings</a></li>
+          <li><a href="entry.html">Entry</a></li>
         </ul>
       </nav>
     </div>
@@ -114,7 +115,7 @@
       const posLabel = {'1B':'1st','2B':'2nd','3B':'3rd','P':'P','C':'C','SS':'SS','LF':'LF','LCF':'LCF','RCF':'RCF','RF':'RF'};
 
       // === LINEUP ===
-      if (g.lineup && g.lineup.battingOrder && g.lineup.defense) {
+      if (g.lineup && g.lineup.battingOrder && g.lineup.battingOrder.length && g.lineup.defense) {
         mount.appendChild(el('h3', { style: 'margin-top:1.5rem;' }, 'Lineup'));
         const dWrap = el('div', { class: 'card', style: 'padding:0;overflow-x:auto;' });
         const tbl = el('table');
@@ -249,6 +250,12 @@
           el('p', { class: 'meta' }, 'No stats entered yet. Use the stat entry form to add data.')
         ));
       }
+
+      // Entry link — always shown at bottom of game detail
+      const date = (g.date || '').split('T')[0];
+      const entryCard = el('div', { class: 'card', style: 'margin-top:1.5rem;text-align:right;' });
+      entryCard.appendChild(el('a', { href: 'entry.html?date=' + date }, '✏️ Enter / edit stats for this game →'));
+      mount.appendChild(entryCard);
     })();
   </script>
   <script src="js/nav.js"></script>
