@@ -18,6 +18,7 @@
           <li><a href="games.html">Games</a></li>
           <li><a href="stats.html">Stats</a></li>
           <li><a href="standings.html">Standings</a></li>
+          <li><a href="entry.html">Entry</a></li>
         </ul>
       </nav>
     </div>
@@ -63,10 +64,11 @@
       return e;
     }
     function fmtDate(iso) {
-      const d = new Date(iso);
+      const raw = String(iso);
+      const d = new Date(raw.includes('T') ? raw : raw + 'T00:00');
       if (isNaN(d)) return iso;
       let s = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-      if (String(iso).includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      if (raw.includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
       return s;
     }
     function minutesToClock(startMin, durMin) {

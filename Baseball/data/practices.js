@@ -1,16 +1,128 @@
 window.PRACTICES = {
   "practices": [
     {
-      "id": "p-2026-04-21",
-      "date": "2026-04-21T18:00",
-      "location": "Field 4",
+      "id": "p-2026-04-25",
+      "date": "2026-04-25",
       "duration": 90,
-      "focus": ["Fielding", "Soft toss + hitting", "Pitching", "Throwing accuracy", "Simulated game"],
+      "focus": ["Hitting + pitching", "Outfield", "Left-side infield", "Right-side infield", "6v7 scrimmage"],
+      "equipment": [
+        "18 baseballs (regular)",
+        "12 safety/training balls",
+        "1 L-screen or net (soft toss)",
+        "Fungo bat (fly balls)",
+        "Cones (12)",
+        "4 bases",
+        "Stopwatch",
+        "Water jug"
+      ],
+      "coachingPoints": [
+        "Reps > lectures. Talk 15 sec, demo 15 sec, move.",
+        "4 stations, rotate every 10 min on whistle. Coaches stay, kids move.",
+        "Station 1 has 4 kids (2 hit, 1 pitch, 1 shag/catch). Others = 3 kids each.",
+        "Pitch station: STOP if arm drops sidearm or kid fatigued — protect arms.",
+        "Scrimmage 6v7: 13 kids split 6 bat / 7 field, swap halfway. Coach pitch. 5-run cap per inning.",
+        "Praise effort and mechanics, not outcomes."
+      ],
+      "blocks": [
+        {
+          "duration": 10,
+          "title": "Warm up",
+          "tag": "Warmup",
+          "drills": [
+            "Dynamic warm up + light running. Coach's call."
+          ],
+          "notes": "10 min. Get loose, raise heart rate, arm circles before throwing."
+        },
+        {
+          "duration": 40,
+          "title": "4-station rotation — 10 min each",
+          "tag": "Stations",
+          "stations": [
+            {
+              "name": "Station 1 — Hitting + Pitching",
+              "coach": "Coach 1 (hit) + Coach 2 (bullpen)",
+              "players": "4 (2 hit / 1 pitch / 1 shag-catch)",
+              "reps": "12–15 swings, 15–20 pitches per kid",
+              "drills": [
+                "Hit side (L-screen or net): soft toss — mid/in/out, 10 swings. Then front toss, 5 swings.",
+                "Pitch side (bullpen net or catcher): 10 flat warmup throws, then 15–20 pitches from stretch.",
+                "Shag kid flips balls + resets net. Swap shag ↔ hitter at 5 min.",
+                "Pitcher swap at 5 min — second kid takes mound.",
+                "Cues: 'knob to ball, barrel through zone' (hit) / 'balance, stride closed, follow through' (pitch)",
+                "STOP pitcher if arm drops sidearm or kid fatigued."
+              ]
+            },
+            {
+              "name": "Station 2 — Outfield",
+              "coach": "Coach 3 (fungo ~80 ft)",
+              "players": "3",
+              "reps": "8–10 fly balls per kid",
+              "drills": [
+                "Round 1: drop-step reads — first step back, no drift forward",
+                "Round 2: catch over throwing shoulder, two hands",
+                "Round 3: catch → crow-hop → throw to cutoff (partner or cone at 40 ft)",
+                "Mix in line drives + over-the-head balls",
+                "Call it loud: 'BALL! BALL! BALL!'"
+              ]
+            },
+            {
+              "name": "Station 3 — Left-side infield (3B / SS)",
+              "coach": "Coach 4 (fungo from home)",
+              "players": "3",
+              "reps": "12+ grounders per kid",
+              "drills": [
+                "1 kid at 3B, 1 at SS, 1 at 1B target",
+                "Round 1: routine grounders — wide base, funnel to belly button, throw to 1B",
+                "Round 2: backhand — step with right foot (RHT), glove thumb down",
+                "Round 3: slow roller charge play — two hands, throw on run",
+                "SS feed for force at 2B (3B simulates runner) — quick transfer",
+                "Rotate 3B ↔ SS ↔ 1B every 4 reps"
+              ]
+            },
+            {
+              "name": "Station 4 — Right-side infield (1B / 2B)",
+              "coach": "Coach 5 or parent (fungo from home)",
+              "players": "3",
+              "reps": "12+ grounders per kid",
+              "drills": [
+                "1 kid at 1B, 1 at 2B, 1 backup/target",
+                "Round 1: routine grounders to 2B — throw to 1B, stretch and catch",
+                "Round 2: 1B fielding — scoop short-hop, flip to pitcher covering (cone)",
+                "Round 3: 2B turning double play — underhand toss to SS bag (cone), force footwork",
+                "1B focus: stretch only when ball released, foot on inside corner",
+                "Rotate 1B ↔ 2B ↔ backup every 4 reps"
+              ]
+            }
+          ],
+          "notes": "Whistle to rotate at 10 min. Coaches stay, kids move. Group assignment: 4 → S1 (hitting/pitching needs extra), 3 each to S2/S3/S4."
+        },
+        {
+          "duration": 25,
+          "title": "6v7 scrimmage — coach pitch",
+          "tag": "Game",
+          "drills": [
+            "Split 13 kids: Team A (6) and Team B (7). Swap bat/field halfway (~12 min).",
+            "Fielding 7: P (coach pitches), 1B, 2B, SS, 3B, LF, CF, RF — drop one OF if only 7 kids fielding (use 6 field + coach helper)",
+            "Coach pitches both sides. 5-run cap per half-inning.",
+            "Batters: 5 pitches max or hit it. Run live.",
+            "Outs count. Real throws. Call plays loud.",
+            "Swap sides at 12 min or after 3 outs per side — whichever first.",
+            "Last 1 min: quick team talk — one thing each kid did well."
+          ],
+          "notes": "Keep it moving. No long huddles. Coaches narrate reads: 'ball in dirt — go!' / 'freeze, ball in.'"
+        }
+      ]
+    },
+    {
+      "id": "p-2026-04-21",
+      "date": "2026-04-21",
+      "duration": 90,
+      "focus": ["Fielding", "Soft toss + hitting", "Out Field", "Throwing accuracy", "Simulated game"],
       "equipment": [
         "18 baseballs (regular)",
         "12 safety/training balls",
         "1 L-screen or net (for soft toss)",
-        "4 target buckets + 2 tarps/nets for throwing accuracy station",
+        "1 target",
         "Cones (12)",
         "Stopwatch",
         "Water jug"
@@ -24,7 +136,6 @@ window.PRACTICES = {
       ],
       "blocks": [
         {
-          "start": 0,
           "duration": 10,
           "title": "Running warm-up (4 lines)",
           "tag": "Warmup",
@@ -44,7 +155,6 @@ window.PRACTICES = {
           "notes": "10 total reps, down-and-back. Keep lines tight — next kid goes when prior finishes cone."
         },
         {
-          "start": 10,
           "duration": 48,
           "title": "4-station rotation — 12 min each",
           "tag": "Stations",
@@ -58,7 +168,7 @@ window.PRACTICES = {
                 "Round 1 (4 min): routine grounders from 25 ft — 'wide base, funnel to belly button'",
                 "Round 2 (4 min): backhand — step with right foot (RHT), glove thumb down",
                 "Round 3 (4 min): charge play — short-hop slow roller, two hands always",
-                "Catch → shuffle → throw to bucket 1B-distance away"
+                "Catch → shuffle → throw"
               ]
             },
             {
@@ -75,16 +185,16 @@ window.PRACTICES = {
               ]
             },
             {
-              "name": "Station 3 — Pitching",
+              "name": "Station 3 — Out Field Fielding",
               "coach": "Coach 3",
               "players": "3",
-              "reps": "15 pitches each (bullpen)",
+              "reps": "Rotate",
               "drills": [
-                "Balance-point hold — lift, pause 2 sec, stride",
-                "Stride to flat ground — toes closed, land on ball of foot",
-                "Bullpen: 15 pitches into net / to coach partner. Strike zone focus, no max effort.",
-                "Finish: glove tucks to chest, back leg comes through",
-                "Protect arms — stop if fatigued or mechanics break"
+                "Hit fly balls and ground balls from outfied",
+                "Focus on tracking balls",
+                "Getting Balls in quick",
+                "Ask why we need to get balls in quick. All runners must stop once ball is in infeild"
+
               ]
             },
             {
@@ -93,17 +203,16 @@ window.PRACTICES = {
               "players": "3",
               "reps": "3 rounds of 10 throws",
               "drills": [
-                "Targets: 3 buckets + 1 tarp at 30 / 45 / 60 ft",
-                "Partner throws to target — crow hop, point with front shoulder",
-                "Scoring: 2 pts tarp, 1 pt bucket, 0 pt miss — call out score",
-                "Rotate targets each round to change distance"
+                "Targets: a Hula Hoop on dense",
+                "Start at 25 / 40 / 60...ft",
+                "Score: 1 pts for each target hit",
+                "Rotate distance each round"
               ]
             }
           ],
           "notes": "Whistle to rotate at 12 min. Coaches stay at station, kids move."
         },
         {
-          "start": 58,
           "duration": 29,
           "title": "Simulated game — 12-spot rotation",
           "tag": "Game",
@@ -162,7 +271,6 @@ window.PRACTICES = {
           "notes": "Rotation gives every kid a mix of IF + OF + bat over 13 turns. Same order works every practice — just reassign jersey #s to the starting slots."
         },
         {
-          "start": 87,
           "duration": 3,
           "title": "Cool down + team talk",
           "tag": "Wrap",
@@ -171,126 +279,6 @@ window.PRACTICES = {
             "One thing each kid did well today",
             "Reminder of next practice + game"
           ]
-        }
-      ]
-    },
-    {
-      "id": "p-2026-04-25",
-      "date": "2026-04-25T10:00",
-      "location": "Field 4",
-      "duration": 75,
-      "focus": ["Running warm-up", "Fielding", "Hitting", "Throwing accuracy", "Baserunning"],
-      "equipment": [
-        "18 baseballs (regular)",
-        "8 safety/training balls",
-        "2 tees",
-        "1 L-screen or net (for soft toss)",
-        "4 target buckets + 1 tarp/net for throwing accuracy",
-        "Cones (12)",
-        "Bases (4 — home, 1B, 2B, 3B)",
-        "Stopwatch",
-        "Water jug"
-      ],
-      "coachingPoints": [
-        "13 kids across 4 stations — group sizes 4 / 3 / 3 / 3. Rotate every 15 min on coach whistle.",
-        "Zero downtime goal: every kid should touch a ball (or run) within 30 seconds at each station.",
-        "Reps > lectures. Talk 15 sec, demo 15 sec, move.",
-        "Arm protection: monitor throw count. Stop if mechanics break or kid looks fatigued.",
-        "Praise effort and mechanics, not outcomes."
-      ],
-      "blocks": [
-        {
-          "start": 0,
-          "duration": 10,
-          "title": "Running warm-up (4 lines)",
-          "tag": "Warmup",
-          "drills": [
-            "Setup: 4 lines at starting cone, cones ~100 ft apart, down-and-back rotations",
-            "1. Light jog",
-            "2. Light jog (faster)",
-            "3. High knees",
-            "4. Butt kicks",
-            "5. Side shuffle (right)",
-            "6. Side shuffle (left)",
-            "7. Karaoke",
-            "8. Sprint down / jog back",
-            "9. Sprint down / backpedal back",
-            "10. Full sprint"
-          ],
-          "notes": "10 total reps, down-and-back. Same as Tuesday — kids know the flow."
-        },
-        {
-          "start": 10,
-          "duration": 5,
-          "title": "Partner throwing warm-up",
-          "tag": "Throwing",
-          "drills": [
-            "Pair up, 2 lines facing each other, start at 20 ft",
-            "4-seam grip, front shoulder to target",
-            "10 throws at 20 ft → step back to 35 ft → 10 more",
-            "Build arm at 70% effort. No max throws here — save arms for stations."
-          ],
-          "notes": "Quick and structured. Coaches walk the lines and cue grip + stride."
-        },
-        {
-          "start": 15,
-          "duration": 60,
-          "title": "4-station rotation — 15 min each",
-          "tag": "Stations",
-          "stations": [
-            {
-              "name": "Station A — Infield ground balls",
-              "coach": "Coach 1",
-              "players": "4",
-              "reps": "20+ grounders per kid",
-              "drills": [
-                "Coach fungos from home plate, 2 parallel lines at SS/3B depth",
-                "Round 1 (5 min): routine — wide base, funnel to belt, throw to 1B bucket",
-                "Round 2 (5 min): backhand — step with glove-side foot, thumb down",
-                "Round 3 (5 min): short hops — knees down, glove out front",
-                "Throw to 1B bucket at 70% effort — protect arms"
-              ]
-            },
-            {
-              "name": "Station B — Hitting (tee + soft toss)",
-              "coach": "Coach 2",
-              "players": "3",
-              "reps": "30+ swings per kid",
-              "drills": [
-                "Two substations running in parallel: tee-into-net + coach soft-toss-into-net",
-                "Round 1 (5 min): tee work — middle/middle, drive line drives into net",
-                "Round 2 (5 min): soft toss inside/outside — hands inside ball on inside, stay back on outside",
-                "Round 3 (5 min): live track — coach tosses yes/no balls, only swing at yes",
-                "Rotate hitter → hitter → shagger every 10 swings. No one idle."
-              ]
-            },
-            {
-              "name": "Station C — Throwing accuracy",
-              "coach": "Coach 3 (or parent)",
-              "players": "3",
-              "reps": "2 rounds × ~12 throws (24 total per kid)",
-              "drills": [
-                "3 target buckets + 1 tarp at 30 / 45 / 60 ft",
-                "Crow hop, point front shoulder at target, follow through",
-                "Round 1: 4 throws each distance, call out score (2 pts tarp, 1 pt bucket, 0 miss)",
-                "Round 2: rotate distances and repeat",
-                "Cap throws at 24 per kid — arm care matters at 9U"
-              ]
-            },
-            {
-              "name": "Station D — Baserunning reads",
-              "coach": "Coach 4",
-              "players": "3",
-              "reps": "Continuous — ~15 reps per kid total",
-              "drills": [
-                "Round 1 (5 min): home-to-1st run-through — hit the front edge, don't slow before bag",
-                "Round 2 (5 min): 1st → 3rd on a single — round hard, pick up 3rd base coach",
-                "Round 3 (5 min): 2nd → home on a single — eyes on coach, pick up sign at 3rd",
-                "Cycle kids one-at-a-time with no line wait — next kid starts as prior clears the bag"
-              ]
-            }
-          ],
-          "notes": "Whistle to rotate every 15 min. Coaches stay at station, kids move. Water break rolls into each rotation (10 sec)."
         }
       ]
     }

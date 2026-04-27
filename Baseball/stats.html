@@ -18,6 +18,7 @@
           <li><a href="games.html">Games</a></li>
           <li><a href="stats.html">Stats</a></li>
           <li><a href="standings.html">Standings</a></li>
+          <li><a href="entry.html">Entry</a></li>
         </ul>
       </nav>
     </div>
@@ -39,6 +40,27 @@
             <th class="num">BB</th><th class="num">K</th>
             <th class="num">R</th><th class="num">RBI</th>
             <th class="num">AVG</th><th class="num">OBP</th><th class="num">SLG</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <h2>Season pitching stats</h2>
+    <p class="meta">IP = innings pitched · WHIP = (H+BB)/IP · K/IP = strikeouts per inning. Kid-pitch innings only (1-2).</p>
+
+    <div id="pitchTotals" class="grid"></div>
+
+    <div class="card" style="padding:0; overflow-x:auto;">
+      <table id="pitchingTable">
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th>
+            <th class="num">G</th><th class="num">IP</th>
+            <th class="num">H</th><th class="num">R</th>
+            <th class="num">BB</th><th class="num">K</th>
+            <th class="num">HBP</th>
+            <th class="num">WHIP</th><th class="num">K/IP</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -67,10 +89,11 @@
       return e;
     }
     function fmtDate(iso) {
-      const d = new Date(iso);
+      const raw = String(iso);
+      const d = new Date(raw.includes('T') ? raw : raw + 'T00:00');
       if (isNaN(d)) return iso;
       let s = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-      if (String(iso).includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      if (raw.includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
       return s;
     }
     function fmtRate(x) {
@@ -179,6 +202,97 @@
         box.appendChild(el('span', { class: 'n' }, String(n)));
         box.appendChild(el('span', { class: 'l' }, label));
         tt.appendChild(box);
+      });
+
+      // ---- Pitching stats ----
+      // Convert baseball IP notation (1.1 = 1⅓, 1.2 = 1⅔) to decimal outs
+      function ipToOuts(ip) {
+        if (typeof ip === 'number') {
+          const whole = Math.floor(ip);
+          const frac = Math.round((ip - whole) * 10);
+          return whole * 3 + frac;
+        }
+        const s = String(ip);
+        const parts = s.split('.');
+        const whole = parseInt(parts[0] || '0', 10);
+        const frac = parts[1] ? parseInt(parts[1], 10) : 0;
+        return whole * 3 + frac;
+      }
+      function outsToIP(outs) {
+        const whole = Math.floor(outs / 3);
+        const rem = outs % 3;
+        return rem === 0 ? String(whole) : whole + '.' + rem;
+      }
+      function outsToDecimal(outs) { return outs / 3; }
+
+      const pTotals = {};
+      games.forEach(g => {
+        (g.pitching || []).forEach(p => {
+          if (!p.name) return;
+          let t = pTotals[p.name];
+          if (!t) {
+            const rosterP = team.roster.find(r => r.name === p.name);
+            t = pTotals[p.name] = {
+              num: (rosterP && rosterP.num) || '', name: p.name,
+              G: 0, outs: 0, H: 0, R: 0, BB: 0, K: 0, HBP: 0
+            };
+          }
+          t.G += 1;
+          t.outs += ipToOuts(p.IP || 0);
+          ['H','R','BB','K','HBP'].forEach(k => { t[k] += Number(p[k] || 0); });
+        });
+      });
+
+      const pRows = Object.values(pTotals)
+        .filter(p => p.G > 0)
+        .sort((a, b) => b.K - a.K || a.name.localeCompare(b.name));
+
+      const pTbody = document.querySelector('#pitchingTable tbody');
+      pRows.forEach(p => {
+        const ipDec = outsToDecimal(p.outs);
+        const WHIP = ipDec > 0 ? (p.H + p.BB) / ipDec : 0;
+        const KIP = ipDec > 0 ? p.K / ipDec : 0;
+        const tr = el('tr', {},
+          el('td', {}, String(p.num || '')),
+          el('td', {}, p.name),
+          el('td', { class: 'num' }, String(p.G)),
+          el('td', { class: 'num' }, outsToIP(p.outs)),
+          el('td', { class: 'num' }, String(p.H)),
+          el('td', { class: 'num' }, String(p.R)),
+          el('td', { class: 'num' }, String(p.BB)),
+          el('td', { class: 'num' }, String(p.K)),
+          el('td', { class: 'num' }, String(p.HBP)),
+          el('td', { class: 'num' }, ipDec > 0 ? WHIP.toFixed(2) : '-'),
+          el('td', { class: 'num' }, ipDec > 0 ? KIP.toFixed(1) : '-')
+        );
+        pTbody.appendChild(tr);
+      });
+
+      if (!pRows.length) {
+        const tr = el('tr', {});
+        tr.innerHTML = '<td colspan="11" style="text-align:center;padding:1rem;" class="meta">No pitching data yet. Add pitching lines in the <a href="entry.html">stat entry form</a>.</td>';
+        pTbody.appendChild(tr);
+      }
+
+      // Pitching summary cards
+      const pt = document.getElementById('pitchTotals');
+      const totalK = pRows.reduce((s, p) => s + p.K, 0);
+      const totalOuts = pRows.reduce((s, p) => s + p.outs, 0);
+      const totalH = pRows.reduce((s, p) => s + p.H, 0);
+      const totalBB = pRows.reduce((s, p) => s + p.BB, 0);
+      const totalIPDec = outsToDecimal(totalOuts);
+      const teamWHIP = totalIPDec > 0 ? (totalH + totalBB) / totalIPDec : 0;
+      const pCards = [
+        ['Total K', totalK],
+        ['Team IP', outsToIP(totalOuts)],
+        ['Team WHIP', totalIPDec > 0 ? teamWHIP.toFixed(2) : '-'],
+        ['K Leader', pRows.length ? pRows[0].name.split(' ')[0] + ' (' + pRows[0].K + ')' : '-']
+      ];
+      pCards.forEach(([label, n]) => {
+        const box = el('div', { class: 'stat' });
+        box.appendChild(el('span', { class: 'n' }, String(n)));
+        box.appendChild(el('span', { class: 'l' }, label));
+        pt.appendChild(box);
       });
 
       // Game log (mini)

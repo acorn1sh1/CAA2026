@@ -18,6 +18,7 @@
           <li><a href="games.html">Games</a></li>
           <li><a href="stats.html">Stats</a></li>
           <li><a href="standings.html">Standings</a></li>
+          <li><a href="entry.html">Entry</a></li>
         </ul>
       </nav>
     </div>
@@ -52,16 +53,14 @@
       return e;
     }
     function fmtDate(iso) {
-      const d = new Date(iso);
+      // Date-only strings (no "T") are parsed as UTC by JS, causing off-by-one in local TZ.
+      // Append T00:00 to force local interpretation.
+      const raw = String(iso);
+      const d = new Date(raw.includes('T') ? raw : raw + 'T00:00');
       if (isNaN(d)) return iso;
       let s = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-      if (String(iso).includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      if (raw.includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
       return s;
-    }
-    function minutesToClock(startMin, durMin) {
-      const end = startMin + durMin;
-      const f = m => Math.floor(m / 60) + ':' + (m % 60).toString().padStart(2, '0');
-      return f(startMin) + '–' + f(end);
     }
     document.addEventListener('DOMContentLoaded', () => {
       const here = location.pathname.split('/').pop() || 'index.html';
@@ -102,7 +101,7 @@
         const summary = el('summary', {}, [
           el('strong', {}, fmtDate(p.date)),
           ' · ',
-          el('span', { class: 'meta' }, `${p.location} · ${p.duration} min · ${p.focus.join(' / ')}`)
+          el('span', { class: 'meta' }, `${p.duration} min · ${p.focus.join(' / ')}`)
         ]);
         summary.style.cursor = 'pointer';
         summary.style.fontSize = '1.05rem';
@@ -131,7 +130,7 @@
 
         p.blocks.forEach(b => {
           const block = el('div', { class: 'block' });
-          block.appendChild(el('div', { class: 'time' }, minutesToClock(b.start, b.duration)));
+          block.appendChild(el('div', { class: 'time' }, b.duration + ' min'));
           const row = el('div', { class: 'body' });
           row.appendChild(el('h4', {}, [el('span', { class: 'tag' }, b.tag || 'Block'), ' ', b.title]));
           if (b.drills) {

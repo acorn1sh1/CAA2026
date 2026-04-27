@@ -18,6 +18,7 @@
           <li><a href="games.html">Games</a></li>
           <li><a href="stats.html">Stats</a></li>
           <li><a href="standings.html">Standings</a></li>
+          <li><a href="entry.html">Entry</a></li>
         </ul>
       </nav>
     </div>
@@ -57,10 +58,11 @@
       return e;
     }
     function fmtDate(iso) {
-      const d = new Date(iso);
+      const raw = String(iso);
+      const d = new Date(raw.includes('T') ? raw : raw + 'T00:00');
       if (isNaN(d)) return iso;
       let s = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-      if (String(iso).includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      if (raw.includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
       return s;
     }
     function minutesToClock(startMin, durMin) {
@@ -107,17 +109,25 @@
           card.appendChild(el('h3', {}, fmtDate(e.date)));
           const parts = [];
           if (e.opponent) parts.push(`vs ${e.opponent}${e.home ? ' (home)' : ' (away)'}`);
+          if (e.duration) parts.push(`${e.duration} min`);
           if (e.location) parts.push(e.location);
           card.appendChild(el('p', {}, parts.join(' · ')));
           if (e.notes) card.appendChild(el('p', { class: 'meta' }, e.notes));
           if (e.practiceId) {
             card.appendChild(el('p', {}, el('a', { href: 'practices.html#' + e.practiceId }, 'View practice plan →')));
           }
+          if (e.type === 'game') {
+            const gameId = 'g-' + (e.date || '').split('T')[0];
+            card.appendChild(el('p', {}, el('a', { href: 'game.html#' + gameId }, 'View lineup & box score →')));
+          }
           mount.appendChild(card);
         });
       }
 
-      render('all');
+      const defaultFilter = 'upcoming';
+      document.querySelector(`[data-filter="${defaultFilter}"]`).classList.add('active');
+      document.querySelector('[data-filter="all"]').classList.remove('active');
+      render(defaultFilter);
       document.querySelectorAll('[data-filter]').forEach(b => {
         b.addEventListener('click', () => {
           document.querySelectorAll('[data-filter]').forEach(x => x.classList.remove('active'));
