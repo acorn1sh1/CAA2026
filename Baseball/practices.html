@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Practices · Columbia TBD</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="practices.html">Practices</a></li>
+          <li><a href="games.html">Games</a></li>
+          <li><a href="stats.html">Stats</a></li>
+          <li><a href="standings.html">Standings</a></li>
+          <li><a href="entry.html">Entry</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2>Practice Plans</h2>
+    <p class="meta">Tap a date to expand. Print any open plan via your browser's print menu.</p>
+
+    <div id="practices"></div>
+
+    <h2>Drill library</h2>
+    <p class="meta">Quick-reference drills to mix into future plans.</p>
+    <div id="drillLib" class="grid"></div>
+  </main>
+
+  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+
+  <script>
+    function el(tag, attrs = {}, ...children) {
+      const e = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === 'class') e.className = v;
+        else if (k === 'html') e.innerHTML = v;
+        else if (k.startsWith('on') && typeof v === 'function') e.addEventListener(k.slice(2), v);
+        else e.setAttribute(k, v);
+      }
+      for (const c of children.flat()) {
+        if (c == null) continue;
+        e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+      }
+      return e;
+    }
+    function fmtDate(iso) {
+      // Date-only strings (no "T") are parsed as UTC by JS, causing off-by-one in local TZ.
+      // Append T00:00 to force local interpretation.
+      const raw = String(iso);
+      const d = new Date(raw.includes('T') ? raw : raw + 'T00:00');
+      if (isNaN(d)) return iso;
+      let s = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+      if (raw.includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      return s;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const here = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('nav a').forEach(a => {
+        if (a.getAttribute('href') === here) a.classList.add('active');
+      });
+    });
+  </script>
+  <script src="data/team.js"></script>
+  <script src="data/practices.js"></script>
+  <script>
+    (() => {
+      const team = window.TEAM;
+      const data = window.PRACTICES;
+      document.getElementById('teamName').textContent = team.team.name;
+
+      const mount = document.getElementById('practices');
+      const now = new Date();
+
+      // Sort: upcoming first (soonest), then past (newest first)
+      const sorted = data.practices.slice().sort((a, b) => {
+        const da = new Date(a.date), db = new Date(b.date);
+        const au = da >= now, bu = db >= now;
+        if (au !== bu) return au ? -1 : 1;
+        return au ? (da - db) : (db - da);
+      });
+
+      // Default: all collapsed. Open a specific practice only if URL hash matches its id.
+      const hashId = (location.hash || '').replace(/^#/, '');
+
+      sorted.forEach((p) => {
+        const attrs = { id: p.id };
+        if (hashId && p.id === hashId) attrs.open = '';
+        const det = el('details', attrs);
+        det.className = 'card';
+        det.style.padding = '0.75rem 1rem';
+
+        const summary = el('summary', {}, [
+          el('strong', {}, fmtDate(p.date)),
+          ' · ',
+          el('span', { class: 'meta' }, `${p.duration} min · ${p.focus.join(' / ')}`)
+        ]);
+        summary.style.cursor = 'pointer';
+        summary.style.fontSize = '1.05rem';
+        det.appendChild(summary);
+
+        const body = el('div');
+        body.style.paddingTop = '0.75rem';
+
+        if (p.equipment?.length) {
+          const eq = el('details', {});
+          eq.appendChild(el('summary', {}, `Equipment (${p.equipment.length})`));
+          const ul = el('ul');
+          p.equipment.forEach(x => ul.appendChild(el('li', {}, x)));
+          eq.appendChild(ul);
+          body.appendChild(eq);
+        }
+
+        if (p.coachingPoints?.length) {
+          const cp = el('details', { open: '' });
+          cp.appendChild(el('summary', {}, 'Coaching reminders'));
+          const ul = el('ul');
+          p.coachingPoints.forEach(x => ul.appendChild(el('li', {}, x)));
+          cp.appendChild(ul);
+          body.appendChild(cp);
+        }
+
+        p.blocks.forEach(b => {
+          const block = el('div', { class: 'block' });
+          block.appendChild(el('div', { class: 'time' }, b.duration + ' min'));
+          const row = el('div', { class: 'body' });
+          row.appendChild(el('h4', {}, [el('span', { class: 'tag' }, b.tag || 'Block'), ' ', b.title]));
+          if (b.drills) {
+            const ul = el('ul');
+            b.drills.forEach(d => ul.appendChild(el('li', {}, d)));
+            row.appendChild(ul);
+          }
+          if (b.stations) {
+            b.stations.forEach(st => {
+              row.appendChild(el('p', {}, [el('strong', {}, st.name), ' ', el('span', { class: 'meta' }, `· ${st.coach} · ${st.players} players · ${st.reps}`)]));
+              const ul = el('ul');
+              st.drills.forEach(d => ul.appendChild(el('li', {}, d)));
+              row.appendChild(ul);
+            });
+          }
+          if (b.notes) row.appendChild(el('p', { class: 'meta' }, '💡 ' + b.notes));
+          block.appendChild(row);
+          body.appendChild(block);
+        });
+
+        det.appendChild(body);
+        mount.appendChild(det);
+      });
+
+      // Scroll to hash-targeted practice after render
+      function focusHashTarget() {
+        const id = (location.hash || '').replace(/^#/, '');
+        if (!id) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+        if (target.tagName === 'DETAILS') target.open = true;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      focusHashTarget();
+
+      // Handle in-page hash changes (e.g. user edits URL or clicks another anchor)
+      window.addEventListener('hashchange', focusHashTarget);
+
+      // Drill library
+      const lib = document.getElementById('drillLib');
+      if (data.drillLibrary) {
+        Object.entries(data.drillLibrary).forEach(([cat, drills]) => {
+          const box = el('div', { class: 'stat' });
+          box.style.textAlign = 'left';
+          box.appendChild(el('strong', {}, cat[0].toUpperCase() + cat.slice(1)));
+          const ul = el('ul');
+          drills.forEach(d => ul.appendChild(el('li', {}, d)));
+          box.appendChild(ul);
+          lib.appendChild(box);
+        });
+      }
+    })();
+  </script>
+  <script src="js/nav.js"></script>
+</body>
+</html>

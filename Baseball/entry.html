@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Entry · Columbia TBD</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .entry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+    .entry-grid label { display: flex; flex-direction: column; font-size: 0.85rem; color: var(--muted); gap: 0.25rem; }
+    .entry-grid input, .entry-grid select { padding: 0.5rem; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; }
+    table.entry-table input { width: 3rem; padding: 0.35rem; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 4px; text-align: right; font-variant-numeric: tabular-nums; }
+    table.entry-table td.name { min-width: 10rem; }
+    .btn { background: var(--accent); color: var(--bg); border: none; padding: 0.6rem 1.1rem; border-radius: var(--radius); font-weight: 600; cursor: pointer; font-size: 0.95rem; margin-right: 0.5rem; margin-bottom: 0.5rem; }
+    .btn.alt { background: var(--bg-alt); color: var(--fg); border: 1px solid var(--border); }
+    .btn:hover { filter: brightness(1.1); }
+    textarea#jsonOut { width: 100%; min-height: 200px; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem; font-family: ui-monospace, monospace; font-size: 0.8rem; }
+    .toast { background: var(--ok); color: var(--bg); padding: 0.5rem 0.9rem; border-radius: 6px; display: inline-block; margin-top: 0.5rem; font-weight: 600; }
+    .hide { display: none; }
+    #gate { max-width: 420px; margin: 2rem auto; }
+    #gate input { width: 100%; padding: 0.6rem; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; margin: 0.5rem 0; }
+    #gate .btn { width: 100%; margin: 0.25rem 0 0; }
+    #gateErr { color: var(--warn); font-weight: 600; min-height: 1.2em; }
+    #gamePicker { width: 100%; padding: 0.6rem; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; }
+    .game-banner { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; }
+    .game-banner .opp { font-size: 1.1rem; font-weight: 700; }
+    .game-banner .details { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+    .step-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.25rem; }
+    .gh-status { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.85rem; padding:0.3rem 0.7rem; border-radius:20px; font-weight:600; }
+    .gh-status.ok { background:color-mix(in srgb,var(--ok) 15%,transparent); color:var(--ok); }
+    .gh-status.err { background:color-mix(in srgb,var(--warn) 15%,transparent); color:var(--warn); }
+    .gh-status.none { background:var(--bg-alt); color:var(--muted); }
+    details.gh-settings summary { cursor:pointer; font-weight:600; font-size:0.9rem; list-style:none; display:flex; align-items:center; gap:0.5rem; }
+    details.gh-settings summary::-webkit-details-marker { display:none; }
+    details.gh-settings[open] summary::before { content:'▾'; }
+    details.gh-settings:not([open]) summary::before { content:'▸'; }
+    .gh-fields { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-top:0.75rem; }
+    .gh-fields label { display:flex; flex-direction:column; font-size:0.82rem; color:var(--muted); gap:0.2rem; }
+    .gh-fields input { padding:0.45rem 0.6rem; background:var(--bg); color:var(--fg); border:1px solid var(--border); border-radius:6px; font-size:0.95rem; }
+    @media(max-width:500px){ .gh-fields { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span> · Entry</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="practices.html">Practices</a></li>
+          <li><a href="games.html">Games</a></li>
+          <li><a href="stats.html">Stats</a></li>
+          <li><a href="standings.html">Standings</a></li>
+          <li><a href="entry.html">Entry</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="gate">
+    <div class="card">
+      <h3>Coach login</h3>
+      <p class="meta">Entry is password-protected.</p>
+      <form id="gateForm" autocomplete="off">
+        <label for="gatePw" class="meta">Password</label>
+        <input type="password" id="gatePw" autofocus>
+        <button type="submit" class="btn">Unlock</button>
+        <p id="gateErr"></p>
+      </form>
+    </div>
+  </section>
+
+  <main class="hide" id="app">
+    <h2>Game Entry</h2>
+
+    <!-- GITHUB SETTINGS -->
+    <div class="card">
+      <details class="gh-settings" id="ghDetails">
+        <summary>
+          <span>GitHub settings</span>
+          <span id="ghStatusBadge" class="gh-status none">⚙ Not configured</span>
+        </summary>
+        <div class="gh-fields">
+          <label>GitHub username / org
+            <input type="text" id="ghOwner" placeholder="e.g. andrewcornish" autocomplete="off">
+          </label>
+          <label>Repository name
+            <input type="text" id="ghRepo" placeholder="e.g. baseball" autocomplete="off">
+          </label>
+          <label>Branch
+            <input type="text" id="ghBranch" placeholder="main" autocomplete="off">
+          </label>
+          <label>Personal Access Token
+            <input type="password" id="ghToken" placeholder="ghp_…" autocomplete="off">
+          </label>
+        </div>
+        <div style="margin-top:0.75rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button class="btn" id="btnGhSave">Save settings</button>
+          <button class="btn alt" id="btnGhTest">Test connection</button>
+          <button class="btn alt" id="btnGhClear">Clear</button>
+        </div>
+        <p class="meta" style="margin-top:0.5rem;">Token needs <code>repo</code> scope (or <code>public_repo</code> for public repos). Stored in your browser only — never sent anywhere except GitHub.</p>
+      </details>
+    </div>
+
+    <!-- STEP 1: Pick a game -->
+    <div class="card">
+      <div class="step-label">Step 1 — Pick a game</div>
+      <select id="gamePicker">
+        <option value="">— Select a game —</option>
+      </select>
+      <div id="gameBanner" class="game-banner hide">
+        <div class="opp" id="bannerOpp"></div>
+        <div class="details" id="bannerDetails"></div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Lineup (fill before game) -->
+    <div class="card">
+      <div class="step-label">Step 2 — Lineup <span style="font-weight:400;text-transform:none;letter-spacing:0;">(set before the game)</span></div>
+      <p class="meta">Set the batting order and each player's position per inning. Kid pitch innings 1–2, coach pitch 3–7.</p>
+      <div style="overflow-x:auto;">
+        <table class="entry-table" id="lineupTbl">
+          <thead>
+            <tr>
+              <th>#</th><th>Player</th>
+              <th class="num">1</th><th class="num">2</th><th class="num">3</th>
+              <th class="num">4</th><th class="num">5</th><th class="num">6</th><th class="num">7</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="meta" id="defWarn"></p>
+      <div style="margin-top:0.75rem;">
+        <button class="btn" id="btnSaveLineup">⬇ Save Lineup</button>
+        <span class="meta" style="font-size:0.8rem;">Saves lineup so it's visible on the game page before the game is played.</span>
+      </div>
+    </div>
+
+    <!-- STEP 3: Stats (fill after game) -->
+    <div class="card">
+      <div class="step-label">Step 3 — Game result <span style="font-weight:400;text-transform:none;letter-spacing:0;">(fill after the game)</span></div>
+      <div class="entry-grid">
+        <label>Our runs <input type="number" id="gUs" min="0" value="0"></label>
+        <label>Opp runs <input type="number" id="gThem" min="0" value="0"></label>
+        <label>Result
+          <select id="gResult">
+            <option value="">(auto)</option>
+            <option value="W">Win</option>
+            <option value="L">Loss</option>
+            <option value="T">Tie</option>
+          </select>
+        </label>
+      </div>
+      <label style="display:block; margin-top:0.5rem;">
+        Notes
+        <input type="text" id="gNotes" placeholder="e.g., walkoff in bottom 6, Jack had 3 RBI" style="width:100%; padding:0.5rem; background:var(--bg); color:var(--fg); border:1px solid var(--border); border-radius:6px; margin-top:0.25rem;">
+      </label>
+      <!-- Hidden fields populated from picker -->
+      <input type="hidden" id="gDate">
+      <input type="hidden" id="gTime" value="18:00">
+      <input type="hidden" id="gOpp">
+      <input type="hidden" id="gHome" value="true">
+      <input type="hidden" id="gLoc">
+    </div>
+
+    <div class="card">
+      <div class="step-label">Line score by inning <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></div>
+      <p class="meta">Enter runs scored each inning. Totals auto-check against scores above.</p>
+      <div style="overflow-x:auto;">
+        <table class="entry-table" id="inningTbl">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="num">1</th><th class="num">2</th><th class="num">3</th>
+              <th class="num">4</th><th class="num">5</th><th class="num">6</th>
+              <th class="num">7</th>
+              <th class="num">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name" id="usLabel">Us</td>
+              <td><input type="number" min="0" data-team="us" data-inning="0" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="1" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="2" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="3" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="4" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="5" value=""></td>
+              <td><input type="number" min="0" data-team="us" data-inning="6" value=""></td>
+              <td class="num" id="usTotal">0</td>
+            </tr>
+            <tr>
+              <td class="name">Opp</td>
+              <td><input type="number" min="0" data-team="opp" data-inning="0" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="1" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="2" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="3" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="4" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="5" value=""></td>
+              <td><input type="number" min="0" data-team="opp" data-inning="6" value=""></td>
+              <td class="num" id="oppTotal">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta" id="inningWarn"></p>
+    </div>
+
+    <div class="card">
+      <div class="step-label">Batting lines</div>
+      <p class="meta">Enter only rows for players who batted.</p>
+      <div style="overflow-x:auto;">
+        <table class="entry-table" id="batTbl">
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th>
+              <th class="num">AB</th><th class="num">H</th>
+              <th class="num">2B</th><th class="num">3B</th><th class="num">HR</th>
+              <th class="num">BB</th><th class="num">K</th>
+              <th class="num">R</th><th class="num">RBI</th>
+              <th class="num">Played</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="meta" id="batWarn"></p>
+    </div>
+
+    <div class="card">
+      <div class="step-label">Pitching lines</div>
+      <p class="meta">IP uses baseball notation: 1.1 = 1⅓, 1.2 = 1⅔. Only kid-pitch innings (1–2) count.</p>
+      <div style="overflow-x:auto;">
+        <table class="entry-table" id="pitchTbl">
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th>
+              <th class="num">IP</th><th class="num">H</th>
+              <th class="num">R</th><th class="num">BB</th>
+              <th class="num">K</th><th class="num">HBP</th>
+              <th class="num">Pitched</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="meta" id="pitchWarn"></p>
+    </div>
+
+    <div class="card">
+      <button class="btn" id="btnExport">⬆ Save Stats</button>
+      <button class="btn alt" id="btnCopy">Copy JSON</button>
+      <button class="btn alt" id="btnPreview">Preview JSON</button>
+      <button class="btn alt" id="btnReset" style="float:right;">Reset form</button>
+      <p class="toast hide" id="toast"></p>
+      <p id="pushStatus" class="meta hide" style="margin-top:0.5rem;"></p>
+    </div>
+
+    <div class="card">
+      <h3>Output JSON</h3>
+      <p class="meta">Preview of what will be pushed to GitHub.</p>
+      <textarea id="jsonOut" readonly placeholder="Click 'Save Lineup' or 'Save Stats' to generate..."></textarea>
+    </div>
+
+    <div class="card" id="manualInstructions">
+      <h3>Manual publish (if GitHub not configured)</h3>
+      <ol>
+        <li>Click <strong>Save Lineup</strong> or <strong>Save Stats</strong>. Your browser downloads <code>games.json</code>.</li>
+        <li>In your local repo, replace <code>data/games.json</code> with the downloaded file.</li>
+        <li>Regenerate the JS mirror: <code>printf 'window.GAMES = ' > data/games.js && cat data/games.json >> data/games.js && printf ';\n' >> data/games.js</code></li>
+        <li><code>git add data/games.json data/games.js &amp;&amp; git commit -m "update lineup/stats" &amp;&amp; git push</code></li>
+        <li>GitHub Pages rebuilds in ~30 sec.</li>
+      </ol>
+    </div>
+  </main>
+
+  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+
+  <script>
+    const PW_HASH = 'ab8b51259550ff28517592867e947c830427dcf37f4ab45fe96a285936e38d60';
+
+    async function sha256Hex(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function unlock() {
+      document.getElementById('gate').classList.add('hide');
+      document.getElementById('app').classList.remove('hide');
+    }
+
+    (function gateInit() {
+      if (sessionStorage.getItem('entryAuthed') === '1') { unlock(); return; }
+      const form = document.getElementById('gateForm');
+      const err = document.getElementById('gateErr');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const pw = document.getElementById('gatePw').value;
+        const h = await sha256Hex(pw);
+        if (h === PW_HASH) {
+          sessionStorage.setItem('entryAuthed', '1');
+          err.textContent = '';
+          unlock();
+        } else {
+          err.textContent = 'Wrong password';
+          document.getElementById('gatePw').value = '';
+        }
+      });
+    })();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const here = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('nav a').forEach(a => {
+        if (a.getAttribute('href') === here) a.classList.add('active');
+      });
+    });
+  </script>
+  <script src="data/team.js"></script>
+  <script src="data/schedule.js"></script>
+  <script src="data/games.js"></script>
+  <script>
+    (() => {
+      const team = window.TEAM;
+      const existingGames = ((window.GAMES && window.GAMES.games) || []).slice();
+      const scheduleEvents = ((window.SCHEDULE && window.SCHEDULE.events) || []).filter(e => e.type === 'game');
+      document.getElementById('teamName').textContent = team.team.name;
+      document.getElementById('usLabel').textContent = team.team.name;
+      loadGhFields();
+      updateGhBadge();
+
+      // ── Game picker ──────────────────────────────────────────────
+      const picker = document.getElementById('gamePicker');
+      scheduleEvents
+        .slice()
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .forEach(e => {
+          const d = new Date(e.date);
+          const label = isNaN(d) ? e.date : d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+          const side = e.home ? 'vs' : '@';
+          const opt = document.createElement('option');
+          opt.value = (e.date || '').split('T')[0];
+          opt.textContent = `${label} · ${side} ${e.opponent}`;
+          picker.appendChild(opt);
+        });
+
+      function applyGame(e) {
+        document.getElementById('gDate').value = (e.date || '').split('T')[0];
+        document.getElementById('gTime').value = (e.date || '').split('T')[1] || '18:00';
+        document.getElementById('gOpp').value = e.opponent || '';
+        document.getElementById('gHome').value = e.home ? 'true' : 'false';
+        document.getElementById('gLoc').value = e.location || '';
+        // Update banner
+        const d = new Date(e.date);
+        const dateStr = isNaN(d) ? e.date : d.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+        const timeStr = d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        document.getElementById('bannerOpp').textContent = (e.home ? 'vs ' : '@ ') + e.opponent;
+        document.getElementById('bannerDetails').textContent = `${dateStr} · ${timeStr} · ${e.location || ''}`;
+        document.getElementById('gameBanner').classList.remove('hide');
+      }
+
+      function loadGameData(date) {
+        const id = 'g-' + date;
+        const g = existingGames.find(x => x.id === id);
+        if (!g) return;
+
+        document.getElementById('gUs').value = g.teamRuns ?? 0;
+        document.getElementById('gThem').value = g.oppRuns ?? 0;
+        document.getElementById('gResult').value = g.result || '';
+        document.getElementById('gNotes').value = g.notes || '';
+
+        // Innings
+        document.querySelectorAll('input[data-team]').forEach(i => i.value = '');
+        (g.byInning || []).forEach(([u, o], i) => {
+          const usI = document.querySelector(`input[data-team="us"][data-inning="${i}"]`);
+          const opI = document.querySelector(`input[data-team="opp"][data-inning="${i}"]`);
+          if (usI) usI.value = u;
+          if (opI) opI.value = o;
+        });
+
+        // Batting
+        document.querySelectorAll('#batTbl tbody tr').forEach(tr => {
+          tr.querySelectorAll('input[type="number"]').forEach(i => i.value = '');
+          tr.querySelector('input[data-k="played"]').checked = false;
+        });
+        (g.batting || []).forEach(b => {
+          const tr = document.querySelector(`#batTbl tbody tr[data-name="${CSS.escape(b.name || '')}"]`);
+          if (!tr) return;
+          tr.querySelector('input[data-k="played"]').checked = true;
+          ['AB','H','2B','3B','HR','BB','K','R','RBI'].forEach(k => {
+            const inp = tr.querySelector(`input[data-k="${k}"]`);
+            if (inp) inp.value = b[k] ?? 0;
+          });
+        });
+
+        // Pitching
+        document.querySelectorAll('#pitchTbl tbody tr').forEach(tr => {
+          tr.querySelectorAll('input[type="number"]').forEach(i => i.value = '');
+          tr.querySelector('input[data-k="IP"]').value = '';
+          tr.querySelector('input[data-k="pitched"]').checked = false;
+        });
+        (g.pitching || []).forEach(p => {
+          const tr = document.querySelector(`#pitchTbl tbody tr[data-name="${CSS.escape(p.name || '')}"]`);
+          if (!tr) return;
+          tr.querySelector('input[data-k="pitched"]').checked = true;
+          tr.querySelector('input[data-k="IP"]').value = p.IP || '';
+          ['H','R','BB','K','HBP'].forEach(k => {
+            const inp = tr.querySelector(`input[data-k="p${k}"]`);
+            if (inp) inp.value = p[k] ?? 0;
+          });
+        });
+
+        // Lineup
+        for (let i = 0; i < names.length; i++) {
+          const sel = document.getElementById('bo-' + i);
+          if (sel) sel.value = '';
+          for (let inn = 1; inn <= INNINGS; inn++) {
+            const ps = document.querySelector(`select[data-player="${i}"][data-inn="${inn}"]`);
+            if (ps) ps.value = '';
+          }
+        }
+        if (g.lineup && g.lineup.battingOrder) {
+          const defense = g.lineup.defense || {};
+          g.lineup.battingOrder.forEach((name, i) => {
+            const sel = document.getElementById('bo-' + i);
+            if (sel) sel.value = name;
+            for (let inn = 1; inn <= INNINGS; inn++) {
+              const posMap = defense[inn] || {};
+              let playerPos = '';
+              Object.entries(posMap).forEach(([pos, pName]) => {
+                if (pName === name) playerPos = pos;
+              });
+              const ps = document.querySelector(`select[data-player="${i}"][data-inn="${inn}"]`);
+              if (ps) ps.value = playerPos;
+            }
+          });
+        }
+
+        updateInningTotals();
+        updateBatWarn();
+        updateDefWarn();
+      }
+
+      picker.addEventListener('change', () => {
+        const date = picker.value;
+        if (!date) {
+          document.getElementById('gameBanner').classList.add('hide');
+          return;
+        }
+        const schedEvent = scheduleEvents.find(e => (e.date || '').startsWith(date));
+        if (schedEvent) applyGame(schedEvent);
+        loadGameData(date);
+      });
+
+      // Auto-select from ?date= URL param
+      const urlDate = new URLSearchParams(location.search).get('date');
+      if (urlDate) {
+        picker.value = urlDate;
+        picker.dispatchEvent(new Event('change'));
+      }
+
+      // ── Roster tables ────────────────────────────────────────────
+      const batBody = document.querySelector('#batTbl tbody');
+      team.roster.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.dataset.name = p.name;
+        tr.innerHTML = `
+          <td>${p.num || ''}</td>
+          <td class="name">${p.name}</td>
+          <td><input type="number" min="0" data-k="AB" value=""></td>
+          <td><input type="number" min="0" data-k="H" value=""></td>
+          <td><input type="number" min="0" data-k="2B" value=""></td>
+          <td><input type="number" min="0" data-k="3B" value=""></td>
+          <td><input type="number" min="0" data-k="HR" value=""></td>
+          <td><input type="number" min="0" data-k="BB" value=""></td>
+          <td><input type="number" min="0" data-k="K" value=""></td>
+          <td><input type="number" min="0" data-k="R" value=""></td>
+          <td><input type="number" min="0" data-k="RBI" value=""></td>
+          <td class="num"><input type="checkbox" data-k="played" checked></td>
+        `;
+        batBody.appendChild(tr);
+      });
+
+      const pitchBody = document.querySelector('#pitchTbl tbody');
+      team.roster.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.dataset.name = p.name;
+        tr.innerHTML = `
+          <td>${p.num || ''}</td>
+          <td class="name">${p.name}</td>
+          <td><input type="text" data-k="IP" value="" style="width:3.5rem;" placeholder="0"></td>
+          <td><input type="number" min="0" data-k="pH" value=""></td>
+          <td><input type="number" min="0" data-k="pR" value=""></td>
+          <td><input type="number" min="0" data-k="pBB" value=""></td>
+          <td><input type="number" min="0" data-k="pK" value=""></td>
+          <td><input type="number" min="0" data-k="pHBP" value=""></td>
+          <td class="num"><input type="checkbox" data-k="pitched"></td>
+        `;
+        pitchBody.appendChild(tr);
+      });
+
+      // ── Lineup table ─────────────────────────────────────────────
+      const names = team.roster.map(p => p.name);
+      const POSITIONS = ['','P','C','1B','2B','SS','3B','LF','LCF','RCF','RF'];
+      const POS_LABELS = {'':'Sit','P':'P','C':'C','1B':'1st','2B':'2nd','3B':'3rd','SS':'SS','LF':'LF','LCF':'LCF','RCF':'RCF','RF':'RF'};
+      const INNINGS = 7;
+
+      function makePosSelect(playerIdx, inn) {
+        const sel = document.createElement('select');
+        sel.dataset.player = playerIdx;
+        sel.dataset.inn = inn;
+        sel.style.cssText = 'padding:0.3rem;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:4px;font-size:0.85rem;width:4.5rem;';
+        POSITIONS.forEach(pos => {
+          const o = document.createElement('option');
+          o.value = pos;
+          o.textContent = POS_LABELS[pos] || pos;
+          sel.appendChild(o);
+        });
+        return sel;
+      }
+
+      const lineupBody = document.querySelector('#lineupTbl tbody');
+      for (let i = 0; i < names.length; i++) {
+        const tr = document.createElement('tr');
+        const numTd = document.createElement('td');
+        numTd.textContent = i + 1;
+        numTd.style.cssText = 'font-weight:600;font-variant-numeric:tabular-nums;';
+        tr.appendChild(numTd);
+        const nameTd = document.createElement('td');
+        nameTd.className = 'name';
+        const nameSel = document.createElement('select');
+        nameSel.id = 'bo-' + i;
+        nameSel.style.cssText = 'padding:0.3rem;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:4px;font-size:0.85rem;min-width:8rem;';
+        const blank = document.createElement('option');
+        blank.value = ''; blank.textContent = '—';
+        nameSel.appendChild(blank);
+        names.forEach(n => {
+          const o = document.createElement('option');
+          o.value = n; o.textContent = n;
+          nameSel.appendChild(o);
+        });
+        nameTd.appendChild(nameSel);
+        tr.appendChild(nameTd);
+        for (let inn = 1; inn <= INNINGS; inn++) {
+          const td = document.createElement('td');
+          td.appendChild(makePosSelect(i, inn));
+          tr.appendChild(td);
+        }
+        lineupBody.appendChild(tr);
+      }
+
+      // ── Smart dropdown filtering ─────────────────────────────────
+      // Rebuild name dropdowns so each player only appears once
+      function refreshNameDropdowns() {
+        const taken = {};
+        for (let i = 0; i < names.length; i++) {
+          const sel = document.getElementById('bo-' + i);
+          if (sel && sel.value) taken[sel.value] = i;
+        }
+        for (let i = 0; i < names.length; i++) {
+          const sel = document.getElementById('bo-' + i);
+          if (!sel) continue;
+          const current = sel.value;
+          sel.innerHTML = '';
+          const blank = document.createElement('option');
+          blank.value = ''; blank.textContent = '—';
+          sel.appendChild(blank);
+          names.forEach(n => {
+            if (!taken[n] || taken[n] === i) {
+              const o = document.createElement('option');
+              o.value = n; o.textContent = n;
+              if (n === current) o.selected = true;
+              sel.appendChild(o);
+            }
+          });
+        }
+      }
+
+      // Rebuild position dropdowns for one inning so each position only appears once
+      function refreshPositionDropdowns(inn) {
+        const taken = {};
+        for (let i = 0; i < names.length; i++) {
+          const sel = document.querySelector(`select[data-player="${i}"][data-inn="${inn}"]`);
+          if (sel && sel.value) taken[sel.value] = i;
+        }
+        for (let i = 0; i < names.length; i++) {
+          const sel = document.querySelector(`select[data-player="${i}"][data-inn="${inn}"]`);
+          if (!sel) continue;
+          const current = sel.value;
+          sel.innerHTML = '';
+          POSITIONS.forEach(pos => {
+            if (!pos || !taken[pos] || taken[pos] === i) {
+              const o = document.createElement('option');
+              o.value = pos;
+              o.textContent = POS_LABELS[pos] || pos;
+              if (pos === current) o.selected = true;
+              sel.appendChild(o);
+            }
+          });
+        }
+      }
+
+      function refreshAllLineupDropdowns() {
+        refreshNameDropdowns();
+        for (let inn = 1; inn <= INNINGS; inn++) refreshPositionDropdowns(inn);
+      }
+
+      function updateDefWarn() { /* duplicates now prevented — no-op kept for compatibility */ }
+
+      document.getElementById('lineupTbl').addEventListener('change', e => {
+        const sel = e.target;
+        if (sel.id && sel.id.startsWith('bo-')) {
+          refreshNameDropdowns();
+        } else if (sel.dataset.inn) {
+          refreshPositionDropdowns(Number(sel.dataset.inn));
+        }
+      });
+
+      function updateInningTotals() {
+        const get = (team) => Array.from(document.querySelectorAll(`input[data-team="${team}"]`)).map(i => Number(i.value || 0));
+        const us = get('us'), opp = get('opp');
+        const usSum = us.reduce((a,b) => a+b, 0);
+        const oppSum = opp.reduce((a,b) => a+b, 0);
+        document.getElementById('usTotal').textContent = usSum;
+        document.getElementById('oppTotal').textContent = oppSum;
+        const usDecl = Number(document.getElementById('gUs').value || 0);
+        const oppDecl = Number(document.getElementById('gThem').value || 0);
+        const hasInnings = us.some(x => x > 0) || opp.some(x => x > 0);
+        const warn = document.getElementById('inningWarn');
+        if (hasInnings && (usSum !== usDecl || oppSum !== oppDecl)) {
+          warn.innerHTML = `⚠️ Inning sums (${usSum}-${oppSum}) don't match declared score (${usDecl}-${oppDecl})`;
+          warn.style.color = 'var(--warn)';
+        } else {
+          warn.textContent = '';
+        }
+      }
+      document.querySelectorAll('#inningTbl input, #gUs, #gThem').forEach(i => i.addEventListener('input', updateInningTotals));
+
+      function updateBatWarn() {
+        let rSum = 0;
+        document.querySelectorAll('#batTbl tbody tr').forEach(tr => {
+          rSum += Number(tr.querySelector('input[data-k="R"]').value || 0);
+        });
+        const usDecl = Number(document.getElementById('gUs').value || 0);
+        const warn = document.getElementById('batWarn');
+        if (rSum > 0 && rSum !== usDecl) {
+          warn.innerHTML = `⚠️ Sum of batter R (${rSum}) ≠ team runs (${usDecl})`;
+          warn.style.color = 'var(--warn)';
+        } else {
+          warn.textContent = '';
+        }
+      }
+      document.querySelectorAll('#batTbl input, #gUs').forEach(i => i.addEventListener('input', updateBatWarn));
+
+      // ── Build game object ────────────────────────────────────────
+      function buildGame() {
+        const date = document.getElementById('gDate').value;
+        const time = document.getElementById('gTime').value || '18:00';
+        const us = Number(document.getElementById('gUs').value || 0);
+        const them = Number(document.getElementById('gThem').value || 0);
+        let result = document.getElementById('gResult').value;
+        if (!result && (us > 0 || them > 0)) result = us > them ? 'W' : us < them ? 'L' : 'T';
+
+        const usInn = Array.from(document.querySelectorAll('input[data-team="us"]')).map(i => i.value === '' ? null : Number(i.value));
+        const oppInn = Array.from(document.querySelectorAll('input[data-team="opp"]')).map(i => i.value === '' ? null : Number(i.value));
+        let byInning = null;
+        if (usInn.some(x => x !== null) || oppInn.some(x => x !== null)) {
+          byInning = [];
+          for (let i = 0; i < 7; i++) {
+            if (usInn[i] === null && oppInn[i] === null) continue;
+            byInning.push([usInn[i] ?? 0, oppInn[i] ?? 0]);
+          }
+        }
+
+        const batting = [];
+        document.querySelectorAll('#batTbl tbody tr').forEach(tr => {
+          const played = tr.querySelector('input[data-k="played"]').checked;
+          const row = { name: tr.dataset.name };
+          const nums = ['AB','H','2B','3B','HR','BB','K','R','RBI'];
+          let any = false;
+          nums.forEach(k => {
+            row[k] = Number(tr.querySelector(`input[data-k="${k}"]`).value || 0);
+            if (row[k] !== 0) any = true;
+          });
+          if (played || any) batting.push(row);
+        });
+
+        const pitching = [];
+        document.querySelectorAll('#pitchTbl tbody tr').forEach(tr => {
+          const pitched = tr.querySelector('input[data-k="pitched"]').checked;
+          const ipRaw = tr.querySelector('input[data-k="IP"]').value.trim();
+          const row = { name: tr.dataset.name, IP: ipRaw || '0' };
+          ['pH','pR','pBB','pK','pHBP'].forEach(k => {
+            row[k.slice(1)] = Number(tr.querySelector(`input[data-k="${k}"]`).value || 0);
+          });
+          const any = ipRaw || row.H || row.R || row.BB || row.K || row.HBP;
+          if (pitched || any) pitching.push(row);
+        });
+
+        const battingOrder = [];
+        const defense = {};
+        let hasDefense = false;
+        for (let i = 0; i < names.length; i++) {
+          const nameSel = document.getElementById('bo-' + i);
+          const playerName = nameSel ? nameSel.value : '';
+          if (playerName) battingOrder.push(playerName);
+          for (let inn = 1; inn <= INNINGS; inn++) {
+            const posSel = document.querySelector(`select[data-player="${i}"][data-inn="${inn}"]`);
+            const pos = posSel ? posSel.value : '';
+            if (pos && playerName) {
+              if (!defense[inn]) defense[inn] = {};
+              defense[inn][pos] = playerName;
+              hasDefense = true;
+            }
+          }
+        }
+
+        const game = {
+          id: 'g-' + (date || 'undated'),
+          date: date ? `${date}T${time}` : '',
+          opponent: document.getElementById('gOpp').value || '',
+          home: document.getElementById('gHome').value === 'true',
+          location: document.getElementById('gLoc').value || '',
+          teamRuns: us,
+          oppRuns: them,
+          result,
+          notes: document.getElementById('gNotes').value || '',
+          lineup: { battingOrder, defense: hasDefense ? defense : {} }
+        };
+        if (byInning) game.byInning = byInning;
+        if (batting.length) game.batting = batting;
+        if (pitching.length) game.pitching = pitching;
+        return game;
+      }
+
+      function mergeGame(newGame) {
+        const list = existingGames.slice();
+        const idx = list.findIndex(g => g.id === newGame.id);
+        if (idx >= 0) list[idx] = newGame;
+        else list.push(newGame);
+        list.sort((a, b) => new Date(a.date) - new Date(b.date));
+        return { games: list };
+      }
+
+      function exportJSON(merged) {
+        const json = JSON.stringify(merged, null, 2);
+        document.getElementById('jsonOut').value = json;
+        const blob = new Blob([json + '\n'], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'games.json';
+        document.body.appendChild(a); a.click();
+        document.body.removeChild(a); URL.revokeObjectURL(url);
+      }
+
+      function toast(msg, ok = true) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.style.background = ok ? 'var(--ok)' : 'var(--warn)';
+        t.classList.remove('hide');
+        setTimeout(() => t.classList.add('hide'), 3000);
+      }
+
+      // ── GitHub integration ───────────────────────────────────────
+      function ghConfig() {
+        return {
+          owner: localStorage.getItem('gh_owner') || '',
+          repo:  localStorage.getItem('gh_repo')  || '',
+          token: localStorage.getItem('gh_token') || '',
+          branch: localStorage.getItem('gh_branch') || 'main'
+        };
+      }
+
+      function ghConfigured() {
+        const c = ghConfig();
+        return c.owner && c.repo && c.token;
+      }
+
+      function updateGhBadge() {
+        const badge = document.getElementById('ghStatusBadge');
+        const manual = document.getElementById('manualInstructions');
+        if (ghConfigured()) {
+          const c = ghConfig();
+          badge.textContent = `✓ ${c.owner}/${c.repo}`;
+          badge.className = 'gh-status ok';
+          manual.classList.add('hide');
+        } else {
+          badge.textContent = '⚙ Not configured';
+          badge.className = 'gh-status none';
+          manual.classList.remove('hide');
+        }
+      }
+
+      function loadGhFields() {
+        const c = ghConfig();
+        document.getElementById('ghOwner').value  = c.owner;
+        document.getElementById('ghRepo').value   = c.repo;
+        document.getElementById('ghBranch').value = c.branch;
+        document.getElementById('ghToken').value  = c.token;
+      }
+
+      document.getElementById('btnGhSave').addEventListener('click', () => {
+        localStorage.setItem('gh_owner',  document.getElementById('ghOwner').value.trim());
+        localStorage.setItem('gh_repo',   document.getElementById('ghRepo').value.trim());
+        localStorage.setItem('gh_branch', document.getElementById('ghBranch').value.trim() || 'main');
+        localStorage.setItem('gh_token',  document.getElementById('ghToken').value.trim());
+        updateGhBadge();
+        document.getElementById('ghDetails').removeAttribute('open');
+        toast('GitHub settings saved');
+      });
+
+      document.getElementById('btnGhClear').addEventListener('click', () => {
+        ['gh_owner','gh_repo','gh_branch','gh_token'].forEach(k => localStorage.removeItem(k));
+        loadGhFields();
+        updateGhBadge();
+        toast('GitHub settings cleared');
+      });
+
+      document.getElementById('btnGhTest').addEventListener('click', async () => {
+        const statusEl = document.getElementById('ghStatusBadge');
+        if (!ghConfigured()) { toast('Fill in all GitHub fields first', false); return; }
+        statusEl.textContent = '⏳ Testing…';
+        statusEl.className = 'gh-status none';
+        try {
+          const c = ghConfig();
+          const r = await fetch(
+            `https://api.github.com/repos/${c.owner}/${c.repo}/contents/data/games.json?ref=${c.branch}`,
+            { headers: { Authorization: `token ${c.token}`, Accept: 'application/vnd.github.v3+json' } }
+          );
+          if (r.ok) {
+            statusEl.textContent = `✓ ${c.owner}/${c.repo}`;
+            statusEl.className = 'gh-status ok';
+            toast('Connection successful!');
+          } else {
+            const err = await r.json();
+            statusEl.textContent = `✗ ${r.status}`;
+            statusEl.className = 'gh-status err';
+            toast(`GitHub error ${r.status}: ${err.message}`, false);
+          }
+        } catch(e) {
+          statusEl.textContent = '✗ Network error';
+          statusEl.className = 'gh-status err';
+          toast('Network error — check connection', false);
+        }
+      });
+
+      function toBase64(str) {
+        return btoa(unescape(encodeURIComponent(str)));
+      }
+
+      async function githubPush(commitMsg, merged) {
+        const c = ghConfig();
+        const headers = {
+          Authorization: `token ${c.token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        };
+        const files = [
+          { path: 'data/games.json', content: JSON.stringify(merged, null, 2) + '\n' },
+          { path: 'data/games.js',   content: 'window.GAMES = ' + JSON.stringify(merged, null, 2) + '\n;\n' }
+        ];
+        for (const f of files) {
+          const getR = await fetch(
+            `https://api.github.com/repos/${c.owner}/${c.repo}/contents/${f.path}?ref=${c.branch}`,
+            { headers }
+          );
+          if (!getR.ok) throw new Error(`Could not read ${f.path} from GitHub (${getR.status})`);
+          const { sha } = await getR.json();
+          const putR = await fetch(
+            `https://api.github.com/repos/${c.owner}/${c.repo}/contents/${f.path}`,
+            {
+              method: 'PUT', headers,
+              body: JSON.stringify({ message: commitMsg, content: toBase64(f.content), sha, branch: c.branch })
+            }
+          );
+          if (!putR.ok) {
+            const err = await putR.json();
+            throw new Error(`Failed to update ${f.path}: ${err.message}`);
+          }
+        }
+      }
+
+      async function saveAndPush(label, commitMsg) {
+        if (!document.getElementById('gDate').value) { toast('Pick a game first', false); return; }
+        const merged = mergeGame(buildGame());
+        document.getElementById('jsonOut').value = JSON.stringify(merged, null, 2);
+
+        if (!ghConfigured()) {
+          exportJSON(merged);
+          toast(`${label} downloaded — push manually`);
+          return;
+        }
+
+        const statusEl = document.getElementById('pushStatus');
+        statusEl.textContent = '⏳ Pushing to GitHub…';
+        statusEl.classList.remove('hide');
+        const buttons = document.querySelectorAll('#app .btn');
+        buttons.forEach(b => b.disabled = true);
+
+        try {
+          await githubPush(commitMsg, merged);
+          statusEl.textContent = '✓ Pushed! GitHub Pages rebuilds in ~30 sec.';
+          toast(`${label} pushed to GitHub`);
+          // Update in-memory games so next save in same session has correct SHAs
+          const idx = existingGames.findIndex(g => g.id === merged.games.find(x => x.id)?.id);
+          merged.games.forEach(g => {
+            const i = existingGames.findIndex(x => x.id === g.id);
+            if (i >= 0) existingGames[i] = g; else existingGames.push(g);
+          });
+        } catch(e) {
+          statusEl.textContent = `✗ Push failed: ${e.message}`;
+          statusEl.style.color = 'var(--warn)';
+          toast('Push failed — check GitHub settings', false);
+          // Fallback: offer download
+          exportJSON(merged);
+        } finally {
+          buttons.forEach(b => b.disabled = false);
+        }
+      }
+
+      // Save Lineup
+      document.getElementById('btnSaveLineup').addEventListener('click', () => {
+        const opp = document.getElementById('gOpp').value || 'game';
+        const date = document.getElementById('gDate').value || '';
+        saveAndPush('Lineup', `lineup: ${opp} (${date})`);
+      });
+
+      // Save Stats
+      document.getElementById('btnExport').addEventListener('click', () => {
+        const opp = document.getElementById('gOpp').value || 'game';
+        const date = document.getElementById('gDate').value || '';
+        const us = document.getElementById('gUs').value;
+        const them = document.getElementById('gThem').value;
+        saveAndPush('Stats', `stats: ${opp} (${date}) ${us}-${them}`);
+      });
+
+      document.getElementById('btnCopy').addEventListener('click', async () => {
+        const json = JSON.stringify(mergeGame(buildGame()), null, 2);
+        document.getElementById('jsonOut').value = json;
+        try { await navigator.clipboard.writeText(json); toast('Copied to clipboard'); }
+        catch { toast('Copy failed — select text manually', false); }
+      });
+
+      document.getElementById('btnPreview').addEventListener('click', () => {
+        document.getElementById('jsonOut').value = JSON.stringify(mergeGame(buildGame()), null, 2);
+        toast('Preview generated');
+      });
+
+      document.getElementById('btnReset').addEventListener('click', () => {
+        if (!confirm('Reset the form? Current inputs will be lost.')) return;
+        document.getElementById('gamePicker').value = '';
+        document.getElementById('gameBanner').classList.add('hide');
+        document.getElementById('gDate').value = '';
+        document.getElementById('gOpp').value = '';
+        document.getElementById('gLoc').value = '';
+        document.getElementById('gUs').value = 0;
+        document.getElementById('gThem').value = 0;
+        document.getElementById('gResult').value = '';
+        document.getElementById('gNotes').value = '';
+        document.querySelectorAll('#batTbl input[type="number"], #inningTbl input').forEach(i => i.value = '');
+        document.querySelectorAll('#batTbl input[type="checkbox"]').forEach(i => i.checked = true);
+        document.querySelectorAll('#pitchTbl input[type="number"], #pitchTbl input[type="text"]').forEach(i => i.value = '');
+        document.querySelectorAll('#pitchTbl input[type="checkbox"]').forEach(i => i.checked = false);
+        document.querySelectorAll('#lineupTbl select').forEach(s => s.value = '');
+        document.getElementById('jsonOut').value = '';
+        updateInningTotals(); updateBatWarn();
+        toast('Form reset');
+      });
+    })();
+  </script>
+  <script src="js/nav.js"></script>
+</body>
+</html>
