@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stats · Columbia TBD</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="practices.html">Practices</a></li>
+          <li><a href="games.html">Games</a></li>
+          <li><a href="stats.html">Stats</a></li>
+          <li><a href="standings.html">Standings</a></li>
+          <li><a href="entry.html">Entry</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h2>Season batting stats</h2>
+    <p class="meta">AVG = H/AB · OBP = (H+BB)/(AB+BB) · SLG = TB/AB. Totals auto-computed from every game posted in <a href="games.html">Games</a>.</p>
+
+    <div id="teamTotals" class="grid"></div>
+
+    <div class="card" style="padding:0; overflow-x:auto;">
+      <table id="battingTable">
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th>
+            <th class="num">G</th><th class="num">AB</th><th class="num">H</th>
+            <th class="num">2B</th><th class="num">3B</th><th class="num">HR</th>
+            <th class="num">BB</th><th class="num">K</th>
+            <th class="num">R</th><th class="num">RBI</th>
+            <th class="num">AVG</th><th class="num">OBP</th><th class="num">SLG</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <h2>Season pitching stats</h2>
+    <p class="meta">IP = innings pitched · WHIP = (H+BB)/IP · K/IP = strikeouts per inning. Kid-pitch innings only (1-2).</p>
+
+    <div id="pitchTotals" class="grid"></div>
+
+    <div class="card" style="padding:0; overflow-x:auto;">
+      <table id="pitchingTable">
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th>
+            <th class="num">G</th><th class="num">IP</th>
+            <th class="num">H</th><th class="num">R</th>
+            <th class="num">BB</th><th class="num">K</th>
+            <th class="num">HBP</th>
+            <th class="num">WHIP</th><th class="num">K/IP</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <h2>Recent games</h2>
+    <div id="gameLog"></div>
+  </main>
+
+  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+
+  <script>
+    function el(tag, attrs = {}, ...children) {
+      const e = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === 'class') e.className = v;
+        else if (k === 'html') e.innerHTML = v;
+        else if (k.startsWith('on') && typeof v === 'function') e.addEventListener(k.slice(2), v);
+        else e.setAttribute(k, v);
+      }
+      for (const c of children.flat()) {
+        if (c == null) continue;
+        e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+      }
+      return e;
+    }
+    function fmtDate(iso) {
+      const raw = String(iso);
+      const d = new Date(raw.includes('T') ? raw : raw + 'T00:00');
+      if (isNaN(d)) return iso;
+      let s = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+      if (raw.includes('T')) s += ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      return s;
+    }
+    function fmtRate(x) {
+      if (!isFinite(x)) return '.000';
+      return x.toFixed(3).replace(/^0/, '');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const here = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('nav a').forEach(a => {
+        if (a.getAttribute('href') === here) a.classList.add('active');
+      });
+    });
+  </script>
+  <script src="data/team.js"></script>
+  <script src="data/games.js"></script>
+  <script>
+    (() => {
+      const team = window.TEAM;
+      const games = (window.GAMES && window.GAMES.games) || [];
+      document.getElementById('teamName').textContent = team.team.name;
+
+      // Build season totals keyed by player name from roster
+      const totals = {};
+      team.roster.forEach(p => {
+        totals[p.name] = {
+          num: p.num, name: p.name,
+          G: 0, AB: 0, H: 0, "2B": 0, "3B": 0, HR: 0,
+          BB: 0, K: 0, R: 0, RBI: 0
+        };
+      });
+
+      games.forEach(g => {
+        (g.batting || []).forEach(b => {
+          if (!b.name) return;
+          let t = totals[b.name];
+          if (!t) {
+            // Player not in roster — still include
+            t = totals[b.name] = {
+              num: b.num || '', name: b.name,
+              G: 0, AB: 0, H: 0, "2B": 0, "3B": 0, HR: 0,
+              BB: 0, K: 0, R: 0, RBI: 0
+            };
+          }
+          t.G += 1;
+          ['AB','H','2B','3B','HR','BB','K','R','RBI'].forEach(k => {
+            t[k] += Number(b[k] || 0);
+          });
+        });
+      });
+
+      const lastName = n => (n || '').trim().split(/\s+/).slice(-1)[0].toLowerCase();
+      const rows = Object.values(totals).sort((a, b) => {
+        const aa = a.AB ? a.H / a.AB : 0;
+        const ba = b.AB ? b.H / b.AB : 0;
+        if (ba !== aa) return ba - aa;
+        return lastName(a.name).localeCompare(lastName(b.name));
+      });
+
+      const tbody = document.querySelector('#battingTable tbody');
+      rows.forEach(p => {
+        const AVG = p.AB ? p.H / p.AB : 0;
+        const OBP = (p.AB + p.BB) ? (p.H + p.BB) / (p.AB + p.BB) : 0;
+        const singles = p.H - p["2B"] - p["3B"] - p.HR;
+        const TB = singles + 2 * p["2B"] + 3 * p["3B"] + 4 * p.HR;
+        const SLG = p.AB ? TB / p.AB : 0;
+        const tr = el('tr', {},
+          el('td', {}, String(p.num || '')),
+          el('td', {}, p.name),
+          el('td', { class: 'num' }, String(p.G)),
+          el('td', { class: 'num' }, String(p.AB)),
+          el('td', { class: 'num' }, String(p.H)),
+          el('td', { class: 'num' }, String(p["2B"])),
+          el('td', { class: 'num' }, String(p["3B"])),
+          el('td', { class: 'num' }, String(p.HR)),
+          el('td', { class: 'num' }, String(p.BB)),
+          el('td', { class: 'num' }, String(p.K)),
+          el('td', { class: 'num' }, String(p.R)),
+          el('td', { class: 'num' }, String(p.RBI)),
+          el('td', { class: 'num' }, fmtRate(AVG)),
+          el('td', { class: 'num' }, fmtRate(OBP)),
+          el('td', { class: 'num' }, fmtRate(SLG))
+        );
+        tbody.appendChild(tr);
+      });
+
+      // Team totals
+      const t = rows.reduce((a, p) => {
+        a.G = Math.max(a.G, p.G);
+        ['AB','H','2B','3B','HR','BB','K','R','RBI'].forEach(k => a[k] += p[k]);
+        return a;
+      }, { G:0, AB:0, H:0, "2B":0, "3B":0, HR:0, BB:0, K:0, R:0, RBI:0 });
+
+      const tt = document.getElementById('teamTotals');
+      const AVG = t.AB ? t.H / t.AB : 0;
+      const OBP = (t.AB + t.BB) ? (t.H + t.BB) / (t.AB + t.BB) : 0;
+      const cards = [
+        ['Games', games.length],
+        ['Team AVG', fmtRate(AVG)],
+        ['Team OBP', fmtRate(OBP)],
+        ['Hits', t.H],
+        ['Extra-base H', t["2B"] + t["3B"] + t.HR],
+        ['Walks', t.BB]
+      ];
+      cards.forEach(([label, n]) => {
+        const box = el('div', { class: 'stat' });
+        box.appendChild(el('span', { class: 'n' }, String(n)));
+        box.appendChild(el('span', { class: 'l' }, label));
+        tt.appendChild(box);
+      });
+
+      // ---- Pitching stats ----
+      // Convert baseball IP notation (1.1 = 1⅓, 1.2 = 1⅔) to decimal outs
+      function ipToOuts(ip) {
+        if (typeof ip === 'number') {
+          const whole = Math.floor(ip);
+          const frac = Math.round((ip - whole) * 10);
+          return whole * 3 + frac;
+        }
+        const s = String(ip);
+        const parts = s.split('.');
+        const whole = parseInt(parts[0] || '0', 10);
+        const frac = parts[1] ? parseInt(parts[1], 10) : 0;
+        return whole * 3 + frac;
+      }
+      function outsToIP(outs) {
+        const whole = Math.floor(outs / 3);
+        const rem = outs % 3;
+        return rem === 0 ? String(whole) : whole + '.' + rem;
+      }
+      function outsToDecimal(outs) { return outs / 3; }
+
+      const pTotals = {};
+      games.forEach(g => {
+        (g.pitching || []).forEach(p => {
+          if (!p.name) return;
+          let t = pTotals[p.name];
+          if (!t) {
+            const rosterP = team.roster.find(r => r.name === p.name);
+            t = pTotals[p.name] = {
+              num: (rosterP && rosterP.num) || '', name: p.name,
+              G: 0, outs: 0, H: 0, R: 0, BB: 0, K: 0, HBP: 0
+            };
+          }
+          t.G += 1;
+          t.outs += ipToOuts(p.IP || 0);
+          ['H','R','BB','K','HBP'].forEach(k => { t[k] += Number(p[k] || 0); });
+        });
+      });
+
+      const pRows = Object.values(pTotals)
+        .filter(p => p.G > 0)
+        .sort((a, b) => b.K - a.K || a.name.localeCompare(b.name));
+
+      const pTbody = document.querySelector('#pitchingTable tbody');
+      pRows.forEach(p => {
+        const ipDec = outsToDecimal(p.outs);
+        const WHIP = ipDec > 0 ? (p.H + p.BB) / ipDec : 0;
+        const KIP = ipDec > 0 ? p.K / ipDec : 0;
+        const tr = el('tr', {},
+          el('td', {}, String(p.num || '')),
+          el('td', {}, p.name),
+          el('td', { class: 'num' }, String(p.G)),
+          el('td', { class: 'num' }, outsToIP(p.outs)),
+          el('td', { class: 'num' }, String(p.H)),
+          el('td', { class: 'num' }, String(p.R)),
+          el('td', { class: 'num' }, String(p.BB)),
+          el('td', { class: 'num' }, String(p.K)),
+          el('td', { class: 'num' }, String(p.HBP)),
+          el('td', { class: 'num' }, ipDec > 0 ? WHIP.toFixed(2) : '-'),
+          el('td', { class: 'num' }, ipDec > 0 ? KIP.toFixed(1) : '-')
+        );
+        pTbody.appendChild(tr);
+      });
+
+      if (!pRows.length) {
+        const tr = el('tr', {});
+        tr.innerHTML = '<td colspan="11" style="text-align:center;padding:1rem;" class="meta">No pitching data yet. Add pitching lines in the <a href="entry.html">stat entry form</a>.</td>';
+        pTbody.appendChild(tr);
+      }
+
+      // Pitching summary cards
+      const pt = document.getElementById('pitchTotals');
+      const totalK = pRows.reduce((s, p) => s + p.K, 0);
+      const totalOuts = pRows.reduce((s, p) => s + p.outs, 0);
+      const totalH = pRows.reduce((s, p) => s + p.H, 0);
+      const totalBB = pRows.reduce((s, p) => s + p.BB, 0);
+      const totalIPDec = outsToDecimal(totalOuts);
+      const teamWHIP = totalIPDec > 0 ? (totalH + totalBB) / totalIPDec : 0;
+      const pCards = [
+        ['Total K', totalK],
+        ['Team IP', outsToIP(totalOuts)],
+        ['Team WHIP', totalIPDec > 0 ? teamWHIP.toFixed(2) : '-'],
+        ['K Leader', pRows.length ? pRows[0].name.split(' ')[0] + ' (' + pRows[0].K + ')' : '-']
+      ];
+      pCards.forEach(([label, n]) => {
+        const box = el('div', { class: 'stat' });
+        box.appendChild(el('span', { class: 'n' }, String(n)));
+        box.appendChild(el('span', { class: 'l' }, label));
+        pt.appendChild(box);
+      });
+
+      // Game log (mini)
+      const log = document.getElementById('gameLog');
+      if (!games.length) {
+        log.innerHTML = '<div class="card"><p class="meta">No games played yet. Add a game via <a href="entry.html">the stat entry form</a>.</p></div>';
+      } else {
+        games.slice().sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5).forEach(g => {
+          const card = el('div', { class: 'card' });
+          card.appendChild(el('h3', {}, fmtDate(g.date) + ' · ' + (g.home ? 'vs ' : '@ ') + (g.opponent || 'TBD')));
+          card.appendChild(el('p', {}, `${g.result || '-'} · ${g.teamRuns ?? '-'} - ${g.oppRuns ?? '-'}`));
+          if (g.notes) card.appendChild(el('p', { class: 'meta' }, g.notes));
+          log.appendChild(card);
+        });
+      }
+    })();
+  </script>
+  <script src="js/nav.js"></script>
+</body>
+</html>
