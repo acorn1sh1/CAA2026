@@ -137,6 +137,9 @@
         <button class="btn" id="btnSaveLineup">⬇ Save Lineup</button>
         <span class="meta" style="font-size:0.8rem;">Saves lineup so it's visible on the game page before the game is played.</span>
       </div>
+      <p class="meta" style="margin-top:0.75rem;">
+        <a href="positions.html" target="_blank">📊 View position tracker →</a>
+      </p>
     </div>
 
     <!-- STEP 3: Stats (fill after game) -->
@@ -440,7 +443,7 @@
 
         updateInningTotals();
         updateBatWarn();
-        updateDefWarn();
+        refreshAllLineupDropdowns();
       }
 
       picker.addEventListener('change', () => {
@@ -964,6 +967,7 @@
         document.querySelectorAll('#pitchTbl input[type="number"], #pitchTbl input[type="text"]').forEach(i => i.value = '');
         document.querySelectorAll('#pitchTbl input[type="checkbox"]').forEach(i => i.checked = false);
         document.querySelectorAll('#lineupTbl select').forEach(s => s.value = '');
+        refreshAllLineupDropdowns();
         document.getElementById('jsonOut').value = '';
         updateInningTotals(); updateBatWarn();
         toast('Form reset');

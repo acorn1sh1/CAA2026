@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Position Tracker · Columbia TBD</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .pos-table-wrap { overflow-x: auto; }
+    table.pos-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    table.pos-table th, table.pos-table td {
+      padding: 0.45rem 0.6rem;
+      border: 1px solid var(--border);
+      text-align: center;
+      white-space: nowrap;
+    }
+    table.pos-table th {
+      background: var(--bg-alt);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+    }
+    table.pos-table td.name {
+      text-align: left;
+      font-weight: 600;
+      min-width: 10rem;
+    }
+    table.pos-table td.zero { color: var(--muted); }
+    table.pos-table td.hot-1 { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+    table.pos-table td.hot-2 { background: color-mix(in srgb, var(--accent) 25%, transparent); font-weight: 700; }
+    table.pos-table td.hot-3 { background: color-mix(in srgb, var(--accent) 42%, transparent); font-weight: 700; }
+    table.pos-table td.total-col { background: var(--bg-alt); font-weight: 700; }
+    table.pos-table tr:hover td { filter: brightness(1.06); }
+    .pos-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+    .pos-header h2 { margin: 0; }
+    .games-played { font-size: 0.82rem; color: var(--muted); }
+    .legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem; align-items: center; }
+    .legend-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: middle; margin-right: 3px; }
+    .section-divider { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin: 1.5rem 0 0.5rem; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="practices.html">Practices</a></li>
+          <li><a href="games.html">Games</a></li>
+          <li><a href="stats.html">Stats</a></li>
+          <li><a href="standings.html">Standings</a></li>
+          <li><a href="entry.html">Entry</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="pos-header">
+      <h2>Position Tracker</h2>
+      <span class="games-played" id="gamesPlayed"></span>
+    </div>
+
+    <div class="legend">
+      <span><span class="legend-swatch" style="background:color-mix(in srgb,var(--accent) 12%,var(--bg))"></span>1×</span>
+      <span><span class="legend-swatch" style="background:color-mix(in srgb,var(--accent) 25%,var(--bg))"></span>2×</span>
+      <span><span class="legend-swatch" style="background:color-mix(in srgb,var(--accent) 42%,var(--bg))"></span>3×+</span>
+      <span style="margin-left:auto;"><a href="entry.html">← Back to Entry</a></span>
+    </div>
+
+    <div class="card">
+      <div class="section-divider">Infield</div>
+      <div class="pos-table-wrap" id="tableInfield"></div>
+      <div class="section-divider" style="margin-top:1.5rem;">Outfield</div>
+      <div class="pos-table-wrap" id="tableOutfield"></div>
+    </div>
+
+    <div class="card" id="cardInnings" style="display:none;">
+      <div class="section-divider">Innings played (infield vs outfield)</div>
+      <div class="pos-table-wrap" id="tableInnings"></div>
+    </div>
+  </main>
+
+  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const here = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('nav a').forEach(a => {
+        if (a.getAttribute('href') === here) a.classList.add('active');
+      });
+    });
+  </script>
+  <script src="data/team.js"></script>
+  <script src="data/games.js"></script>
+  <script>
+    (() => {
+      const team = window.TEAM;
+      const gamesData = window.GAMES;
+
+      document.getElementById('teamName').textContent = team.team.name;
+
+      const INFIELD  = ['P','C','1B','2B','SS','3B'];
+      const OUTFIELD = ['LF','LCF','RCF','RF'];
+      const ALL_POS  = [...INFIELD, ...OUTFIELD];
+
+      // Collect all players from roster + any who appear in game data
+      const rosterPlayers = (team.players || []).map(p => p.name);
+      const playerSet = new Set(rosterPlayers);
+
+      // Count positions across all games that have a lineup with defense
+      // counts[player][position] = number of innings played there
+      const counts = {};
+      const ifCounts  = {};  // infield innings per player
+      const ofCounts  = {};  // outfield innings per player
+      const sitCounts = {};  // sit innings per player
+
+      let gamesWithLineup = 0;
+
+      gamesData.games.forEach(game => {
+        if (!game.lineup || !game.lineup.defense) return;
+        const def = game.lineup.defense;
+        const playedInnings = Object.keys(def).filter(inn => Object.keys(def[inn]).length > 0);
+        if (!playedInnings.length) return;
+        gamesWithLineup++;
+
+        // Track which players appeared in this game
+        const appearedInInning = {}; // player -> Set of innings
+
+        playedInnings.forEach(inn => {
+          Object.entries(def[inn]).forEach(([pos, player]) => {
+            if (!player) return;
+            playerSet.add(player);
+            if (!counts[player]) counts[player] = {};
+            counts[player][pos] = (counts[player][pos] || 0) + 1;
+
+            if (!ifCounts[player])  ifCounts[player]  = 0;
+            if (!ofCounts[player])  ofCounts[player]  = 0;
+            if (!sitCounts[player]) sitCounts[player] = 0;
+            if (INFIELD.includes(pos))  ifCounts[player]++;
+            if (OUTFIELD.includes(pos)) ofCounts[player]++;
+
+            if (!appearedInInning[player]) appearedInInning[player] = new Set();
+            appearedInInning[player].add(inn);
+          });
+        });
+
+        // Sits = innings in game that player did NOT appear
+        const totalInnings = playedInnings.length;
+        playerSet.forEach(player => {
+          const played = appearedInInning[player] ? appearedInInning[player].size : 0;
+          if (!sitCounts[player]) sitCounts[player] = 0;
+          // Only count sits for players who appeared in at least one inning of this game
+          // (avoids counting sits for players not on the roster yet)
+          if (appearedInInning[player]) {
+            sitCounts[player] += (totalInnings - played);
+          }
+        });
+      });
+
+      document.getElementById('gamesPlayed').textContent =
+        `${gamesWithLineup} game${gamesWithLineup !== 1 ? 's' : ''} with lineup data`;
+
+      const players = [...playerSet].sort();
+
+      function heatClass(n) {
+        if (n === 0) return 'zero';
+        if (n === 1) return 'hot-1';
+        if (n === 2) return 'hot-2';
+        return 'hot-3';
+      }
+
+      function buildTable(containerId, positions) {
+        const wrap = document.getElementById(containerId);
+        const table = document.createElement('table');
+        table.className = 'pos-table';
+
+        // Header
+        const thead = table.createTHead();
+        const hr = thead.insertRow();
+        const th0 = document.createElement('th');
+        th0.textContent = 'Player';
+        hr.appendChild(th0);
+        positions.forEach(pos => {
+          const th = document.createElement('th');
+          th.textContent = pos;
+          hr.appendChild(th);
+        });
+        const thTot = document.createElement('th');
+        thTot.textContent = 'Total';
+        hr.appendChild(thTot);
+
+        // Rows
+        const tbody = table.createTBody();
+        players.forEach(player => {
+          const tr = tbody.insertRow();
+          const tdName = tr.insertCell();
+          tdName.className = 'name';
+          tdName.textContent = player;
+
+          let rowTotal = 0;
+          positions.forEach(pos => {
+            const n = (counts[player] || {})[pos] || 0;
+            rowTotal += n;
+            const td = tr.insertCell();
+            td.textContent = n || '—';
+            td.className = heatClass(n);
+          });
+
+          const tdTot = tr.insertCell();
+          tdTot.textContent = rowTotal;
+          tdTot.className = 'total-col';
+        });
+
+        wrap.appendChild(table);
+      }
+
+      buildTable('tableInfield', INFIELD);
+      buildTable('tableOutfield', OUTFIELD);
+
+      // Infield/outfield innings summary
+      if (gamesWithLineup > 0) {
+        document.getElementById('cardInnings').style.display = '';
+        const wrap = document.getElementById('tableInnings');
+        const table = document.createElement('table');
+        table.className = 'pos-table';
+        const thead = table.createTHead();
+        const hr = thead.insertRow();
+        ['Player','Infield','Outfield','Sit','Total','IF %'].forEach(h => {
+          const th = document.createElement('th');
+          th.textContent = h;
+          hr.appendChild(th);
+        });
+        const tbody = table.createTBody();
+        players.forEach(player => {
+          const inf = ifCounts[player]  || 0;
+          const of  = ofCounts[player]  || 0;
+          const sit = sitCounts[player] || 0;
+          const tot = inf + of;
+          const pct = tot > 0 ? Math.round(100 * inf / tot) : 0;
+          const tr = tbody.insertRow();
+          const tdName = tr.insertCell();
+          tdName.className = 'name';
+          tdName.textContent = player;
+          [inf, of, sit, tot, pct + '%'].forEach((v, i) => {
+            const td = tr.insertCell();
+            td.textContent = v;
+            if (i === 2) td.className = sit > 0 ? 'hot-1' : 'zero'; // light highlight on sit
+          });
+        });
+        wrap.appendChild(table);
+      }
+    })();
+  </script>
+  <script src="js/nav.js"></script>
+</body>
+</html>
