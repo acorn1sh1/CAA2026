@@ -32,6 +32,11 @@
       <button data-filter="practice">Practices</button>
       <button data-filter="upcoming">Upcoming</button>
     </div>
+    <div style="margin-bottom:1rem;text-align:right;">
+      <button id="exportIcs" style="background:var(--bg-alt);color:var(--fg);border:1px solid var(--border);border-radius:var(--radius);padding:0.45rem 1rem;cursor:pointer;font-size:0.875rem;display:inline-flex;align-items:center;gap:0.4rem;">
+        🗓 Export to Apple Calendar
+      </button>
+    </div>
     <div id="events"></div>
   </main>
 
@@ -134,6 +139,70 @@
           b.classList.add('active');
           render(b.dataset.filter);
         });
+      });
+
+      // ── Apple Calendar / ICS export ──────────────────────────────────
+      function toIcsDate(iso) {
+        // iso is like "2026-05-12T18:00" — treat as local (America/Chicago)
+        const d = new Date(iso);
+        const pad = n => String(n).padStart(2, '0');
+        // Floating local time (no Z) so Apple Calendar uses device timezone
+        return d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate()) +
+               'T' + pad(d.getHours()) + pad(d.getMinutes()) + '00';
+      }
+      function icsEscape(s) {
+        return String(s || '').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+      }
+      function buildIcs(events) {
+        const lines = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'PRODID:-//Columbia 9U Baseball//Schedule//EN',
+          'CALSCALE:GREGORIAN',
+          'X-WR-CALNAME:Columbia 9U Baseball',
+          'X-WR-TIMEZONE:America/Chicago',
+        ];
+        events.forEach((e, i) => {
+          const start = toIcsDate(e.date);
+          const durMs = (e.duration || (e.type === 'game' ? 90 : 90)) * 60 * 1000;
+          const endD = new Date(new Date(e.date).getTime() + durMs);
+          const pad = n => String(n).padStart(2,'0');
+          const end = endD.getFullYear() + pad(endD.getMonth()+1) + pad(endD.getDate()) +
+                      'T' + pad(endD.getHours()) + pad(endD.getMinutes()) + '00';
+          let summary = e.type === 'game'
+            ? `9U Baseball: vs ${e.opponent}${e.home ? ' (home)' : ' (away)'}`
+            : '9U Baseball Practice';
+          lines.push(
+            'BEGIN:VEVENT',
+            `UID:columbia9u-${e.date.replace(/\D/g,'')}-${i}@baseball`,
+            `DTSTART;TZID=America/Chicago:${start}`,
+            `DTEND;TZID=America/Chicago:${end}`,
+            `SUMMARY:${icsEscape(summary)}`,
+            `LOCATION:${icsEscape(e.location || '')}`,
+            e.notes ? `DESCRIPTION:${icsEscape(e.notes)}` : 'DESCRIPTION:',
+            'END:VEVENT'
+          );
+        });
+        lines.push('END:VCALENDAR');
+        return lines.join('\r\n');
+      }
+      document.getElementById('exportIcs').addEventListener('click', () => {
+        const activeFilter = document.querySelector('[data-filter].active')?.dataset.filter || 'upcoming';
+        const now = new Date();
+        const toExport = all.filter(e => {
+          if (activeFilter === 'all') return true;
+          if (activeFilter === 'upcoming') return e.d >= now;
+          return e.type === activeFilter;
+        });
+        if (!toExport.length) { alert('No events to export.'); return; }
+        const ics = buildIcs(toExport);
+        const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'columbia-9u-baseball.ics';
+        a.click();
+        URL.revokeObjectURL(url);
       });
     })();
   </script>
