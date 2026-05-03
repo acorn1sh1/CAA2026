@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Position Tracker · Columbia TBD</title>
+  <title>Position Tracker · Columbia Kings</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     .pos-table-wrap { overflow-x: auto; }
@@ -46,7 +46,7 @@
 <body>
   <header class="site">
     <div class="wrap">
-      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span></h1>
+      <h1><span class="ball">⚾</span> <span id="teamName">Columbia Kings</span></h1>
       <nav>
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -87,7 +87,7 @@
     </div>
   </main>
 
-  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+  <footer class="site">Built for Coach Andrew · Atom Spring 2026</footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -105,6 +105,10 @@
       const gamesData = window.GAMES;
 
       document.getElementById('teamName').textContent = team.team.name;
+
+      // Build jersey-number lookup: full name → number string
+      const jerseyMap = {};
+      (team.roster || []).forEach(p => { jerseyMap[p.name] = p.num || ''; });
 
       const INFIELD  = ['P','C','1B','2B','SS','3B'];
       const OUTFIELD = ['LF','LCF','RCF','RF'];
@@ -184,6 +188,9 @@
         // Header
         const thead = table.createTHead();
         const hr = thead.insertRow();
+        const th0num = document.createElement('th');
+        th0num.textContent = '#';
+        hr.appendChild(th0num);
         const th0 = document.createElement('th');
         th0.textContent = 'Player';
         hr.appendChild(th0);
@@ -200,6 +207,10 @@
         const tbody = table.createTBody();
         players.forEach(player => {
           const tr = tbody.insertRow();
+          const tdNum = tr.insertCell();
+          tdNum.textContent = jerseyMap[player] || '';
+          tdNum.style.color = 'var(--muted)';
+          tdNum.style.fontSize = '0.8rem';
           const tdName = tr.insertCell();
           tdName.className = 'name';
           tdName.textContent = player;
@@ -232,7 +243,7 @@
         table.className = 'pos-table';
         const thead = table.createTHead();
         const hr = thead.insertRow();
-        ['Player','Infield','Outfield','Sit','Total','IF %'].forEach(h => {
+        ['#','Player','Infield','Outfield','Sit','Total','IF %'].forEach(h => {
           const th = document.createElement('th');
           th.textContent = h;
           hr.appendChild(th);
@@ -245,6 +256,10 @@
           const tot = inf + of;
           const pct = tot > 0 ? Math.round(100 * inf / tot) : 0;
           const tr = tbody.insertRow();
+          const tdJerseyNum = tr.insertCell();
+          tdJerseyNum.textContent = jerseyMap[player] || '';
+          tdJerseyNum.style.color = 'var(--muted)';
+          tdJerseyNum.style.fontSize = '0.8rem';
           const tdName = tr.insertCell();
           tdName.className = 'name';
           tdName.textContent = player;

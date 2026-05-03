@@ -1,6 +1,6 @@
-# 9U Baseball Team Site
+# Columbia Kings Baseball Team Site
 
-Static site for a 9U team — practice plans, schedule, stats — deployable to GitHub Pages.
+Static site for the Columbia Kings Atom team — practice plans, schedule, stats — deployable to GitHub Pages.
 
 ## Layout
 

@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Schedule · Columbia TBD</title>
+  <title>Schedule · Columbia Kings</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site">
     <div class="wrap">
-      <h1><span class="ball">⚾</span> <span id="teamName">9U Team</span></h1>
+      <h1><span class="ball">⚾</span> <span id="teamName">Columbia Kings</span></h1>
       <nav>
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -40,7 +40,7 @@
     <div id="events"></div>
   </main>
 
-  <footer class="site">Built for Coach Andrew · 9U Spring 2026</footer>
+  <footer class="site">Built for Coach Andrew · Atom Spring 2026</footer>
 
   <script>
     async function loadJSON(path) {
@@ -157,9 +157,9 @@
         const lines = [
           'BEGIN:VCALENDAR',
           'VERSION:2.0',
-          'PRODID:-//Columbia 9U Baseball//Schedule//EN',
+          'PRODID:-//Columbia Kings Atom Baseball//Schedule//EN',
           'CALSCALE:GREGORIAN',
-          'X-WR-CALNAME:Columbia 9U Baseball',
+          'X-WR-CALNAME:Columbia Kings Atom Baseball',
           'X-WR-TIMEZONE:America/Chicago',
         ];
         events.forEach((e, i) => {
@@ -170,11 +170,11 @@
           const end = endD.getFullYear() + pad(endD.getMonth()+1) + pad(endD.getDate()) +
                       'T' + pad(endD.getHours()) + pad(endD.getMinutes()) + '00';
           let summary = e.type === 'game'
-            ? `9U Baseball: vs ${e.opponent}${e.home ? ' (home)' : ' (away)'}`
-            : '9U Baseball Practice';
+            ? `Atom Baseball: vs ${e.opponent}${e.home ? ' (home)' : ' (away)'}`
+            : 'Atom Baseball Practice';
           lines.push(
             'BEGIN:VEVENT',
-            `UID:columbia9u-${e.date.replace(/\D/g,'')}-${i}@baseball`,
+            `UID:columbiakings-${e.date.replace(/\D/g,'')}-${i}@baseball`,
             `DTSTART;TZID=America/Chicago:${start}`,
             `DTEND;TZID=America/Chicago:${end}`,
             `SUMMARY:${icsEscape(summary)}`,
@@ -200,7 +200,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'columbia-9u-baseball.ics';
+        a.download = 'columbia-kings-atom-baseball.ics';
         a.click();
         URL.revokeObjectURL(url);
       });

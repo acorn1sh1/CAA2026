@@ -1,8 +1,8 @@
 {
   "team": {
-    "name": "Columbia TBD",
+    "name": "Columbia Kings",
     "season": "Spring 2026",
-    "league": "9U Kid Pitch / Coach Pitch",
+    "league": "Atom Kid Pitch / Coach Pitch",
     "rules": {
       "pitchFormat": "Kid pitch innings 1-2, coach pitch innings 3+",
       "runCap": "5 runs per inning",
@@ -14,18 +14,18 @@
     }
   },
   "roster": [
-    { "num": "", "name": "Greyson Cerminn",  "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Jack Cornish",     "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Albert Doerr",     "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Forrest Doerr",    "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Jude Durako",      "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Benton Herrmann",  "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Luca Lopez",       "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Michael Schirmer", "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Levi Schueler",    "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Nolan Schueler",   "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Jackson Segura",   "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Charlie Wachtel",  "pos": [], "bats": "", "throws": "" },
-    { "num": "", "name": "Parker White",     "pos": [], "bats": "", "throws": "" }
+    { "num": "6",  "name": "Greyson Cerminn",  "pos": [], "bats": "R", "throws": "R" },
+    { "num": "3",  "name": "Jack Cornish",      "pos": [], "bats": "R", "throws": "L" },
+    { "num": "21", "name": "Albert Doerr",      "pos": [], "bats": "R", "throws": "R" },
+    { "num": "24", "name": "Forrest Doerr",     "pos": [], "bats": "R", "throws": "R" },
+    { "num": "27", "name": "Jude Durako",       "pos": [], "bats": "R", "throws": "R" },
+    { "num": "10", "name": "Benton Herrmann",   "pos": [], "bats": "R", "throws": "R" },
+    { "num": "18", "name": "Luca Lopez",        "pos": [], "bats": "R", "throws": "R" },
+    { "num": "15", "name": "Michael Schirmer",  "pos": [], "bats": "L", "throws": "R" },
+    { "num": "9",  "name": "Levi Schueler",     "pos": [], "bats": "R", "throws": "R" },
+    { "num": "30", "name": "Nolan Schueler",    "pos": [], "bats": "R", "throws": "R" },
+    { "num": "33", "name": "Jackson Segura",    "pos": [], "bats": "R", "throws": "R" },
+    { "num": "36", "name": "Charlie Wachtel",   "pos": [], "bats": "R", "throws": "R" },
+    { "num": "39", "name": "Parker White",      "pos": [], "bats": "R", "throws": "R" }
   ]
 }
