@@ -1,0 +1,32 @@
+window.TEAM = {
+  "team": {
+    "name": "Columbia Kings",
+    "season": "Spring 2026",
+    "league": "Atom Kid Pitch / Coach Pitch",
+    "rules": {
+      "pitchFormat": "Kid pitch innings 1-2, coach pitch innings 3+",
+      "runCap": "5 runs per inning",
+      "innings": 7
+    },
+    "coach": {
+      "name": "Coach Andrew",
+      "contact": "andrewjcornish@gmail.com"
+    }
+  },
+  "roster": [
+    { "num": "6",  "name": "Greyson Cerminn",  "pos": [], "bats": "R", "throws": "R" },
+    { "num": "3",  "name": "Jack Cornish",      "pos": [], "bats": "R", "throws": "L" },
+    { "num": "21", "name": "Albert Doerr",      "pos": [], "bats": "R", "throws": "R" },
+    { "num": "24", "name": "Forrest Doerr",     "pos": [], "bats": "R", "throws": "R" },
+    { "num": "27", "name": "Jude Durako",       "pos": [], "bats": "R", "throws": "R" },
+    { "num": "10", "name": "Benton Herrmann",   "pos": [], "bats": "R", "throws": "R" },
+    { "num": "18", "name": "Luca Lopez",        "pos": [], "bats": "R", "throws": "R" },
+    { "num": "15", "name": "Michael Schirmer",  "pos": [], "bats": "L", "throws": "R" },
+    { "num": "9",  "name": "Levi Schueler",     "pos": [], "bats": "R", "throws": "R" },
+    { "num": "30", "name": "Nolan Schueler",    "pos": [], "bats": "R", "throws": "R" },
+    { "num": "33", "name": "Jackson Segura",    "pos": [], "bats": "R", "throws": "R" },
+    { "num": "36", "name": "Charlie Wachtel",   "pos": [], "bats": "R", "throws": "R" },
+    { "num": "39", "name": "Parker White",      "pos": [], "bats": "R", "throws": "R" }
+  ]
+}
+;

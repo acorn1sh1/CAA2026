@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Columbia Kings Lineup – May 12, 2026 vs. Steck</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    background: white;
+    color: #000;
+    padding: 16px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 12px;
+    border-bottom: 3px solid #1a3a5c;
+    padding-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #1a3a5c;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .header .subtitle {
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 3px;
+    color: #333;
+  }
+  .header .meta {
+    font-size: 11px;
+    color: #555;
+    margin-top: 2px;
+  }
+
+  /* LAYOUT */
+  .main {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  /* BATTING ORDER */
+  .batting-card {
+    flex: 0 0 160px;
+  }
+  .card-title {
+    background: #1a3a5c;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 11px;
+    padding: 5px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 3px 3px 0 0;
+  }
+  .batting-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #aaa;
+    border-top: none;
+  }
+  .batting-table tr:nth-child(even) { background: #f0f4f8; }
+  .batting-table td {
+    padding: 5px 7px;
+    border-bottom: 1px solid #ccc;
+  }
+  .batting-table .num {
+    color: #1a3a5c;
+    font-weight: bold;
+    width: 22px;
+    text-align: center;
+    border-right: 1px solid #ccc;
+  }
+  .batting-table .name {
+    font-size: 11px;
+  }
+
+  /* DEFENSE GRID */
+  .defense-section {
+    flex: 1;
+  }
+  .defense-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #aaa;
+    border-top: none;
+  }
+  .defense-table th {
+    background: #1a3a5c;
+    color: white;
+    text-align: center;
+    padding: 5px 3px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-right: 1px solid #4a6a8c;
+  }
+  .defense-table th:first-child {
+    border-radius: 3px 0 0 0;
+  }
+  .defense-table th:last-child {
+    border-radius: 0 3px 0 0;
+    border-right: none;
+  }
+  .pos-header {
+    background: #2d5a8e !important;
+    text-align: left !important;
+    padding-left: 7px !important;
+    min-width: 36px;
+  }
+  .defense-table td {
+    padding: 4px 4px;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    text-align: center;
+    font-size: 10px;
+    white-space: nowrap;
+  }
+  .defense-table td:last-child { border-right: none; }
+  .defense-table tr:nth-child(even) td { background: #f0f4f8; }
+  .defense-table tr:nth-child(odd) td { background: #fff; }
+  .defense-table .pos-label {
+    background: #e8eef5 !important;
+    font-weight: bold;
+    color: #1a3a5c;
+    text-align: left;
+    padding-left: 7px;
+    border-right: 2px solid #1a3a5c;
+  }
+
+  /* highlight pitcher/catcher rows */
+  .row-P td { background: #ddeeff !important; }
+  .row-C td { background: #e8f5e8 !important; }
+  .row-P .pos-label { background: #b8d8f8 !important; }
+  .row-C .pos-label { background: #c8ecc8 !important; }
+
+  /* BENCH ROW */
+  .row-bench td { background: #fff8e1 !important; }
+  .row-bench .pos-label { background: #ffe8a0 !important; color: #7a5000; }
+
+  /* NOTES */
+  .notes-bar {
+    margin-top: 12px;
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #fafafa;
+    font-size: 10px;
+    color: #444;
+    display: flex;
+    gap: 20px;
+  }
+  .notes-bar span { font-weight: bold; color: #1a3a5c; }
+
+  .legend {
+    margin-top: 8px;
+    font-size: 9px;
+    color: #666;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  @media print {
+    body { padding: 8px; }
+    @page { margin: 0.5in; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Columbia Kings</h1>
+  <div class="subtitle">vs. Steck &nbsp;|&nbsp; Tuesday, May 12, 2026 &nbsp;|&nbsp; 6:00 PM</div>
+  <div class="meta">@ Columbia American Legion Field 4 &nbsp;·&nbsp; Away &nbsp;·&nbsp; Season Opener</div>
+</div>
+
+<div class="main">
+
+  <!-- BATTING ORDER -->
+  <div class="batting-card">
+    <div class="card-title">Batting Order</div>
+    <table class="batting-table">
+      <tr><td class="num">1</td><td class="name">Luca Lopez</td></tr>
+      <tr><td class="num">2</td><td class="name">Jackson Segura</td></tr>
+      <tr><td class="num">3</td><td class="name">Jack Cornish</td></tr>
+      <tr><td class="num">4</td><td class="name">Levi Schueler</td></tr>
+      <tr><td class="num">5</td><td class="name">Albert Doerr</td></tr>
+      <tr><td class="num">6</td><td class="name">Charlie Wachtel</td></tr>
+      <tr><td class="num">7</td><td class="name">Forrest Doerr</td></tr>
+      <tr><td class="num">8</td><td class="name">Nolan Schueler</td></tr>
+      <tr><td class="num">9</td><td class="name">Greyson Cerminn</td></tr>
+      <tr><td class="num">10</td><td class="name">Parker White</td></tr>
+      <tr><td class="num">11</td><td class="name">Michael Schirmer</td></tr>
+      <tr><td class="num">12</td><td class="name">Benton Herrmann</td></tr>
+    </table>
+  </div>
+
+  <!-- DEFENSIVE ROTATION -->
+  <div class="defense-section">
+    <div class="card-title">Defensive Rotation by Inning</div>
+    <table class="defense-table">
+      <thead>
+        <tr>
+          <th class="pos-header">POS</th>
+          <th>INN 1</th>
+          <th>INN 2</th>
+          <th>INN 3</th>
+          <th>INN 4</th>
+          <th>INN 5</th>
+          <th>INN 6</th>
+          <th>INN 7</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-P">
+          <td class="pos-label">P</td>
+          <td>M. Schirmer</td>
+          <td>B. Herrmann</td>
+          <td>L. Lopez</td>
+          <td>A. Doerr</td>
+          <td>C. Wachtel</td>
+          <td>N. Schueler</td>
+          <td>G. Cerminn</td>
+        </tr>
+        <tr class="row-C">
+          <td class="pos-label">C</td>
+          <td>L. Lopez</td>
+          <td>J. Segura</td>
+          <td>J. Cornish</td>
+          <td>C. Wachtel</td>
+          <td>A. Doerr</td>
+          <td>F. Doerr</td>
+          <td>N. Schueler</td>
+        </tr>
+        <tr>
+          <td class="pos-label">1B</td>
+          <td>J. Segura</td>
+          <td>J. Cornish</td>
+          <td>L. Schueler</td>
+          <td>F. Doerr</td>
+          <td>P. White</td>
+          <td>G. Cerminn</td>
+          <td>M. Schirmer</td>
+        </tr>
+        <tr>
+          <td class="pos-label">2B</td>
+          <td>J. Cornish</td>
+          <td>G. Cerminn</td>
+          <td>A. Doerr</td>
+          <td>N. Schueler</td>
+          <td>M. Schirmer</td>
+          <td>B. Herrmann</td>
+          <td>C. Wachtel</td>
+        </tr>
+        <tr>
+          <td class="pos-label">SS</td>
+          <td>L. Schueler</td>
+          <td>F. Doerr</td>
+          <td>N. Schueler</td>
+          <td>G. Cerminn</td>
+          <td>B. Herrmann</td>
+          <td>C. Wachtel</td>
+          <td>P. White</td>
+        </tr>
+        <tr>
+          <td class="pos-label">3B</td>
+          <td>A. Doerr</td>
+          <td>L. Lopez</td>
+          <td>J. Segura</td>
+          <td>P. White</td>
+          <td>F. Doerr</td>
+          <td>M. Schirmer</td>
+          <td>B. Herrmann</td>
+        </tr>
+        <tr>
+          <td class="pos-label">LF</td>
+          <td>C. Wachtel</td>
+          <td>N. Schueler</td>
+          <td>G. Cerminn</td>
+          <td>J. Segura</td>
+          <td>L. Lopez</td>
+          <td>J. Cornish</td>
+          <td>A. Doerr</td>
+        </tr>
+        <tr>
+          <td class="pos-label">LCF</td>
+          <td>F. Doerr</td>
+          <td>L. Schueler</td>
+          <td>M. Schirmer</td>
+          <td>J. Cornish</td>
+          <td>L. Schueler</td>
+          <td>A. Doerr</td>
+          <td>L. Lopez</td>
+        </tr>
+        <tr>
+          <td class="pos-label">RCF</td>
+          <td>N. Schueler</td>
+          <td>P. White</td>
+          <td>B. Herrmann</td>
+          <td>L. Schueler</td>
+          <td>J. Segura</td>
+          <td>L. Lopez</td>
+          <td>F. Doerr</td>
+        </tr>
+        <tr>
+          <td class="pos-label">RF</td>
+          <td>P. White</td>
+          <td>M. Schirmer</td>
+          <td>C. Wachtel</td>
+          <td>B. Herrmann</td>
+          <td>G. Cerminn</td>
+          <td>L. Schueler</td>
+          <td>J. Segura</td>
+        </tr>
+        <tr class="row-bench">
+          <td class="pos-label">BENCH</td>
+          <td>G. Cerminn<br>B. Herrmann</td>
+          <td>A. Doerr<br>C. Wachtel</td>
+          <td>F. Doerr<br>P. White</td>
+          <td>L. Lopez<br>M. Schirmer</td>
+          <td>N. Schueler<br>J. Cornish</td>
+          <td>J. Segura<br>P. White</td>
+          <td>J. Cornish<br>L. Schueler</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="notes-bar">
+  <div><span>Coach:</span> Andrew Cornish</div>
+  <div><span>Format:</span> Kid pitch inn. 1–2 · Coach pitch inn. 3+ · 5-run cap per inning</div>
+  <div><span>Notes:</span> Jude Durako out (broken arm)</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><span class="legend-dot" style="background:#b8d8f8;"></span> Pitcher</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#c8ecc8;"></span> Catcher</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#ffe8a0;"></span> Bench</div>
+</div>
+
+</body>
+</html>

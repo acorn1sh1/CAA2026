@@ -1,0 +1,21 @@
+window.STATS = {
+  "games": [],
+  "season": {
+    "batting": [
+      { "num": "", "name": "Jack Cornish",     "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Greyson Cerminn",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Benton Herrmann",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Michael Schirmer", "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Luca Lopez",       "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Albert Doerr",     "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Forrest Doerr",    "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Jude Durako",      "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Nolan Schueler",   "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Levi Schueler",    "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Jackson Segura",   "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Charlie Wachtel",  "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 },
+      { "num": "", "name": "Parker White",     "G": 0, "AB": 0, "H": 0, "BB": 0, "K": 0, "R": 0, "RBI": 0 }
+    ]
+  }
+}
+;
