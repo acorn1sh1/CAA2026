@@ -19,7 +19,7 @@ window.TEAM = {
     { "num": "21", "name": "Albert Doerr",      "pos": [], "bats": "R", "throws": "R" },
     { "num": "24", "name": "Forrest Doerr",     "pos": [], "bats": "R", "throws": "R" },
     { "num": "27", "name": "Jude Durako",       "pos": [], "bats": "R", "throws": "R" },
-    { "num": "10", "name": "Benton Herrmann",   "pos": [], "bats": "R", "throws": "R" },
+    { "num": "12", "name": "Benton Herrmann",   "pos": [], "bats": "R", "throws": "R" },
     { "num": "18", "name": "Luca Lopez",        "pos": [], "bats": "R", "throws": "R" },
     { "num": "15", "name": "Michael Schirmer",  "pos": [], "bats": "L", "throws": "R" },
     { "num": "9",  "name": "Levi Schueler",     "pos": [], "bats": "R", "throws": "R" },

@@ -199,6 +199,8 @@
         g.lineup.battingOrder.forEach((name, idx) => {
           const tr = el('tr');
           tr.appendChild(el('td', { class: 'lu-num' }, String(idx + 1)));
+          const jersey = jerseyByName[name];
+          tr.appendChild(el('td', { class: 'lu-num', style: 'color:#888;border-right:1px solid #ccc;' }, jersey != null ? '#' + jersey : ''));
           tr.appendChild(el('td', {}, name));
           bTbody.appendChild(tr);
         });
@@ -265,9 +267,10 @@
           const HA = g.home ? 'vs.' : '@';
           const homAway = g.home ? 'Home' : 'Away';
 
-          const battingRows = g.lineup.battingOrder.map((name, i) =>
-            `<tr><td class="num">${i+1}</td><td class="name">${name}</td></tr>`
-          ).join('');
+          const battingRows = g.lineup.battingOrder.map((name, i) => {
+            const jersey = jerseyByName[name];
+            return `<tr><td class="num">${i+1}</td><td class="num" style="color:#666;border-right:1px solid #ccc;">${jersey != null ? '#'+jersey : ''}</td><td class="name">${name}</td></tr>`;
+          }).join('');
 
           const defRows = DEF_POSITIONS.map(pos => {
             const cls = pos === 'P' ? ' class="row-P"' : pos === 'C' ? ' class="row-C"' : '';
