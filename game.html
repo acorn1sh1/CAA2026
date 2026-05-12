@@ -9,7 +9,7 @@
     /* ── Lineup sheet styles (scoped to .lu-*) ── */
     .lu-wrap { display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap; margin-top:0.75rem; font-family:Arial,sans-serif; font-size:12px; color:#000; }
     .lu-bat-card { flex:0 0 168px; }
-    .lu-def-section { flex:1; min-width:0; }
+    .lu-def-section { flex:1; min-width:0; overflow-x:auto; }
     .lu-card-title { background:#1a3a5c; color:#fff; text-align:center; font-weight:700; font-size:11px; padding:5px 0; text-transform:uppercase; letter-spacing:1px; border-radius:3px 3px 0 0; }
     /* batting table */
     .lu-bat-tbl { width:100%; border-collapse:collapse; border:1px solid #aaa; border-top:none; }
@@ -36,6 +36,17 @@
     /* legend */
     .lu-legend { display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; font-size:10px; color:#555; font-family:Arial,sans-serif; }
     .lu-legend-dot { display:inline-block; width:12px; height:12px; border-radius:2px; margin-right:4px; vertical-align:middle; }
+    /* pdf button */
+    .lu-pdf-btn { display:inline-block; margin-top:12px; padding:6px 14px; background:#1a3a5c; color:#fff; border:none; border-radius:4px; font-size:12px; font-family:Arial,sans-serif; cursor:pointer; text-decoration:none; }
+    .lu-pdf-btn:hover { background:#2d5a8e; }
+    /* print: hide site chrome, show only lineup */
+    @media print {
+      header.site, footer.site, nav, .site, #gameDetail > p:first-child,
+      h2, p.meta, .grid, .lu-pdf-btn, a[href*="entry.html"] { display:none !important; }
+      body, main { background:#fff !important; color:#000 !important; padding:0 !important; margin:0 !important; }
+      .lu-wrap, .lu-bat-card, .lu-def-section, .lu-legend { display:flex !important; }
+      @page { margin:0.5in; }
+    }
   </style>
 </head>
 <body>
@@ -235,6 +246,106 @@
           legend.appendChild(item);
         });
         mount.appendChild(legend);
+
+        // PDF button — generates printable sheet in new tab
+        const pdfBtn = el('button', { class: 'lu-pdf-btn' }, '🖨️ Print / Save PDF');
+        pdfBtn.addEventListener('click', () => {
+          const d = new Date(g.date);
+          const dateStr = isNaN(d) ? g.date : d.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+          const timeStr = String(g.date).includes('T') ? d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) : '';
+          const HA = g.home ? 'vs.' : '@';
+          const homAway = g.home ? 'Home' : 'Away';
+
+          const battingRows = g.lineup.battingOrder.map((name, i) =>
+            `<tr><td class="num">${i+1}</td><td class="name">${name}</td></tr>`
+          ).join('');
+
+          const defRows = DEF_POSITIONS.map(pos => {
+            const cls = pos === 'P' ? ' class="row-P"' : pos === 'C' ? ' class="row-C"' : '';
+            const cells = innings.map(inn => {
+              const name = (g.lineup.defense[inn] || {})[pos] || '';
+              return `<td>${name ? abbr(name) : '—'}</td>`;
+            }).join('');
+            return `<tr${cls}><td class="pos-label">${pos}</td>${cells}</tr>`;
+          }).join('');
+
+          const benchRow = (() => {
+            const cells = innings.map(inn => {
+              const sitting = g.lineup.battingOrder.filter(p => !fieldedPerInning[inn].has(p)).map(abbr);
+              return `<td>${sitting.join('<br>') || '—'}</td>`;
+            }).join('');
+            return `<tr class="row-bench"><td class="pos-label">BENCH</td>${cells}</tr>`;
+          })();
+
+          const innHeaders = innings.map(inn => `<th>INN ${inn}</th>`).join('');
+
+          const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Columbia Kings – ${HA} ${g.opponent} – ${dateStr}</title>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:Arial,sans-serif; font-size:11px; background:#fff; color:#000; padding:16px; }
+.header { text-align:center; margin-bottom:12px; border-bottom:3px solid #1a3a5c; padding-bottom:8px; }
+.header h1 { font-size:22px; font-weight:900; color:#1a3a5c; text-transform:uppercase; letter-spacing:2px; }
+.header .subtitle { font-size:13px; font-weight:bold; margin-top:3px; color:#333; }
+.header .meta { font-size:11px; color:#555; margin-top:2px; }
+.main { display:flex; gap:14px; align-items:flex-start; }
+.batting-card { flex:0 0 160px; }
+.card-title { background:#1a3a5c; color:#fff; text-align:center; font-weight:bold; font-size:11px; padding:5px 0; text-transform:uppercase; letter-spacing:1px; border-radius:3px 3px 0 0; }
+.batting-table { width:100%; border-collapse:collapse; border:1px solid #aaa; border-top:none; }
+.batting-table tr:nth-child(even) { background:#f0f4f8; }
+.batting-table td { padding:5px 7px; border-bottom:1px solid #ccc; }
+.batting-table .num { color:#1a3a5c; font-weight:bold; width:22px; text-align:center; border-right:1px solid #ccc; }
+.defense-section { flex:1; }
+.defense-table { width:100%; border-collapse:collapse; border:1px solid #aaa; border-top:none; table-layout:fixed; }
+.defense-table th { background:#1a3a5c; color:#fff; text-align:center; padding:5px 3px; font-size:10px; text-transform:uppercase; letter-spacing:0.5px; border-right:1px solid #4a6a8c; }
+.defense-table th:last-child { border-right:none; }
+.pos-header { background:#2d5a8e !important; text-align:left !important; padding-left:7px !important; width:40px; border-radius:3px 0 0 0; }
+.defense-table td { padding:4px; border-bottom:1px solid #ccc; border-right:1px solid #ccc; text-align:center; font-size:10px; white-space:nowrap; }
+.defense-table td:last-child { border-right:none; }
+.defense-table tr:nth-child(even) td { background:#f0f4f8; }
+.defense-table tr:nth-child(odd) td { background:#fff; }
+.pos-label { background:#e8eef5 !important; font-weight:bold; color:#1a3a5c; text-align:left; padding-left:7px; border-right:2px solid #1a3a5c; }
+.row-P td { background:#ddeeff !important; }
+.row-P .pos-label { background:#b8d8f8 !important; }
+.row-C td { background:#e8f5e8 !important; }
+.row-C .pos-label { background:#c8ecc8 !important; }
+.row-bench td { background:#fff8e1 !important; color:#7a5000 !important; }
+.row-bench .pos-label { background:#ffe8a0 !important; color:#7a5000 !important; }
+.legend { margin-top:8px; font-size:9px; color:#666; display:flex; gap:14px; flex-wrap:wrap; }
+.legend-dot { width:12px; height:12px; border-radius:2px; display:inline-block; margin-right:3px; vertical-align:middle; }
+@media print { body { padding:8px; } @page { margin:0.5in; } }
+</style></head><body>
+<div class="header">
+  <h1>${team.team.name}</h1>
+  <div class="subtitle">${HA} ${g.opponent} &nbsp;|&nbsp; ${dateStr}${timeStr ? ' &nbsp;|&nbsp; ' + timeStr : ''}</div>
+  <div class="meta">${g.location || ''} &nbsp;·&nbsp; ${homAway}${g.notes ? ' &nbsp;·&nbsp; ' + g.notes : ''}</div>
+</div>
+<div class="main">
+  <div class="batting-card">
+    <div class="card-title">Batting Order</div>
+    <table class="batting-table"><tbody>${battingRows}</tbody></table>
+  </div>
+  <div class="defense-section">
+    <div class="card-title">Defensive Rotation by Inning</div>
+    <table class="defense-table">
+      <thead><tr><th class="pos-header">POS</th>${innHeaders}</tr></thead>
+      <tbody>${defRows}${benchRow}</tbody>
+    </table>
+  </div>
+</div>
+<div class="legend">
+  <span><span class="legend-dot" style="background:#b8d8f8;"></span>Pitcher</span>
+  <span><span class="legend-dot" style="background:#c8ecc8;"></span>Catcher</span>
+  <span><span class="legend-dot" style="background:#ffe8a0;"></span>Bench</span>
+</div>
+<script>window.onload = () => { window.print(); }<\/script>
+</body></html>`;
+
+          const win = window.open('', '_blank');
+          win.document.write(html);
+          win.document.close();
+        });
+        mount.appendChild(pdfBtn);
       }
 
       // === LINE SCORE ===
