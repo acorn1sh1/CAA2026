@@ -10,12 +10,21 @@
     .lu-wrap { display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap; margin-top:0.75rem; font-family:Arial,sans-serif; font-size:12px; color:#000; }
     .lu-bat-card { flex:0 0 168px; }
     .lu-def-section { flex:1; min-width:0; overflow-x:auto; }
+    @media (max-width:640px) {
+      .lu-wrap { flex-direction:column; gap:10px; }
+      .lu-bat-card { flex:none; width:100%; }
+      .lu-bat-tbl { width:100%; }
+      .lu-def-section { width:100%; }
+      .lu-def-tbl td, .lu-def-tbl th { font-size:10px; padding:4px 3px; }
+      .lu-def-tbl .lu-pos-hdr { width:34px; }
+      .lu-def-tbl .lu-pos-lbl { padding-left:4px; }
+    }
     .lu-card-title { background:#1a3a5c; color:#fff; text-align:center; font-weight:700; font-size:11px; padding:5px 0; text-transform:uppercase; letter-spacing:1px; border-radius:3px 3px 0 0; }
     /* batting table */
     .lu-bat-tbl { width:100%; border-collapse:collapse; border:1px solid #aaa; border-top:none; }
     .lu-bat-tbl tr:nth-child(even) td { background:#f0f4f8; }
     .lu-bat-tbl tr:nth-child(odd) td  { background:#fff; }
-    .lu-bat-tbl td { padding:5px 7px; border-bottom:1px solid #ccc; color:#000; }
+    .lu-bat-tbl td { padding:5px 7px; border-bottom:1px solid #ccc; color:#000; font-size:12px; }
     .lu-bat-tbl .lu-num { color:#1a3a5c; font-weight:700; width:24px; text-align:center; border-right:1px solid #ccc; }
     /* defense table */
     .lu-def-tbl { width:100%; border-collapse:collapse; border:1px solid #aaa; border-top:none; table-layout:fixed; }
@@ -313,6 +322,7 @@ body { font-family:Arial,sans-serif; font-size:11px; background:#fff; color:#000
 .row-bench .pos-label { background:#ffe8a0 !important; color:#7a5000 !important; }
 .legend { margin-top:8px; font-size:9px; color:#666; display:flex; gap:14px; flex-wrap:wrap; }
 .legend-dot { width:12px; height:12px; border-radius:2px; display:inline-block; margin-right:3px; vertical-align:middle; }
+* { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 @media print { body { padding:8px; } @page { margin:0.5in; } }
 </style></head><body>
 <div class="header">
