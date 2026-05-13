@@ -6,10 +6,10 @@ window.GAMES = {
       "opponent": "Steck",
       "home": false,
       "location": "Columbia American Legion Field 4",
-      "teamRuns": 0,
-      "oppRuns": 0,
-      "result": "",
-      "notes": "First game of the season",
+      "teamRuns": 17,
+      "oppRuns": 3,
+      "result": "W",
+      "notes": "First game of the season — W 17-3 in 6 innings",
       "lineup": {
         "battingOrder": [
           "Luca Lopez",
@@ -111,7 +111,188 @@ window.GAMES = {
             "RF": "Jackson Segura"
           }
         }
-      }
+      },
+      "innings": 6,
+      "batting": [
+        {
+          "num": "18",
+          "name": "Luca Lopez",
+          "AB": 3,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 2,
+          "R": 0,
+          "RBI": 1
+        },
+        {
+          "num": "33",
+          "name": "Jackson Segura",
+          "AB": 4,
+          "H": 3,
+          "2B": 0,
+          "3B": 1,
+          "HR": 0,
+          "BB": 0,
+          "K": 1,
+          "R": 2,
+          "RBI": 1
+        },
+        {
+          "num": "3",
+          "name": "Jack Cornish",
+          "AB": 4,
+          "H": 2,
+          "2B": 1,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 2,
+          "RBI": 2
+        },
+        {
+          "num": "9",
+          "name": "Levi Schueler",
+          "AB": 3,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 1,
+          "R": 0,
+          "RBI": 2
+        },
+        {
+          "num": "21",
+          "name": "Albert Doerr",
+          "AB": 4,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 1,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "num": "36",
+          "name": "Charlie Wachtel",
+          "AB": 4,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 2,
+          "R": 1,
+          "RBI": 1
+        },
+        {
+          "num": "24",
+          "name": "Forrest Doerr",
+          "AB": 3,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 2,
+          "RBI": 1
+        },
+        {
+          "num": "30",
+          "name": "Nolan Schueler",
+          "AB": 2,
+          "H": 2,
+          "2B": 1,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 3,
+          "RBI": 3
+        },
+        {
+          "num": "6",
+          "name": "Greyson Cerminn",
+          "AB": 3,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 3,
+          "RBI": 1
+        },
+        {
+          "num": "39",
+          "name": "Parker White",
+          "AB": 2,
+          "H": 2,
+          "2B": 2,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 2,
+          "RBI": 5
+        },
+        {
+          "num": "15",
+          "name": "Michael Schirmer",
+          "AB": 3,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 2,
+          "R": 1,
+          "RBI": 0
+        },
+        {
+          "num": "12",
+          "name": "Benton Herrmann",
+          "AB": 3,
+          "H": 3,
+          "2B": 1,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 1,
+          "RBI": 0
+        }
+      ],
+      "pitching": [
+        {
+          "num": "15",
+          "name": "Michael Schirmer",
+          "IP": 1,
+          "H": 0,
+          "R": 0,
+          "BB": 1,
+          "K": 3,
+          "HBP": 0
+        },
+        {
+          "num": "12",
+          "name": "Benton Herrmann",
+          "IP": 1,
+          "H": 1,
+          "R": 0,
+          "BB": 1,
+          "K": 2,
+          "HBP": 0
+        }
+      ]
     },
     {
       "id": "g-2026-05-14",
@@ -547,4 +728,5 @@ window.GAMES = {
       }
     }
   ]
-};
+}
+;

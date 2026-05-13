@@ -6,10 +6,10 @@
       "opponent": "Steck",
       "home": false,
       "location": "Columbia American Legion Field 4",
-      "teamRuns": 0,
-      "oppRuns": 0,
-      "result": "",
-      "notes": "First game of the season",
+      "teamRuns": 17,
+      "oppRuns": 3,
+      "result": "W",
+      "notes": "First game of the season \u2014 W 17-3 in 6 innings",
       "lineup": {
         "battingOrder": [
           "Luca Lopez",
@@ -111,7 +111,155 @@
             "RF": "Jackson Segura"
           }
         }
-      }
+      },
+      "innings": 6,
+      "batting": [
+        {
+          "name": "Luca Lopez",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Jackson Segura",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Jack Cornish",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Levi Schueler",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Albert Doerr",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Charlie Wachtel",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Forrest Doerr",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Nolan Schueler",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Greyson Cerminn",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Parker White",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Michael Schirmer",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        },
+        {
+          "name": "Benton Herrmann",
+          "AB": 0,
+          "H": 0,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 0,
+          "RBI": 0
+        }
+      ],
+      "pitching": []
     },
     {
       "id": "g-2026-05-14",
