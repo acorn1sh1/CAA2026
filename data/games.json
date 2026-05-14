@@ -247,7 +247,26 @@
           "RBI": 3
         }
       ],
-      "pitching": []
+      "pitching": [
+        {
+          "name": "Michael Schirmer",
+          "IP": 1,
+          "H": 0,
+          "R": 0,
+          "BB": 1,
+          "K": 3,
+          "HBP": 0
+        },
+        {
+          "name": "Benton Herrmann",
+          "IP": 1,
+          "H": 1,
+          "R": 0,
+          "BB": 1,
+          "K": 2,
+          "HBP": 0
+        }
+      ]
     },
     {
       "id": "g-2026-05-14",

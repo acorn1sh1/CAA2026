@@ -47,7 +47,7 @@
     </div>
 
     <h2>Season pitching stats</h2>
-    <p class="meta">IP = innings pitched · WHIP = (H+BB)/IP · K/IP = strikeouts per inning. Kid-pitch innings only (1-2).</p>
+    <p class="meta">IP = innings pitched · ERA = scaled to 6-inning game · WHIP = (H+BB)/IP · K/IP = strikeouts per inning. Kid-pitch innings only (1-2).</p>
 
     <div id="pitchTotals" class="grid"></div>
 
@@ -60,6 +60,7 @@
             <th class="num">H</th><th class="num">R</th>
             <th class="num">BB</th><th class="num">K</th>
             <th class="num">HBP</th>
+            <th class="num">ERA</th>
             <th class="num">WHIP</th><th class="num">K/IP</th>
           </tr>
         </thead>
@@ -189,13 +190,29 @@
       const tt = document.getElementById('teamTotals');
       const AVG = t.AB ? t.H / t.AB : 0;
       const OBP = (t.AB + t.BB) ? (t.H + t.BB) / (t.AB + t.BB) : 0;
+
+      // Batting leaders (min 1 AB)
+      const qualified = rows.filter(p => p.AB > 0);
+      const batLeader = (stat) => {
+        if (!qualified.length) return '-';
+        const sorted = qualified.slice().sort((a, b) => b[stat] - a[stat]);
+        const best = sorted[0][stat];
+        if (best === 0) return '-';
+        const tied = sorted.filter(p => p[stat] === best);
+        const names = tied.map(p => p.name.split(' ')[0]).join(' & ');
+        return names + ' (' + best + ')';
+      };
+
       const cards = [
         ['Games', games.length],
         ['Team AVG', fmtRate(AVG)],
         ['Team OBP', fmtRate(OBP)],
-        ['Hits', t.H],
-        ['Extra-base H', t["2B"] + t["3B"] + t.HR],
-        ['Walks', t.BB]
+        ['Doubles', t["2B"]],
+        ['Triples', t["3B"]],
+        ['Walks', t.BB],
+        ['Hit Leader',  batLeader('H')],
+        ['Run Leader',  batLeader('R')],
+        ['RBI Leader',  batLeader('RBI')]
       ];
       cards.forEach(([label, n]) => {
         const box = el('div', { class: 'stat' });
@@ -250,6 +267,8 @@
       const pTbody = document.querySelector('#pitchingTable tbody');
       pRows.forEach(p => {
         const ipDec = outsToDecimal(p.outs);
+        // ERA scaled to 6-inning game (Atom format)
+        const ERA = ipDec > 0 ? (p.R / ipDec) * 6 : null;
         const WHIP = ipDec > 0 ? (p.H + p.BB) / ipDec : 0;
         const KIP = ipDec > 0 ? p.K / ipDec : 0;
         const tr = el('tr', {},
@@ -262,6 +281,7 @@
           el('td', { class: 'num' }, String(p.BB)),
           el('td', { class: 'num' }, String(p.K)),
           el('td', { class: 'num' }, String(p.HBP)),
+          el('td', { class: 'num' }, ERA !== null ? ERA.toFixed(2) : '-'),
           el('td', { class: 'num' }, ipDec > 0 ? WHIP.toFixed(2) : '-'),
           el('td', { class: 'num' }, ipDec > 0 ? KIP.toFixed(1) : '-')
         );
@@ -270,7 +290,7 @@
 
       if (!pRows.length) {
         const tr = el('tr', {});
-        tr.innerHTML = '<td colspan="11" style="text-align:center;padding:1rem;" class="meta">No pitching data yet. Add pitching lines in the <a href="entry.html">stat entry form</a>.</td>';
+        tr.innerHTML = '<td colspan="12" style="text-align:center;padding:1rem;" class="meta">No pitching data yet. Add pitching lines in the <a href="entry.html">stat entry form</a>.</td>';
         pTbody.appendChild(tr);
       }
 
@@ -282,11 +302,30 @@
       const totalBB = pRows.reduce((s, p) => s + p.BB, 0);
       const totalIPDec = outsToDecimal(totalOuts);
       const teamWHIP = totalIPDec > 0 ? (totalH + totalBB) / totalIPDec : 0;
+      // ERA leader = lowest ERA among pitchers with at least 1 IP
+      const eraLeader = (() => {
+        const eligible = pRows
+          .filter(p => p.outs >= 3) // min 1 IP = 3 outs
+          .map(p => ({ name: p.name, era: (p.R / outsToDecimal(p.outs)) * 6 }))
+          .sort((a, b) => a.era - b.era);
+        if (!eligible.length) return '-';
+        const best = eligible[0].era;
+        const tied = eligible.filter(p => Math.abs(p.era - best) < 0.001);
+        const names = tied.map(p => p.name.split(' ')[0]).join(' & ');
+        return names + ' (' + best.toFixed(2) + ')';
+      })();
+
       const pCards = [
         ['Total K', totalK],
         ['Team IP', outsToIP(totalOuts)],
         ['Team WHIP', totalIPDec > 0 ? teamWHIP.toFixed(2) : '-'],
-        ['K Leader', pRows.length ? pRows[0].name.split(' ')[0] + ' (' + pRows[0].K + ')' : '-']
+        ['ERA Leader', eraLeader],
+        ['K Leader', (() => {
+          if (!pRows.length) return '-';
+          const best = pRows[0].K;
+          const tied = pRows.filter(p => p.K === best);
+          return tied.map(p => p.name.split(' ')[0]).join(' & ') + ' (' + best + ')';
+        })()]
       ];
       pCards.forEach(([label, n]) => {
         const box = el('div', { class: 'stat' });
