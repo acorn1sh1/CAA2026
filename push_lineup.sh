@@ -26,6 +26,10 @@ push_file() {
 }
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
-push_file "data/games.json" "$DIR/data/games.json" "lineup: May 12 lineup with I/O balance"
-push_file "data/games.js"   "$DIR/data/games.js"   "lineup: May 12 games.js update"
+MSG="${1:-stats: post-game update}"
+push_file "data/games.json" "$DIR/data/games.json" "$MSG"
+push_file "data/games.js"   "$DIR/data/games.js"   "$MSG"
+push_file "data/stats.json"  "$DIR/data/stats.json"  "$MSG"
+push_file "data/stats.js"    "$DIR/data/stats.js"    "$MSG"
+push_file "standings.html"   "$DIR/standings.html"   "$MSG"
 echo "Done!"

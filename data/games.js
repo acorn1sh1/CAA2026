@@ -9,7 +9,7 @@ window.GAMES = {
       "teamRuns": 17,
       "oppRuns": 3,
       "result": "W",
-      "notes": "First game of the season — W 17-3 in 6 innings",
+      "notes": "First game of the season \u2014 W 17-3 in 6 innings",
       "lineup": {
         "battingOrder": [
           "Luca Lopez",
@@ -97,25 +97,12 @@ window.GAMES = {
             "LCF": "Albert Doerr",
             "RCF": "Luca Lopez",
             "RF": "Levi Schueler"
-          },
-          "7": {
-            "P": "Greyson Cerminn",
-            "C": "Nolan Schueler",
-            "1B": "Michael Schirmer",
-            "2B": "Charlie Wachtel",
-            "SS": "Parker White",
-            "3B": "Benton Herrmann",
-            "LF": "Albert Doerr",
-            "LCF": "Luca Lopez",
-            "RCF": "Forrest Doerr",
-            "RF": "Jackson Segura"
           }
         }
       },
       "innings": 6,
       "batting": [
         {
-          "num": "18",
           "name": "Luca Lopez",
           "AB": 3,
           "H": 0,
@@ -128,7 +115,6 @@ window.GAMES = {
           "RBI": 1
         },
         {
-          "num": "33",
           "name": "Jackson Segura",
           "AB": 4,
           "H": 3,
@@ -141,7 +127,6 @@ window.GAMES = {
           "RBI": 1
         },
         {
-          "num": "3",
           "name": "Jack Cornish",
           "AB": 4,
           "H": 2,
@@ -154,7 +139,6 @@ window.GAMES = {
           "RBI": 2
         },
         {
-          "num": "9",
           "name": "Levi Schueler",
           "AB": 3,
           "H": 2,
@@ -167,7 +151,6 @@ window.GAMES = {
           "RBI": 2
         },
         {
-          "num": "21",
           "name": "Albert Doerr",
           "AB": 4,
           "H": 0,
@@ -180,7 +163,6 @@ window.GAMES = {
           "RBI": 0
         },
         {
-          "num": "36",
           "name": "Charlie Wachtel",
           "AB": 4,
           "H": 1,
@@ -190,10 +172,9 @@ window.GAMES = {
           "BB": 0,
           "K": 2,
           "R": 1,
-          "RBI": 1
+          "RBI": 0
         },
         {
-          "num": "24",
           "name": "Forrest Doerr",
           "AB": 3,
           "H": 1,
@@ -206,7 +187,6 @@ window.GAMES = {
           "RBI": 1
         },
         {
-          "num": "30",
           "name": "Nolan Schueler",
           "AB": 2,
           "H": 2,
@@ -219,7 +199,6 @@ window.GAMES = {
           "RBI": 3
         },
         {
-          "num": "6",
           "name": "Greyson Cerminn",
           "AB": 3,
           "H": 2,
@@ -232,7 +211,6 @@ window.GAMES = {
           "RBI": 1
         },
         {
-          "num": "39",
           "name": "Parker White",
           "AB": 2,
           "H": 2,
@@ -242,10 +220,9 @@ window.GAMES = {
           "BB": 1,
           "K": 0,
           "R": 2,
-          "RBI": 5
+          "RBI": 3
         },
         {
-          "num": "15",
           "name": "Michael Schirmer",
           "AB": 3,
           "H": 1,
@@ -258,7 +235,6 @@ window.GAMES = {
           "RBI": 0
         },
         {
-          "num": "12",
           "name": "Benton Herrmann",
           "AB": 3,
           "H": 3,
@@ -268,31 +244,10 @@ window.GAMES = {
           "BB": 0,
           "K": 0,
           "R": 1,
-          "RBI": 0
+          "RBI": 3
         }
       ],
-      "pitching": [
-        {
-          "num": "15",
-          "name": "Michael Schirmer",
-          "IP": 1,
-          "H": 0,
-          "R": 0,
-          "BB": 1,
-          "K": 3,
-          "HBP": 0
-        },
-        {
-          "num": "12",
-          "name": "Benton Herrmann",
-          "IP": 1,
-          "H": 1,
-          "R": 0,
-          "BB": 1,
-          "K": 2,
-          "HBP": 0
-        }
-      ]
+      "pitching": []
     },
     {
       "id": "g-2026-05-14",
@@ -728,5 +683,4 @@ window.GAMES = {
       }
     }
   ]
-}
-;
+};

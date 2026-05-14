@@ -27,14 +27,8 @@
   <main>
     <h2>League Standings</h2>
 
-    <div class="card">
-      <p>Official standings are maintained on the District 19 league site and updated after each game night.</p>
-      <p>
-        <a href="https://dist19.com/" target="_blank" rel="noopener" style="font-size:1.1rem; font-weight:600;">
-          Open District 19 →
-        </a>
-      </p>
-      <p class="meta">Tip: bookmark that page on your phone for quick checks during the season.</p>
+    <div id="leagueStandings">
+      <p class="meta" id="standingsStatus">Loading standings from District 19…</p>
     </div>
 
     <h2>Our record</h2>
@@ -96,6 +90,92 @@
         mount.appendChild(box);
       });
     })();
+  </script>
+  <script>
+  (async () => {
+    const TARGET = 'https://dist19.com/baseball/atoms/';
+    const PROXY  = 'https://api.allorigins.win/get?url=' + encodeURIComponent(TARGET);
+    const mount  = document.getElementById('leagueStandings');
+    const status = document.getElementById('standingsStatus');
+
+    const fallback = () => {
+      mount.innerHTML = `
+        <div class="card">
+          <p>Couldn't load standings automatically.</p>
+          <p><a href="${TARGET}" target="_blank" rel="noopener" style="font-size:1.1rem;font-weight:600;">Open District 19 standings →</a></p>
+        </div>`;
+    };
+
+    try {
+      const res  = await fetch(PROXY);
+      const json = await res.json();
+      const html = json.contents;
+      if (!html) { fallback(); return; }
+
+      const doc    = new DOMParser().parseFromString(html, 'text/html');
+      // Find the biggest table — most likely the standings table
+      const tables = [...doc.querySelectorAll('table')];
+      if (!tables.length) { fallback(); return; }
+      const table  = tables.reduce((a, b) => a.rows.length >= b.rows.length ? a : b);
+
+      // Build clean styled table
+      const wrapper = document.createElement('div');
+      wrapper.style.overflowX = 'auto';
+
+      const t = document.createElement('table');
+      t.style.cssText = 'width:100%;border-collapse:collapse;font-size:.95rem;color:inherit;';
+
+      let dataRowIdx = 0;
+      [...table.rows].forEach((row, ri) => {
+        const isHeader = ri === 0;
+        const isUs = row.textContent.toLowerCase().includes('cornish');
+
+        // Collect non-logo cells first
+        const cells = [...row.cells].filter(cell =>
+          cell.textContent.trim() || !cell.querySelector('img')
+        ).map(cell => cell.textContent.trim());
+
+        // Skip rows with no usable content
+        if (cells.length === 0) return;
+
+        const tr = document.createElement('tr');
+        if (isUs) {
+          tr.style.cssText = 'background:#f0a500;color:#0a1628;font-weight:700;';
+        } else if (isHeader) {
+          tr.style.cssText = 'background:rgba(255,255,255,0.08);font-weight:600;color:rgba(255,255,255,0.7);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;';
+        } else {
+          tr.style.cssText = dataRowIdx % 2 === 0
+            ? 'background:rgba(255,255,255,0.04);'
+            : 'background:transparent;';
+        }
+
+        cells.forEach((text, ci) => {
+          const td = document.createElement(isHeader ? 'th' : 'td');
+          td.textContent = text;
+          td.style.cssText = 'padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;text-align:center;';
+          if (!isHeader && ci === 1) td.style.textAlign = 'left'; // Team name left-aligned
+          tr.appendChild(td);
+        });
+
+        t.appendChild(tr);
+        if (!isHeader) dataRowIdx++;
+      });
+
+      wrapper.appendChild(t);
+
+      const updated = document.createElement('p');
+      updated.className = 'meta';
+      updated.style.marginTop = '6px';
+      updated.innerHTML = `Live from <a href="${TARGET}" target="_blank" rel="noopener">dist19.com</a> · loaded ${new Date().toLocaleTimeString()}`;
+
+      mount.innerHTML = '';
+      mount.appendChild(wrapper);
+      mount.appendChild(updated);
+
+    } catch (e) {
+      fallback();
+    }
+  })();
   </script>
   <script src="js/nav.js"></script>
 </body>
