@@ -177,11 +177,8 @@
         const DEF_POSITIONS = ['P','C','1B','2B','SS','3B','LF','LCF','RCF','RF'];
         const innings = Object.keys(g.lineup.defense).sort((a,b) => Number(a) - Number(b));
 
-        // "First Last" → "F. Last"
-        const abbr = name => {
-          const parts = name.trim().split(' ');
-          return parts.length >= 2 ? parts[0][0] + '. ' + parts.slice(1).join(' ') : name;
-        };
+        // "First Last" → "First"
+        const abbr = name => name.trim().split(' ')[0];
 
         // Which players are on field each inning
         const fieldedPerInning = {};

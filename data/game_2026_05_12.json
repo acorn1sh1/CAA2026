@@ -14,13 +14,13 @@
     { "order": 3,  "num": "3",  "name": "Jack Cornish",     "AB": 4, "R": 2, "H": 2, "RBI": 2, "BB": 0, "K": 0, "singles": 1, "doubles": 1, "triples": 0, "HR": 0 },
     { "order": 4,  "num": "9",  "name": "Levi Schueler",    "AB": 3, "R": 0, "H": 2, "RBI": 2, "BB": 1, "K": 1, "singles": 2, "doubles": 0, "triples": 0, "HR": 0 },
     { "order": 5,  "num": "21", "name": "Albert Doerr",     "AB": 4, "R": 0, "H": 0, "RBI": 0, "BB": 0, "K": 1, "singles": 0, "doubles": 0, "triples": 0, "HR": 0 },
-    { "order": 6,  "num": "36", "name": "Charlie Wachtel",  "AB": 4, "R": 1, "H": 1, "RBI": 1, "BB": 0, "K": 2, "singles": 1, "doubles": 0, "triples": 0, "HR": 0 },
+    { "order": 6,  "num": "36", "name": "Charlie Wachtel",  "AB": 4, "R": 1, "H": 1, "RBI": 0, "BB": 0, "K": 2, "singles": 1, "doubles": 0, "triples": 0, "HR": 0 },
     { "order": 7,  "num": "24", "name": "Forrest Doerr",    "AB": 3, "R": 2, "H": 1, "RBI": 1, "BB": 1, "K": 0, "singles": 1, "doubles": 0, "triples": 0, "HR": 0 },
     { "order": 8,  "num": "30", "name": "Nolan Schueler",   "AB": 2, "R": 3, "H": 2, "RBI": 3, "BB": 1, "K": 0, "singles": 1, "doubles": 1, "triples": 0, "HR": 0 },
     { "order": 9,  "num": "6",  "name": "Greyson Cerminn",  "AB": 3, "R": 3, "H": 2, "RBI": 1, "BB": 1, "K": 0, "singles": 2, "doubles": 0, "triples": 0, "HR": 0 },
-    { "order": 10, "num": "39", "name": "Parker White",     "AB": 2, "R": 2, "H": 2, "RBI": 5, "BB": 1, "K": 0, "singles": 0, "doubles": 2, "triples": 0, "HR": 0 },
+    { "order": 10, "num": "39", "name": "Parker White",     "AB": 2, "R": 2, "H": 2, "RBI": 3, "BB": 1, "K": 0, "singles": 0, "doubles": 2, "triples": 0, "HR": 0 },
     { "order": 11, "num": "15", "name": "Michael Schirmer", "AB": 3, "R": 1, "H": 1, "RBI": 0, "BB": 0, "K": 2, "singles": 1, "doubles": 0, "triples": 0, "HR": 0 },
-    { "order": 12, "num": "12", "name": "Benton Herrmann",  "AB": 3, "R": 1, "H": 3, "RBI": 0, "BB": 0, "K": 0, "singles": 2, "doubles": 1, "triples": 0, "HR": 0 }
+    { "order": 12, "num": "12", "name": "Benton Herrmann",  "AB": 3, "R": 1, "H": 3, "RBI": 3, "BB": 0, "K": 0, "singles": 2, "doubles": 1, "triples": 0, "HR": 0 }
   ],
   "pitching": [
     { "inning": 1, "num": "15", "name": "Michael Schirmer", "IP": 1, "BF": 4, "H": 0, "R": 0, "ER": 0, "BB": 1, "K": 3, "KS": 2, "KL": 1 },
