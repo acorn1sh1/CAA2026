@@ -589,16 +589,16 @@ window.GAMES = {
       "notes": "",
       "lineup": {
         "battingOrder": [
-          "Greyson Cerminn",
+          "Michael Schirmer",
           "Jackson Segura",
           "Nolan Schueler",
           "Parker White",
           "Benton Herrmann",
           "Levi Schueler",
-          "Forrest Doerr",
+          "Greyson Cerminn",
           "Jack Cornish",
           "Charlie Wachtel",
-          "Michael Schirmer",
+          "Forrest Doerr",
           "Luca Lopez",
           "Albert Doerr"
         ],
