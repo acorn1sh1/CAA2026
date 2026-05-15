@@ -9,7 +9,7 @@ window.GAMES = {
       "teamRuns": 17,
       "oppRuns": 3,
       "result": "W",
-      "notes": "First game of the season — W 17-3 in 6 innings",
+      "notes": "First game of the season \u2014 W 17-3 in 6 innings",
       "lineup": {
         "battingOrder": [
           "Luca Lopez",
@@ -589,18 +589,18 @@ window.GAMES = {
       "notes": "",
       "lineup": {
         "battingOrder": [
-          "Parker White",
-          "Jack Cornish",
-          "Luca Lopez",
-          "Michael Schirmer",
-          "Forrest Doerr",
-          "Jackson Segura",
-          "Charlie Wachtel",
-          "Albert Doerr",
-          "Benton Herrmann",
           "Greyson Cerminn",
+          "Jackson Segura",
           "Nolan Schueler",
-          "Levi Schueler"
+          "Parker White",
+          "Benton Herrmann",
+          "Levi Schueler",
+          "Forrest Doerr",
+          "Jack Cornish",
+          "Charlie Wachtel",
+          "Michael Schirmer",
+          "Luca Lopez",
+          "Albert Doerr"
         ],
         "defense": {
           "1": {
@@ -899,4 +899,3 @@ window.GAMES = {
     }
   ]
 }
-
