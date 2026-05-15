@@ -7,6 +7,14 @@ window.STATS = {
       "result": "W",
       "teamRuns": 17,
       "oppRuns": 3
+    },
+    {
+      "id": "g-2026-05-14",
+      "date": "2026-05-14",
+      "opponent": "Search",
+      "result": "W",
+      "teamRuns": 12,
+      "oppRuns": 2
     }
   ],
   "season": {
@@ -14,65 +22,65 @@ window.STATS = {
       {
         "num": "",
         "name": "Jack Cornish",
-        "G": 1,
-        "AB": 4,
+        "G": 2,
+        "AB": 7,
         "H": 2,
         "BB": 0,
-        "K": 0,
+        "K": 1,
         "R": 2,
         "RBI": 2
       },
       {
         "num": "",
         "name": "Greyson Cerminn",
-        "G": 1,
-        "AB": 3,
-        "H": 2,
+        "G": 2,
+        "AB": 7,
+        "H": 5,
         "BB": 1,
-        "K": 0,
-        "R": 3,
-        "RBI": 1
-      },
-      {
-        "num": "",
-        "name": "Benton Herrmann",
-        "G": 1,
-        "AB": 3,
-        "H": 3,
-        "BB": 0,
-        "K": 0,
-        "R": 1,
+        "K": 1,
+        "R": 4,
         "RBI": 3
       },
       {
         "num": "",
-        "name": "Michael Schirmer",
-        "G": 1,
-        "AB": 3,
-        "H": 1,
+        "name": "Benton Herrmann",
+        "G": 2,
+        "AB": 7,
+        "H": 5,
         "BB": 0,
-        "K": 2,
-        "R": 1,
-        "RBI": 0
+        "K": 1,
+        "R": 2,
+        "RBI": 4
+      },
+      {
+        "num": "",
+        "name": "Michael Schirmer",
+        "G": 2,
+        "AB": 6,
+        "H": 2,
+        "BB": 1,
+        "K": 4,
+        "R": 2,
+        "RBI": 1
       },
       {
         "num": "",
         "name": "Luca Lopez",
-        "G": 1,
-        "AB": 3,
-        "H": 0,
+        "G": 2,
+        "AB": 7,
+        "H": 2,
         "BB": 1,
-        "K": 2,
-        "R": 0,
+        "K": 3,
+        "R": 1,
         "RBI": 1
       },
       {
         "num": "",
         "name": "Albert Doerr",
-        "G": 1,
-        "AB": 4,
+        "G": 2,
+        "AB": 7,
         "H": 0,
-        "BB": 0,
+        "BB": 1,
         "K": 1,
         "R": 0,
         "RBI": 0
@@ -80,13 +88,13 @@ window.STATS = {
       {
         "num": "",
         "name": "Forrest Doerr",
-        "G": 1,
-        "AB": 3,
-        "H": 1,
+        "G": 2,
+        "AB": 7,
+        "H": 3,
         "BB": 1,
-        "K": 0,
-        "R": 2,
-        "RBI": 1
+        "K": 1,
+        "R": 3,
+        "RBI": 2
       },
       {
         "num": "",
@@ -102,58 +110,59 @@ window.STATS = {
       {
         "num": "",
         "name": "Nolan Schueler",
-        "G": 1,
-        "AB": 2,
-        "H": 2,
-        "BB": 1,
+        "G": 2,
+        "AB": 5,
+        "H": 5,
+        "BB": 2,
         "K": 0,
         "R": 3,
-        "RBI": 3
+        "RBI": 6
       },
       {
         "num": "",
         "name": "Levi Schueler",
-        "G": 1,
-        "AB": 3,
-        "H": 2,
+        "G": 2,
+        "AB": 7,
+        "H": 4,
         "BB": 1,
-        "K": 1,
-        "R": 0,
-        "RBI": 2
+        "K": 2,
+        "R": 1,
+        "RBI": 3
       },
       {
         "num": "",
         "name": "Jackson Segura",
-        "G": 1,
-        "AB": 4,
-        "H": 3,
+        "G": 2,
+        "AB": 7,
+        "H": 6,
         "BB": 0,
         "K": 1,
-        "R": 2,
-        "RBI": 1
+        "R": 5,
+        "RBI": 2
       },
       {
         "num": "",
         "name": "Charlie Wachtel",
-        "G": 1,
-        "AB": 4,
-        "H": 1,
+        "G": 2,
+        "AB": 8,
+        "H": 3,
         "BB": 0,
-        "K": 2,
-        "R": 1,
+        "K": 4,
+        "R": 2,
         "RBI": 0
       },
       {
         "num": "",
         "name": "Parker White",
-        "G": 1,
-        "AB": 2,
-        "H": 2,
+        "G": 2,
+        "AB": 5,
+        "H": 5,
         "BB": 1,
         "K": 0,
-        "R": 2,
-        "RBI": 3
+        "R": 4,
+        "RBI": 4
       }
     ]
   }
-};
+}
+
