@@ -699,17 +699,106 @@
       "teamRuns": 0,
       "oppRuns": 0,
       "result": "",
-      "notes": "",
+      "notes": "Albert Doerr out · Jude Durako out (broken arm)",
       "lineup": {
-        "battingOrder": [],
+        "battingOrder": [
+          "Charlie Wachtel",
+          "Forrest Doerr",
+          "Michael Schirmer",
+          "Jack Cornish",
+          "Parker White",
+          "Jackson Segura",
+          "Luca Lopez",
+          "Greyson Cerminn",
+          "Benton Herrmann",
+          "Levi Schueler",
+          "Nolan Schueler"
+        ],
         "defense": {
-          "1": {},
-          "2": {},
-          "3": {},
-          "4": {},
-          "5": {},
-          "6": {},
-          "7": {}
+          "1": {
+            "P": "Levi Schueler",
+            "C": "Benton Herrmann",
+            "1B": "Jack Cornish",
+            "2B": "Jackson Segura",
+            "SS": "Charlie Wachtel",
+            "3B": "Greyson Cerminn",
+            "LF": "Parker White",
+            "LCF": "Luca Lopez",
+            "RCF": "Forrest Doerr",
+            "RF": "Michael Schirmer"
+          },
+          "2": {
+            "P": "Nolan Schueler",
+            "C": "Charlie Wachtel",
+            "1B": "Benton Herrmann",
+            "2B": "Greyson Cerminn",
+            "SS": "Jack Cornish",
+            "3B": "Parker White",
+            "LF": "Jackson Segura",
+            "LCF": "Luca Lopez",
+            "RCF": "Forrest Doerr",
+            "RF": "Michael Schirmer"
+          },
+          "3": {
+            "P": "Jackson Segura",
+            "C": "Luca Lopez",
+            "1B": "Nolan Schueler",
+            "2B": "Charlie Wachtel",
+            "SS": "Forrest Doerr",
+            "3B": "Jack Cornish",
+            "LF": "Michael Schirmer",
+            "LCF": "Levi Schueler",
+            "RCF": "Benton Herrmann",
+            "RF": "Greyson Cerminn"
+          },
+          "4": {
+            "P": "Luca Lopez",
+            "C": "Nolan Schueler",
+            "1B": "Greyson Cerminn",
+            "2B": "Jackson Segura",
+            "SS": "Levi Schueler",
+            "3B": "Michael Schirmer",
+            "LF": "Forrest Doerr",
+            "LCF": "Jack Cornish",
+            "RCF": "Parker White",
+            "RF": "Charlie Wachtel"
+          },
+          "5": {
+            "P": "Michael Schirmer",
+            "C": "Jackson Segura",
+            "1B": "Benton Herrmann",
+            "2B": "Greyson Cerminn",
+            "SS": "Parker White",
+            "3B": "Nolan Schueler",
+            "LF": "Forrest Doerr",
+            "LCF": "Charlie Wachtel",
+            "RCF": "Levi Schueler",
+            "RF": "Jack Cornish"
+          },
+          "6": {
+            "P": "Benton Herrmann",
+            "C": "Luca Lopez",
+            "1B": "Greyson Cerminn",
+            "2B": "Nolan Schueler",
+            "SS": "Levi Schueler",
+            "3B": "Charlie Wachtel",
+            "LF": "Jackson Segura",
+            "LCF": "Parker White",
+            "RCF": "Michael Schirmer",
+            "RF": "Forrest Doerr"
+          },
+          "7": {
+            "P": "Parker White",
+            "C": "Michael Schirmer",
+            "1B": "Jackson Segura",
+            "2B": "Jack Cornish",
+            "SS": "Greyson Cerminn",
+            "3B": "Forrest Doerr",
+            "LF": "Nolan Schueler",
+            "LCF": "Luca Lopez",
+            "RCF": "Levi Schueler",
+            "RF": "Benton Herrmann"
+          }
         }
       }
     },
