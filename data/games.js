@@ -1745,10 +1745,28 @@ window.GAMES =
       "opponent": "Smithton 2",
       "home": false,
       "location": "Smithton Community Park Field 3",
-      "teamRuns": 0,
-      "oppRuns": 0,
-      "result": "",
-      "notes": "G7 pitching: Nolan I1, Jackson I2",
+      "teamRuns": 21,
+      "oppRuns": 2,
+      "result": "W",
+      "notes": "G7 W 21-2 | pitching: Nolan I1, Jackson I2",
+      "pitching": [
+        { "name": "Nolan Schueler",  "IP": 1, "H": 0, "R": 0, "BB": 2, "K": 3, "HBP": 0 },
+        { "name": "Jackson Segura",  "IP": 1, "H": 2, "R": 0, "BB": 0, "K": 3, "HBP": 0 }
+      ],
+      "batting": [
+        { "name": "Greyson Cerminn",  "AB": 3, "H": 3, "2B": 1, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 1, "RBI": 2 },
+        { "name": "Albert Doerr",     "AB": 2, "H": 2, "2B": 0, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 1, "RBI": 2 },
+        { "name": "Jack Cornish",     "AB": 3, "H": 1, "2B": 0, "3B": 0, "HR": 0, "BB": 0, "K": 1, "R": 1, "RBI": 1 },
+        { "name": "Charlie Wachtel",  "AB": 3, "H": 1, "2B": 0, "3B": 0, "HR": 0, "BB": 0, "K": 1, "R": 1, "RBI": 1 },
+        { "name": "Nolan Schueler",   "AB": 2, "H": 2, "2B": 1, "3B": 0, "HR": 0, "BB": 0, "K": 0, "R": 2, "RBI": 1 },
+        { "name": "Jackson Segura",   "AB": 3, "H": 2, "2B": 0, "3B": 0, "HR": 0, "BB": 0, "K": 0, "R": 2, "RBI": 1 },
+        { "name": "Parker White",     "AB": 2, "H": 1, "2B": 0, "3B": 0, "HR": 1, "BB": 1, "K": 1, "R": 2, "RBI": 4 },
+        { "name": "Jude Durako",      "AB": 2, "H": 2, "2B": 0, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 3, "RBI": 1 },
+        { "name": "Luca Lopez",       "AB": 2, "H": 2, "2B": 0, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 2, "RBI": 1 },
+        { "name": "Levi Schueler",    "AB": 2, "H": 2, "2B": 0, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 2, "RBI": 2 },
+        { "name": "Benton Herrmann",  "AB": 3, "H": 1, "2B": 0, "3B": 0, "HR": 0, "BB": 0, "K": 1, "R": 1, "RBI": 2 },
+        { "name": "Michael Schirmer", "AB": 2, "H": 2, "2B": 2, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 3, "RBI": 3 }
+      ],
       "lineup": {
         "battingOrder": [
           "Greyson Cerminn",
@@ -1865,7 +1883,7 @@ window.GAMES =
       "lineup": {
         "battingOrder": [
           "Charlie Wachtel",
-          "Dominic",
+          "Dominic Lopez",
           "Jackson Segura",
           "Benton Herrmann",
           "Parker White",
@@ -1873,14 +1891,14 @@ window.GAMES =
           "Jude Durako",
           "Greyson Cerminn",
           "Luca Lopez",
-          "Jack Cornish",
-          "Albert Doerr"
+          "Albert Doerr",
+          "Jack Cornish"
         ],
         "defense": {
           "1": {
             "P": "Michael Schirmer",
             "C": "Jack Cornish",
-            "SS": "Dominic",
+            "SS": "Dominic Lopez",
             "3B": "Jackson Segura",
             "2B": "Greyson Cerminn",
             "1B": "Benton Herrmann",
@@ -1891,14 +1909,14 @@ window.GAMES =
           },
           "2": {
             "P": "Parker White",
-            "C": "Greyson Cerminn",
-            "SS": "Dominic",
+            "C": "Jack Cornish",
+            "SS": "Dominic Lopez",
             "3B": "Jackson Segura",
             "2B": "Michael Schirmer",
             "1B": "Benton Herrmann",
-            "LF": "Jude Durako",
+            "LF": "Greyson Cerminn",
             "LCF": "Luca Lopez",
-            "RCF": "Jack Cornish",
+            "RCF": "Jude Durako",
             "RF": "Albert Doerr"
           },
           "3": {
@@ -1908,7 +1926,7 @@ window.GAMES =
             "3B": "Jackson Segura",
             "2B": "Michael Schirmer",
             "1B": "Parker White",
-            "LF": "Dominic",
+            "LF": "Dominic Lopez",
             "LCF": "Luca Lopez",
             "RCF": "Jude Durako",
             "RF": "Albert Doerr"
@@ -1916,7 +1934,7 @@ window.GAMES =
           "4": {
             "P": "Michael Schirmer",
             "C": "Jack Cornish",
-            "SS": "Dominic",
+            "SS": "Dominic Lopez",
             "3B": "Jackson Segura",
             "2B": "Greyson Cerminn",
             "1B": "Parker White",
@@ -1932,7 +1950,7 @@ window.GAMES =
             "3B": "Jackson Segura",
             "2B": "Michael Schirmer",
             "1B": "Parker White",
-            "LF": "Dominic",
+            "LF": "Dominic Lopez",
             "LCF": "Luca Lopez",
             "RCF": "Charlie Wachtel",
             "RF": "Jude Durako"
@@ -1944,7 +1962,7 @@ window.GAMES =
             "3B": "Jackson Segura",
             "2B": "Greyson Cerminn",
             "1B": "Parker White",
-            "LF": "Dominic",
+            "LF": "Dominic Lopez",
             "LCF": "Jack Cornish",
             "RCF": "Luca Lopez",
             "RF": "Albert Doerr"
@@ -1952,7 +1970,7 @@ window.GAMES =
           "7": {
             "P": "Jude Durako",
             "C": "Jack Cornish",
-            "SS": "Dominic",
+            "SS": "Dominic Lopez",
             "3B": "Jackson Segura",
             "2B": "Parker White",
             "1B": "Benton Herrmann",
