@@ -1750,22 +1750,170 @@ window.GAMES =
       "result": "W",
       "notes": "G7 W 21-2 | pitching: Nolan I1, Jackson I2",
       "pitching": [
-        { "name": "Nolan Schueler",  "IP": 1, "H": 0, "R": 0, "BB": 2, "K": 3, "HBP": 0 },
-        { "name": "Jackson Segura",  "IP": 1, "H": 2, "R": 0, "BB": 0, "K": 3, "HBP": 0 }
+        {
+          "name": "Nolan Schueler",
+          "IP": 1,
+          "H": 0,
+          "R": 0,
+          "BB": 2,
+          "K": 3,
+          "HBP": 0
+        },
+        {
+          "name": "Jackson Segura",
+          "IP": 1,
+          "H": 2,
+          "R": 0,
+          "BB": 0,
+          "K": 3,
+          "HBP": 0
+        }
       ],
       "batting": [
-        { "name": "Greyson Cerminn",  "AB": 3, "H": 3, "2B": 1, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 1, "RBI": 2 },
-        { "name": "Albert Doerr",     "AB": 2, "H": 2, "2B": 0, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 1, "RBI": 2 },
-        { "name": "Jack Cornish",     "AB": 3, "H": 1, "2B": 0, "3B": 0, "HR": 0, "BB": 0, "K": 1, "R": 1, "RBI": 1 },
-        { "name": "Charlie Wachtel",  "AB": 3, "H": 1, "2B": 0, "3B": 0, "HR": 0, "BB": 0, "K": 1, "R": 1, "RBI": 1 },
-        { "name": "Nolan Schueler",   "AB": 2, "H": 2, "2B": 1, "3B": 0, "HR": 0, "BB": 0, "K": 0, "R": 2, "RBI": 1 },
-        { "name": "Jackson Segura",   "AB": 3, "H": 2, "2B": 0, "3B": 0, "HR": 0, "BB": 0, "K": 0, "R": 2, "RBI": 1 },
-        { "name": "Parker White",     "AB": 2, "H": 1, "2B": 0, "3B": 0, "HR": 1, "BB": 1, "K": 1, "R": 2, "RBI": 4 },
-        { "name": "Jude Durako",      "AB": 2, "H": 2, "2B": 0, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 3, "RBI": 1 },
-        { "name": "Luca Lopez",       "AB": 2, "H": 2, "2B": 0, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 2, "RBI": 1 },
-        { "name": "Levi Schueler",    "AB": 2, "H": 2, "2B": 0, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 2, "RBI": 2 },
-        { "name": "Benton Herrmann",  "AB": 3, "H": 1, "2B": 0, "3B": 0, "HR": 0, "BB": 0, "K": 1, "R": 1, "RBI": 2 },
-        { "name": "Michael Schirmer", "AB": 2, "H": 2, "2B": 2, "3B": 0, "HR": 0, "BB": 1, "K": 0, "R": 3, "RBI": 3 }
+        {
+          "name": "Greyson Cerminn",
+          "AB": 3,
+          "H": 3,
+          "2B": 1,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 1,
+          "RBI": 2
+        },
+        {
+          "name": "Albert Doerr",
+          "AB": 2,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 1,
+          "RBI": 2
+        },
+        {
+          "name": "Jack Cornish",
+          "AB": 3,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 1,
+          "R": 1,
+          "RBI": 1
+        },
+        {
+          "name": "Charlie Wachtel",
+          "AB": 3,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 1,
+          "R": 1,
+          "RBI": 1
+        },
+        {
+          "name": "Nolan Schueler",
+          "AB": 2,
+          "H": 2,
+          "2B": 1,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 2,
+          "RBI": 1
+        },
+        {
+          "name": "Jackson Segura",
+          "AB": 3,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 2,
+          "RBI": 1
+        },
+        {
+          "name": "Parker White",
+          "AB": 2,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 1,
+          "BB": 1,
+          "K": 1,
+          "R": 2,
+          "RBI": 4
+        },
+        {
+          "name": "Jude Durako",
+          "AB": 2,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 3,
+          "RBI": 1
+        },
+        {
+          "name": "Luca Lopez",
+          "AB": 2,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 2,
+          "RBI": 1
+        },
+        {
+          "name": "Levi Schueler",
+          "AB": 2,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 2,
+          "RBI": 2
+        },
+        {
+          "name": "Benton Herrmann",
+          "AB": 3,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 1,
+          "R": 1,
+          "RBI": 2
+        },
+        {
+          "name": "Michael Schirmer",
+          "AB": 2,
+          "H": 2,
+          "2B": 2,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 3,
+          "RBI": 3
+        }
       ],
       "lineup": {
         "battingOrder": [
@@ -1876,10 +2024,10 @@ window.GAMES =
       "opponent": "Dupo",
       "home": false,
       "location": "Dupo Quarterback Club Field 1",
-      "teamRuns": 0,
-      "oppRuns": 0,
-      "result": "",
-      "notes": "G8 pitching: Parker I1, Michael I2 | Absent: Forrest, Nolan, Levi | Guest: Dominic (wears Levi's #)",
+      "teamRuns": 28,
+      "oppRuns": 10,
+      "result": "W",
+      "notes": "W 28-10 | pitching: Parker I1, Michael I2 | Absent: Forrest, Nolan, Levi | Guests: Dominic (Levi's #), Nash (Nolan's #)",
       "lineup": {
         "battingOrder": [
           "Charlie Wachtel",
@@ -1888,11 +2036,12 @@ window.GAMES =
           "Benton Herrmann",
           "Parker White",
           "Michael Schirmer",
+          "Nash Pepenberg",
           "Jude Durako",
           "Greyson Cerminn",
           "Luca Lopez",
-          "Albert Doerr",
-          "Jack Cornish"
+          "Jack Cornish",
+          "Albert Doerr"
         ],
         "defense": {
           "1": {
@@ -1912,32 +2061,32 @@ window.GAMES =
             "C": "Jack Cornish",
             "SS": "Dominic Lopez",
             "3B": "Jackson Segura",
-            "2B": "Michael Schirmer",
-            "1B": "Benton Herrmann",
+            "2B": "Benton Herrmann",
+            "1B": "Nash Pepenberg",
             "LF": "Greyson Cerminn",
             "LCF": "Luca Lopez",
             "RCF": "Jude Durako",
-            "RF": "Albert Doerr"
+            "RF": "Charlie Wachtel"
           },
           "3": {
             "P": "Greyson Cerminn",
             "C": "Charlie Wachtel",
-            "SS": "Benton Herrmann",
+            "SS": "Nash Pepenberg",
             "3B": "Jackson Segura",
-            "2B": "Michael Schirmer",
-            "1B": "Parker White",
+            "2B": "Parker White",
+            "1B": "Michael Schirmer",
             "LF": "Dominic Lopez",
             "LCF": "Luca Lopez",
             "RCF": "Jude Durako",
             "RF": "Albert Doerr"
           },
           "4": {
-            "P": "Michael Schirmer",
+            "P": "Parker White",
             "C": "Jack Cornish",
-            "SS": "Dominic Lopez",
-            "3B": "Jackson Segura",
+            "SS": "Michael Schirmer",
+            "3B": "Dominic Lopez",
             "2B": "Greyson Cerminn",
-            "1B": "Parker White",
+            "1B": "Nash Pepenberg",
             "LF": "Benton Herrmann",
             "LCF": "Jude Durako",
             "RCF": "Charlie Wachtel",
@@ -1950,10 +2099,10 @@ window.GAMES =
             "3B": "Jackson Segura",
             "2B": "Michael Schirmer",
             "1B": "Parker White",
-            "LF": "Dominic Lopez",
+            "LF": "Nash Pepenberg",
             "LCF": "Luca Lopez",
-            "RCF": "Charlie Wachtel",
-            "RF": "Jude Durako"
+            "RCF": "Dominic Lopez",
+            "RF": "Albert Doerr"
           },
           "6": {
             "P": "Michael Schirmer",
@@ -1961,16 +2110,16 @@ window.GAMES =
             "SS": "Benton Herrmann",
             "3B": "Jackson Segura",
             "2B": "Greyson Cerminn",
-            "1B": "Parker White",
+            "1B": "Nash Pepenberg",
             "LF": "Dominic Lopez",
-            "LCF": "Jack Cornish",
+            "LCF": "Parker White",
             "RCF": "Luca Lopez",
-            "RF": "Albert Doerr"
+            "RF": "Jude Durako"
           },
           "7": {
             "P": "Jude Durako",
             "C": "Jack Cornish",
-            "SS": "Dominic Lopez",
+            "SS": "Nash Pepenberg",
             "3B": "Jackson Segura",
             "2B": "Parker White",
             "1B": "Benton Herrmann",
@@ -1980,7 +2129,173 @@ window.GAMES =
             "RF": "Albert Doerr"
           }
         }
-      }
+      },
+      "batting": [
+        {
+          "name": "Charlie Wachtel",
+          "AB": 3,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 2,
+          "K": 2,
+          "R": 1,
+          "RBI": 1
+        },
+        {
+          "name": "Greyson Cerminn",
+          "AB": 4,
+          "H": 4,
+          "2B": 1,
+          "3B": 1,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 3,
+          "RBI": 5
+        },
+        {
+          "name": "Jackson Segura",
+          "AB": 5,
+          "H": 3,
+          "2B": 2,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 2,
+          "R": 2,
+          "RBI": 1
+        },
+        {
+          "name": "Benton Herrmann",
+          "AB": 4,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 2,
+          "RBI": 2
+        },
+        {
+          "name": "Parker White",
+          "AB": 2,
+          "H": 2,
+          "2B": 1,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 3,
+          "RBI": 1
+        },
+        {
+          "name": "Luca Lopez",
+          "AB": 3,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 1,
+          "R": 3,
+          "RBI": 2
+        },
+        {
+          "name": "Michael Schirmer",
+          "AB": 3,
+          "H": 3,
+          "2B": 2,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 3,
+          "RBI": 3
+        },
+        {
+          "name": "Jude Durako",
+          "AB": 4,
+          "H": 4,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 3,
+          "RBI": 3
+        },
+        {
+          "name": "Jack Cornish",
+          "AB": 3,
+          "H": 3,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 3,
+          "RBI": 2
+        },
+        {
+          "name": "Albert Doerr",
+          "AB": 3,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 1,
+          "RBI": 2
+        },
+        {
+          "name": "Dominic",
+          "AB": 5,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 2,
+          "R": 1,
+          "RBI": 2
+        },
+        {
+          "name": "Nash",
+          "AB": 3,
+          "H": 3,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 3,
+          "RBI": 2
+        }
+      ],
+      "pitching": [
+        {
+          "name": "Parker White",
+          "IP": 1,
+          "H": 0,
+          "R": 4,
+          "BB": 5,
+          "K": 0,
+          "HBP": 0
+        },
+        {
+          "name": "Michael Schirmer",
+          "IP": 1,
+          "H": 0,
+          "R": 5,
+          "BB": 5,
+          "K": 0,
+          "HBP": 0
+        }
+      ]
     },
     {
       "id": "g-2026-06-09",
@@ -1991,17 +2306,106 @@ window.GAMES =
       "teamRuns": 0,
       "oppRuns": 0,
       "result": "",
-      "notes": "",
+      "notes": "Pitching: Benton I1, Michael I2, Greyson I3, Charlie I4, Luca I5, Albert I6, Jude I7 | Absent: Nolan, Levi, Jackson, Forrest | Guests: Dominic (#9), Nash (#30)",
       "lineup": {
-        "battingOrder": [],
+        "battingOrder": [
+          "Greyson Cerminn",
+          "Jude Durako",
+          "Michael Schirmer",
+          "Parker White",
+          "Nash Pepenberg",
+          "Benton Herrmann",
+          "Luca Lopez",
+          "Jack Cornish",
+          "Charlie Wachtel",
+          "Albert Doerr",
+          "Dominic Lopez"
+        ],
         "defense": {
-          "1": {},
-          "2": {},
-          "3": {},
-          "4": {},
-          "5": {},
-          "6": {},
-          "7": {}
+          "1": {
+            "P": "Benton Herrmann",
+            "C": "Parker White",
+            "1B": "Charlie Wachtel",
+            "2B": "Jude Durako",
+            "SS": "Greyson Cerminn",
+            "3B": "Albert Doerr",
+            "LF": "Nash Pepenberg",
+            "LCF": "Luca Lopez",
+            "RCF": "Jack Cornish",
+            "RF": "Dominic Lopez"
+          },
+          "2": {
+            "P": "Michael Schirmer",
+            "C": "Benton Herrmann",
+            "1B": "Nash Pepenberg",
+            "2B": "Albert Doerr",
+            "SS": "Greyson Cerminn",
+            "3B": "Jude Durako",
+            "LF": "Charlie Wachtel",
+            "LCF": "Dominic Lopez",
+            "RCF": "Jack Cornish",
+            "RF": "Luca Lopez"
+          },
+          "3": {
+            "P": "Greyson Cerminn",
+            "C": "Jack Cornish",
+            "1B": "Charlie Wachtel",
+            "2B": "Dominic Lopez",
+            "SS": "Parker White",
+            "3B": "Albert Doerr",
+            "LF": "Michael Schirmer",
+            "LCF": "Luca Lopez",
+            "RCF": "Nash Pepenberg",
+            "RF": "Jude Durako"
+          },
+          "4": {
+            "P": "Charlie Wachtel",
+            "C": "Jack Cornish",
+            "1B": "Benton Herrmann",
+            "2B": "Albert Doerr",
+            "SS": "Jude Durako",
+            "3B": "Parker White",
+            "LF": "Dominic Lopez",
+            "LCF": "Michael Schirmer",
+            "RCF": "Greyson Cerminn",
+            "RF": "Luca Lopez"
+          },
+          "5": {
+            "P": "Luca Lopez",
+            "C": "Parker White",
+            "1B": "Albert Doerr",
+            "2B": "Greyson Cerminn",
+            "SS": "Charlie Wachtel",
+            "3B": "Jude Durako",
+            "LF": "Benton Herrmann",
+            "LCF": "Michael Schirmer",
+            "RCF": "Nash Pepenberg",
+            "RF": "Jack Cornish"
+          },
+          "6": {
+            "P": "Albert Doerr",
+            "C": "Benton Herrmann",
+            "1B": "Nash Pepenberg",
+            "2B": "Luca Lopez",
+            "SS": "Dominic Lopez",
+            "3B": "Parker White",
+            "LF": "Jude Durako",
+            "LCF": "Michael Schirmer",
+            "RCF": "Jack Cornish",
+            "RF": "Charlie Wachtel"
+          },
+          "7": {
+            "P": "Jude Durako",
+            "C": "Parker White",
+            "1B": "Benton Herrmann",
+            "2B": "Michael Schirmer",
+            "SS": "Charlie Wachtel",
+            "3B": "Nash Pepenberg",
+            "LF": "Albert Doerr",
+            "LCF": "Dominic Lopez",
+            "RCF": "Jack Cornish",
+            "RF": "Greyson Cerminn"
+          }
         }
       }
     },

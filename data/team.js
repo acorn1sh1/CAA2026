@@ -15,6 +15,7 @@ window.TEAM = {
   },
   "roster": [
     { "num": "9",  "name": "Dominic Lopez",      "pos": [], "bats": "R", "throws": "R", "guest": true },
+    { "num": "30", "name": "Nash Pepenberg",     "pos": [], "bats": "R", "throws": "R", "guest": true },
     { "num": "6",  "name": "Greyson Cerminn",  "pos": [], "bats": "R", "throws": "R" },
     { "num": "3",  "name": "Jack Cornish",      "pos": [], "bats": "R", "throws": "L" },
     { "num": "21", "name": "Albert Doerr",      "pos": [], "bats": "R", "throws": "R" },
