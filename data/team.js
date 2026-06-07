@@ -14,8 +14,6 @@ window.TEAM = {
     }
   },
   "roster": [
-    { "num": "9",  "name": "Dominic Lopez",      "pos": [], "bats": "R", "throws": "R", "guest": true },
-    { "num": "30", "name": "Nash Pepenberg",     "pos": [], "bats": "R", "throws": "R", "guest": true },
     { "num": "6",  "name": "Greyson Cerminn",  "pos": [], "bats": "R", "throws": "R" },
     { "num": "3",  "name": "Jack Cornish",      "pos": [], "bats": "R", "throws": "L" },
     { "num": "21", "name": "Albert Doerr",      "pos": [], "bats": "R", "throws": "R" },
@@ -28,7 +26,8 @@ window.TEAM = {
     { "num": "30", "name": "Nolan Schueler",    "pos": [], "bats": "R", "throws": "R" },
     { "num": "33", "name": "Jackson Segura",    "pos": [], "bats": "R", "throws": "R" },
     { "num": "36", "name": "Charlie Wachtel",   "pos": [], "bats": "R", "throws": "R" },
-    { "num": "39", "name": "Parker White",      "pos": [], "bats": "R", "throws": "R" }
+    { "num": "39", "name": "Parker White",      "pos": [], "bats": "R", "throws": "R" },
+    { "num": "9",  "name": "Dominic",           "pos": [], "bats": "R", "throws": "R", "guest": true },
+    { "num": "30", "name": "Nash",              "pos": [], "bats": "R", "throws": "R", "guest": true }
   ]
-}
-;
+};

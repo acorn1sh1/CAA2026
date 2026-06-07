@@ -180,6 +180,20 @@
       "duration": 90,
       "location": "American Legion Field 9, E. Locust St, Columbia IL 62236",
       "notes": ""
+    },
+    {
+      "type": "practice",
+      "date": "2026-06-23T18:00",
+      "duration": 90,
+      "location": "American Legion Field 4, E. Locust St, Columbia IL 62236",
+      "notes": ""
+    },
+    {
+      "type": "practice",
+      "date": "2026-06-30T18:00",
+      "duration": 90,
+      "location": "American Legion Field 4, E. Locust St, Columbia IL 62236",
+      "notes": ""
     }
   ]
 }

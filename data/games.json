@@ -2013,17 +2013,105 @@
       "teamRuns": 0,
       "oppRuns": 0,
       "result": "",
-      "notes": "",
+      "notes": "Absent: Charlie, Forrest, Nolan, Levi, Jackson | Guests: Dominic (#9), Nash (#30) | Pitching: Michael I1, Parker I2 (kid pitch); Greyson I3, Albert I4, Jude I5, Luca I6, Jack I7 (coach pitch)",
       "lineup": {
-        "battingOrder": [],
+        "battingOrder": [
+          "Albert Doerr",
+          "Jack Cornish",
+          "Benton Herrmann",
+          "Greyson Cerminn",
+          "Jude Durako",
+          "Parker White",
+          "Luca Lopez",
+          "Nash",
+          "Michael Schirmer",
+          "Dominic"
+        ],
         "defense": {
-          "1": {},
-          "2": {},
-          "3": {},
-          "4": {},
-          "5": {},
-          "6": {},
-          "7": {}
+          "1": {
+            "P": "Michael Schirmer",
+            "C": "Benton Herrmann",
+            "1B": "Luca Lopez",
+            "2B": "Greyson Cerminn",
+            "SS": "Jack Cornish",
+            "3B": "Jude Durako",
+            "LF": "Albert Doerr",
+            "LCF": "Parker White",
+            "RCF": "Nash",
+            "RF": "Dominic"
+          },
+          "2": {
+            "P": "Parker White",
+            "C": "Benton Herrmann",
+            "1B": "Albert Doerr",
+            "2B": "Nash",
+            "SS": "Dominic",
+            "3B": "Greyson Cerminn",
+            "LF": "Michael Schirmer",
+            "LCF": "Jude Durako",
+            "RCF": "Luca Lopez",
+            "RF": "Jack Cornish"
+          },
+          "3": {
+            "P": "Greyson Cerminn",
+            "C": "Jack Cornish",
+            "1B": "Michael Schirmer",
+            "2B": "Albert Doerr",
+            "SS": "Parker White",
+            "3B": "Jude Durako",
+            "LF": "Dominic",
+            "LCF": "Nash",
+            "RCF": "Benton Herrmann",
+            "RF": "Luca Lopez"
+          },
+          "4": {
+            "P": "Albert Doerr",
+            "C": "Jack Cornish",
+            "1B": "Nash",
+            "2B": "Benton Herrmann",
+            "SS": "Dominic",
+            "3B": "Jude Durako",
+            "LF": "Greyson Cerminn",
+            "LCF": "Parker White",
+            "RCF": "Michael Schirmer",
+            "RF": "Luca Lopez"
+          },
+          "5": {
+            "P": "Jude Durako",
+            "C": "Greyson Cerminn",
+            "1B": "Parker White",
+            "2B": "Luca Lopez",
+            "SS": "Nash",
+            "3B": "Jack Cornish",
+            "LF": "Albert Doerr",
+            "LCF": "Dominic",
+            "RCF": "Benton Herrmann",
+            "RF": "Michael Schirmer"
+          },
+          "6": {
+            "P": "Luca Lopez",
+            "C": "Michael Schirmer",
+            "1B": "Nash",
+            "2B": "Dominic",
+            "SS": "Parker White",
+            "3B": "Jude Durako",
+            "LF": "Benton Herrmann",
+            "LCF": "Jack Cornish",
+            "RCF": "Albert Doerr",
+            "RF": "Greyson Cerminn"
+          },
+          "7": {
+            "P": "Jack Cornish",
+            "C": "Benton Herrmann",
+            "1B": "Michael Schirmer",
+            "2B": "Nash",
+            "SS": "Albert Doerr",
+            "3B": "Dominic",
+            "LF": "Greyson Cerminn",
+            "LCF": "Parker White",
+            "RCF": "Jude Durako",
+            "RF": "Luca Lopez"
+          }
         }
       }
     },
