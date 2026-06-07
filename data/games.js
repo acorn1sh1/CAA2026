@@ -2008,17 +2008,106 @@ window.GAMES = {
       "teamRuns": 0,
       "oppRuns": 0,
       "result": "",
-      "notes": "",
+      "notes": "Absent: Forrest, Nolan, Levi, Jackson | Guests: Dominic Lopez (#9), Nash Papenberg (#30) | Pitching: Benton I1+I2 (kid pitch); Greyson I3, Jack I4, Luca I5, Michael I6, Parker I7 (coach)",
       "lineup": {
-        "battingOrder": [],
+        "battingOrder": [
+          "Greyson Cerminn",
+          "Albert Doerr",
+          "Michael Schirmer",
+          "Jude Durako",
+          "Parker White",
+          "Luca Lopez",
+          "Jack Cornish",
+          "Charlie Wachtel",
+          "Nash Papenberg",
+          "Benton Herrmann",
+          "Dominic Lopez"
+        ],
         "defense": {
-          "1": {},
-          "2": {},
-          "3": {},
-          "4": {},
-          "5": {},
-          "6": {},
-          "7": {}
+          "1": {
+            "P": "Benton Herrmann",
+            "C": "Luca Lopez",
+            "1B": "Parker White",
+            "2B": "Michael Schirmer",
+            "SS": "Nash Papenberg",
+            "3B": "Albert Doerr",
+            "LF": "Jude Durako",
+            "LCF": "Charlie Wachtel",
+            "RCF": "Greyson Cerminn",
+            "RF": "Jack Cornish"
+          },
+          "2": {
+            "P": "Benton Herrmann",
+            "C": "Albert Doerr",
+            "1B": "Jude Durako",
+            "2B": "Greyson Cerminn",
+            "SS": "Dominic Lopez",
+            "3B": "Charlie Wachtel",
+            "LF": "Parker White",
+            "LCF": "Michael Schirmer",
+            "RCF": "Luca Lopez",
+            "RF": "Jack Cornish"
+          },
+          "3": {
+            "P": "Greyson Cerminn",
+            "C": "Jack Cornish",
+            "1B": "Parker White",
+            "2B": "Dominic Lopez",
+            "SS": "Nash Papenberg",
+            "3B": "Luca Lopez",
+            "LF": "Jude Durako",
+            "LCF": "Benton Herrmann",
+            "RCF": "Michael Schirmer",
+            "RF": "Albert Doerr"
+          },
+          "4": {
+            "P": "Jack Cornish",
+            "C": "Benton Herrmann",
+            "1B": "Nash Papenberg",
+            "2B": "Charlie Wachtel",
+            "SS": "Dominic Lopez",
+            "3B": "Greyson Cerminn",
+            "LF": "Jude Durako",
+            "LCF": "Michael Schirmer",
+            "RCF": "Luca Lopez",
+            "RF": "Parker White"
+          },
+          "5": {
+            "P": "Luca Lopez",
+            "C": "Michael Schirmer",
+            "1B": "Jude Durako",
+            "2B": "Albert Doerr",
+            "SS": "Dominic Lopez",
+            "3B": "Greyson Cerminn",
+            "LF": "Benton Herrmann",
+            "LCF": "Jack Cornish",
+            "RCF": "Charlie Wachtel",
+            "RF": "Nash Papenberg"
+          },
+          "6": {
+            "P": "Michael Schirmer",
+            "C": "Albert Doerr",
+            "1B": "Nash Papenberg",
+            "2B": "Charlie Wachtel",
+            "SS": "Luca Lopez",
+            "3B": "Jude Durako",
+            "LF": "Benton Herrmann",
+            "LCF": "Parker White",
+            "RCF": "Jack Cornish",
+            "RF": "Dominic Lopez"
+          },
+          "7": {
+            "P": "Parker White",
+            "C": "Charlie Wachtel",
+            "1B": "Luca Lopez",
+            "2B": "Albert Doerr",
+            "SS": "Jack Cornish",
+            "3B": "Greyson Cerminn",
+            "LF": "Nash Papenberg",
+            "LCF": "Jude Durako",
+            "RCF": "Michael Schirmer",
+            "RF": "Dominic Lopez"
+          }
         }
       }
     },
