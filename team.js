@@ -19,14 +19,15 @@ window.TEAM = {
     { "num": "21", "name": "Albert Doerr",      "pos": [], "bats": "R", "throws": "R" },
     { "num": "24", "name": "Forrest Doerr",     "pos": [], "bats": "R", "throws": "R" },
     { "num": "27", "name": "Jude Durako",       "pos": [], "bats": "R", "throws": "R" },
-    { "num": "10", "name": "Benton Herrmann",   "pos": [], "bats": "R", "throws": "R" },
+    { "num": "12", "name": "Benton Herrmann",   "pos": [], "bats": "R", "throws": "R" },
     { "num": "18", "name": "Luca Lopez",        "pos": [], "bats": "R", "throws": "R" },
     { "num": "15", "name": "Michael Schirmer",  "pos": [], "bats": "L", "throws": "R" },
     { "num": "9",  "name": "Levi Schueler",     "pos": [], "bats": "R", "throws": "R" },
     { "num": "30", "name": "Nolan Schueler",    "pos": [], "bats": "R", "throws": "R" },
     { "num": "33", "name": "Jackson Segura",    "pos": [], "bats": "R", "throws": "R" },
     { "num": "36", "name": "Charlie Wachtel",   "pos": [], "bats": "R", "throws": "R" },
-    { "num": "39", "name": "Parker White",      "pos": [], "bats": "R", "throws": "R" }
+    { "num": "39", "name": "Parker White",      "pos": [], "bats": "R", "throws": "R" },
+    { "num": "9",  "name": "Dominic Lopez",     "pos": [], "bats": "R", "throws": "R", "guest": true },
+    { "num": "30", "name": "Nash Papenberg",   "pos": [], "bats": "R", "throws": "R", "guest": true }
   ]
-}
-;
+};

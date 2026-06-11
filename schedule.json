@@ -68,11 +68,11 @@
     },
     {
       "type": "game",
-      "date": "2026-05-19T18:00",
+      "date": "2026-05-30T08:00",
       "opponent": "Duke",
       "home": false,
-      "location": "Columbia American Legion Field 2, 375 E. Locust St, Columbia IL 62236",
-      "notes": ""
+      "location": "Columbia American Legion Field 4, 375 E. Locust St, Columbia IL 62236",
+      "notes": "Makeup game (originally May 19)"
     },
     {
       "type": "game",
@@ -103,13 +103,6 @@
       "opponent": "Duke",
       "home": false,
       "location": "Columbia American Legion Field 4, 375 E. Locust St, Columbia IL 62236",
-      "notes": ""
-    },
-    {
-      "type": "practice",
-      "date": "2026-05-30T08:00",
-      "duration": 90,
-      "location": "American Legion Field 9, E. Locust St, Columbia IL 62236",
       "notes": ""
     },
     {
@@ -186,6 +179,20 @@
       "date": "2026-06-27T08:00",
       "duration": 90,
       "location": "American Legion Field 9, E. Locust St, Columbia IL 62236",
+      "notes": ""
+    },
+    {
+      "type": "practice",
+      "date": "2026-06-23T18:00",
+      "duration": 90,
+      "location": "American Legion Field 4, E. Locust St, Columbia IL 62236",
+      "notes": ""
+    },
+    {
+      "type": "practice",
+      "date": "2026-06-30T18:00",
+      "duration": 90,
+      "location": "American Legion Field 4, E. Locust St, Columbia IL 62236",
       "notes": ""
     }
   ]
