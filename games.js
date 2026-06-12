@@ -1,4 +1,4 @@
-const gamesData = {
+var GAMES = {
   "games": [
     {
       "id": "g-2026-05-12",
@@ -2555,10 +2555,140 @@ const gamesData = {
       "opponent": "Smithton 1",
       "home": true,
       "location": "Columbia American Legion Field 2",
-      "teamRuns": 0,
-      "oppRuns": 0,
-      "result": "",
-      "notes": "Absent: Charlie, Forrest, Nolan, Levi, Jackson | Guests: Dominic (#9), Nash (#30) | Pitching: Michael I1, Parker I2 (kid pitch); Greyson I3, Albert I4, Jude I5, Luca I6, Jack I7 (coach pitch)",
+      "teamRuns": 18,
+      "oppRuns": 8,
+      "result": "W",
+      "notes": "W 18-8 | Absent: Charlie, Forrest, Nolan, Levi, Jackson | Guests: Dominic (#9), Nash (#30) | Pitching: Michael I1, Parker I2 (kid pitch); Greyson I3, Albert I4, Jude I5, Luca I6, Jack I7 (coach pitch)",
+      "pitching": [
+        {
+          "name": "Michael Schirmer",
+          "IP": 1,
+          "H": 0,
+          "R": 0,
+          "BB": 2,
+          "K": 1,
+          "HBP": 0
+        },
+        {
+          "name": "Parker White",
+          "IP": 1,
+          "H": 0,
+          "R": 4,
+          "BB": 4,
+          "K": 2,
+          "HBP": 0
+        }
+      ],
+      "batting": [
+        {
+          "name": "Albert Doerr",
+          "AB": 4,
+          "H": 1,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 3,
+          "R": 1,
+          "RBI": 1
+        },
+        {
+          "name": "Jack Cornish",
+          "AB": 3,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 2,
+          "K": 0,
+          "R": 2,
+          "RBI": 1
+        },
+        {
+          "name": "Benton Herrmann",
+          "AB": 4,
+          "H": 4,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 4,
+          "RBI": 1
+        },
+        {
+          "name": "Greyson Cerminn",
+          "AB": 5,
+          "H": 4,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 1,
+          "R": 3,
+          "RBI": 1
+        },
+        {
+          "name": "Jude Durako",
+          "AB": 5,
+          "H": 2,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 1,
+          "R": 1,
+          "RBI": 1
+        },
+        {
+          "name": "Parker White",
+          "AB": 5,
+          "H": 3,
+          "2B": 0,
+          "3B": 1,
+          "HR": 0,
+          "BB": 0,
+          "K": 1,
+          "R": 1,
+          "RBI": 5
+        },
+        {
+          "name": "Luca Lopez",
+          "AB": 5,
+          "H": 3,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 1,
+          "RBI": 3
+        },
+        {
+          "name": "Michael Schirmer",
+          "AB": 3,
+          "H": 3,
+          "2B": 1,
+          "3B": 1,
+          "HR": 0,
+          "BB": 1,
+          "K": 0,
+          "R": 3,
+          "RBI": 3
+        },
+        {
+          "name": "Dominic Lopez",
+          "AB": 4,
+          "H": 3,
+          "2B": 0,
+          "3B": 0,
+          "HR": 0,
+          "BB": 0,
+          "K": 0,
+          "R": 1,
+          "RBI": 2
+        }
+      ],
       "lineup": {
         "battingOrder": [
           "Albert Doerr",
@@ -2708,4 +2838,3 @@ const gamesData = {
     }
   ]
 };
-window.GAMES = gamesData;
