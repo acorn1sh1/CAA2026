@@ -1,4 +1,4 @@
-window.GAMES = {
+{
   "games": [
     {
       "id": "g-2026-05-12",
@@ -9,7 +9,7 @@ window.GAMES = {
       "teamRuns": 17,
       "oppRuns": 3,
       "result": "W",
-      "notes": "First game of the season \u2014 W 17-3 in 6 innings",
+      "notes": "First game of the season — W 17-3 in 6 innings",
       "lineup": {
         "battingOrder": [
           "Luca Lopez",
@@ -878,7 +878,7 @@ window.GAMES = {
       "teamRuns": 14,
       "oppRuns": 10,
       "result": "W",
-      "notes": "W 14-10. Albert Doerr out \u00b7 Jude Durako out (broken arm)",
+      "notes": "W 14-10. Albert Doerr out · Jude Durako out (broken arm)",
       "lineup": {
         "battingOrder": [
           "Charlie Wachtel",
@@ -2796,9 +2796,9 @@ window.GAMES = {
       "opponent": "Red Bud",
       "home": true,
       "location": "Columbia American Legion Field 4",
-      "teamRuns": 5,
-      "oppRuns": 17,
-      "result": "L",
+      "teamRuns": 0,
+      "oppRuns": 0,
+      "result": "",
       "notes": "Full roster (13) | Pitching: Nolan I1, Levi I2 (kid pitch); Jack I3, Forrest I4, Michael I5, Nolan I6, Greyson I7 (coach pitch)",
       "lineup": {
         "battingOrder": [
@@ -2902,185 +2902,7 @@ window.GAMES = {
             "RF": "Levi Schueler"
           }
         }
-      },
-      "pitching": [
-        {
-          "name": "Nolan Schueler",
-          "IP": 1,
-          "H": 5,
-          "R": 4,
-          "BB": 2,
-          "K": 2,
-          "HBP": 0
-        },
-        {
-          "name": "Levi Schueler",
-          "IP": 1,
-          "H": 0,
-          "R": 0,
-          "BB": 2,
-          "K": 2,
-          "HBP": 0
-        }
-      ],
-      "batting": [
-        {
-          "name": "Greyson Cerminn",
-          "AB": 3,
-          "H": 1,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 1,
-          "R": 0,
-          "RBI": 0
-        },
-        {
-          "name": "Jack Cornish",
-          "AB": 3,
-          "H": 0,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 3,
-          "R": 0,
-          "RBI": 0
-        },
-        {
-          "name": "Levi Schueler",
-          "AB": 3,
-          "H": 1,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 1,
-          "R": 1,
-          "RBI": 0
-        },
-        {
-          "name": "Charlie Wachtel",
-          "AB": 3,
-          "H": 1,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 2,
-          "R": 1,
-          "RBI": 1
-        },
-        {
-          "name": "Parker White",
-          "AB": 3,
-          "H": 2,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 1,
-          "R": 1,
-          "RBI": 1
-        },
-        {
-          "name": "Jude Durako",
-          "AB": 3,
-          "H": 3,
-          "2B": 1,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 0,
-          "R": 0,
-          "RBI": 1
-        },
-        {
-          "name": "Nolan Schueler",
-          "AB": 2,
-          "H": 1,
-          "2B": 1,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 1,
-          "R": 0,
-          "RBI": 1
-        },
-        {
-          "name": "Albert Doerr",
-          "AB": 3,
-          "H": 0,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 1,
-          "R": 0,
-          "RBI": 0
-        },
-        {
-          "name": "Jackson Segura",
-          "AB": 2,
-          "H": 1,
-          "2B": 1,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 0,
-          "R": 1,
-          "RBI": 0
-        },
-        {
-          "name": "Forrest Doerr",
-          "AB": 2,
-          "H": 1,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 1,
-          "R": 0,
-          "RBI": 0
-        },
-        {
-          "name": "Benton Herrmann",
-          "AB": 2,
-          "H": 2,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 0,
-          "R": 0,
-          "RBI": 0
-        },
-        {
-          "name": "Luca Lopez",
-          "AB": 2,
-          "H": 0,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 2,
-          "R": 0,
-          "RBI": 0
-        },
-        {
-          "name": "Michael Schirmer",
-          "AB": 2,
-          "H": 2,
-          "2B": 2,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 0,
-          "R": 1,
-          "RBI": 1
-        }
-      ]
+      }
     },
     {
       "id": "g-2026-06-18",
@@ -3088,10 +2910,10 @@ window.GAMES = {
       "opponent": "New Athens",
       "home": true,
       "location": "Columbia American Legion Field 2",
-      "teamRuns": 20,
-      "oppRuns": 10,
-      "result": "W",
-      "notes": "No Greyson (12) | Jackson sick, did not play (lineup/defense slots for him left blank, need reassignment) | Pitching: Albert I1 (4R,3H,4BB,2K), Michael I2 (0R,0H,0BB,3K) (kid pitch); Forrest I3, Jack I4, Nolan I5, Benton I6, Parker I7 (coach pitch) - original notes said Jackson pitched I2, unconfirmed who actually did",
+      "teamRuns": 0,
+      "oppRuns": 0,
+      "result": "",
+      "notes": "No Greyson (12) | Pitching: Albert I1, Jackson I2 (kid pitch); Forrest I3, Jack I4, Nolan I5, Benton I6, Parker I7 (coach pitch)",
       "lineup": {
         "battingOrder": [
           "Jack Cornish",
@@ -3101,6 +2923,7 @@ window.GAMES = {
           "Jude Durako",
           "Nolan Schueler",
           "Albert Doerr",
+          "Jackson Segura",
           "Forrest Doerr",
           "Benton Herrmann",
           "Luca Lopez",
@@ -3120,7 +2943,7 @@ window.GAMES = {
             "RF": "Levi Schueler"
           },
           "2": {
-            "P": null,
+            "P": "Jackson Segura",
             "C": "Forrest Doerr",
             "1B": "Nolan Schueler",
             "2B": "Benton Herrmann",
@@ -3149,7 +2972,7 @@ window.GAMES = {
             "1B": "Michael Schirmer",
             "2B": "Benton Herrmann",
             "SS": "Levi Schueler",
-            "3B": null,
+            "3B": "Jackson Segura",
             "LF": "Charlie Wachtel",
             "LCF": "Albert Doerr",
             "RCF": "Jude Durako",
@@ -3164,7 +2987,7 @@ window.GAMES = {
             "3B": "Levi Schueler",
             "LF": "Albert Doerr",
             "LCF": "Jude Durako",
-            "RCF": null,
+            "RCF": "Jackson Segura",
             "RF": "Parker White"
           },
           "6": {
@@ -3177,7 +3000,7 @@ window.GAMES = {
             "LF": "Charlie Wachtel",
             "LCF": "Albert Doerr",
             "RCF": "Jude Durako",
-            "RF": null
+            "RF": "Jackson Segura"
           },
           "7": {
             "P": "Parker White",
@@ -3189,164 +3012,10 @@ window.GAMES = {
             "LF": "Charlie Wachtel",
             "LCF": "Albert Doerr",
             "RCF": "Jude Durako",
-            "RF": null
+            "RF": "Jackson Segura"
           }
         }
-      },
-      "batting": [
-        {
-          "name": "Jack Cornish",
-          "AB": 2,
-          "H": 1,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 2,
-          "K": 0,
-          "R": 3,
-          "RBI": 1
-        },
-        {
-          "name": "Levi Schueler",
-          "AB": 3,
-          "H": 2,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 1,
-          "K": 1,
-          "R": 3,
-          "RBI": 2
-        },
-        {
-          "name": "Charlie Wachtel",
-          "AB": 2,
-          "H": 2,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 2,
-          "K": 0,
-          "R": 4,
-          "RBI": 1
-        },
-        {
-          "name": "Parker White",
-          "AB": 4,
-          "H": 4,
-          "2B": 2,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 0,
-          "R": 2,
-          "RBI": 4
-        },
-        {
-          "name": "Jude Durako",
-          "AB": 3,
-          "H": 3,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 1,
-          "K": 0,
-          "R": 1,
-          "RBI": 4
-        },
-        {
-          "name": "Nolan Schueler",
-          "AB": 3,
-          "H": 2,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 1,
-          "R": 1,
-          "RBI": 2
-        },
-        {
-          "name": "Albert Doerr",
-          "AB": 2,
-          "H": 2,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 1,
-          "K": 0,
-          "R": 1,
-          "RBI": 2
-        },
-        {
-          "name": "Forrest Doerr",
-          "AB": 2,
-          "H": 1,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 1,
-          "K": 1,
-          "R": 0,
-          "RBI": 2
-        },
-        {
-          "name": "Benton Herrmann",
-          "AB": 3,
-          "H": 1,
-          "2B": 1,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 1,
-          "R": 1,
-          "RBI": 1
-        },
-        {
-          "name": "Luca Lopez",
-          "AB": 2,
-          "H": 1,
-          "2B": 0,
-          "3B": 0,
-          "HR": 0,
-          "BB": 1,
-          "K": 1,
-          "R": 2,
-          "RBI": 0
-        },
-        {
-          "name": "Michael Schirmer",
-          "AB": 3,
-          "H": 3,
-          "2B": 2,
-          "3B": 0,
-          "HR": 0,
-          "BB": 0,
-          "K": 0,
-          "R": 2,
-          "RBI": 1
-        }
-      ],
-      "pitching": [
-        {
-          "name": "Albert Doerr",
-          "IP": 1,
-          "H": 3,
-          "R": 4,
-          "BB": 4,
-          "K": 2,
-          "HBP": 0
-        },
-        {
-          "name": "Michael Schirmer",
-          "IP": 1,
-          "H": 0,
-          "R": 0,
-          "BB": 0,
-          "K": 3,
-          "HBP": 0
-        }
-      ]
+      }
     }
   ]
-};
+}
