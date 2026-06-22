@@ -3347,6 +3347,18 @@
           "HBP": 0
         }
       ]
+    },
+    {
+      "id": "g-2026-07-07",
+      "date": "2026-07-07T18:00",
+      "opponent": "TBD",
+      "home": true,
+      "location": "Columbia American Legion",
+      "teamRuns": 0,
+      "oppRuns": 0,
+      "result": "",
+      "notes": "Playoff Game 1 - opponent/field TBD",
+      "playoff": true
     }
   ]
 }

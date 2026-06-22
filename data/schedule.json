@@ -3,7 +3,7 @@
     {
       "type": "practice",
       "date": "2026-04-21T18:00",
-      "duration": 90,
+      "duration": 120,
       "location": "American Legion Field 4, E. Locust St, Columbia IL 62236",
       "notes": "",
       "practiceId": "p-2026-04-21"
@@ -18,7 +18,7 @@
     {
       "type": "practice",
       "date": "2026-04-28T18:00",
-      "duration": 90,
+      "duration": 120,
       "location": "American Legion Field 4, E. Locust St, Columbia IL 62236",
       "notes": ""
     },
@@ -32,7 +32,7 @@
     {
       "type": "practice",
       "date": "2026-05-05T18:00",
-      "duration": 90,
+      "duration": 120,
       "location": "American Legion Field 4, E. Locust St, Columbia IL 62236",
       "notes": ""
     },
@@ -184,16 +184,25 @@
     {
       "type": "practice",
       "date": "2026-06-23T18:00",
-      "duration": 90,
+      "duration": 120,
       "location": "American Legion Field 4, E. Locust St, Columbia IL 62236",
       "notes": ""
     },
     {
       "type": "practice",
       "date": "2026-06-30T18:00",
-      "duration": 90,
+      "duration": 120,
       "location": "American Legion Field 4, E. Locust St, Columbia IL 62236",
       "notes": ""
+    },
+    {
+      "type": "game",
+      "date": "2026-07-07T18:00",
+      "opponent": "TBD",
+      "home": true,
+      "location": "Columbia American Legion",
+      "notes": "Playoff Game 1",
+      "playoff": true
     }
   ]
 }
